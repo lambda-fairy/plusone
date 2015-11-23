@@ -3,11 +3,11 @@
 
 module Core (
 
-    -- Types
+    -- * Types
     Natural,
     Sequence,
 
-    -- Memoization
+    -- * Memoization
     memo,
     memoFix,
 
