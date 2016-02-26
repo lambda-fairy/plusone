@@ -2,14 +2,19 @@
 
 
 module Memo (
+    Natural,
+    Sequence,
     memo,
     memoFix,
     ) where
 
 
+import Numeric.Natural
 import Prelude hiding (lookup)
 
-import Core
+
+-- | A sequence is a function indexed by a natural number.
+type Sequence = (->) Natural
 
 
 -- | A lazy, infinite binary tree which allows for @O(log n)@ indexing
