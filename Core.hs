@@ -14,4 +14,4 @@ instance Num Cauchy where
     negate (Cauchy f) = Cauchy (\n -> negate (f n))
     abs (Cauchy f) = Cauchy (\n -> abs (f n))
     signum (Cauchy f) = Cauchy (\n -> signum (f n))
-    fromInteger = Cauchy . const . fromInteger
+    fromInteger n = Cauchy (\_ -> fromInteger n)
