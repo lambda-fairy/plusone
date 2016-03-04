@@ -13,7 +13,7 @@ instance Num Cauchy where
     (*) = error "(*) not implemented"
     negate (Cauchy f) = Cauchy (\n -> negate (f n))
     abs (Cauchy f) = Cauchy (\n -> abs (f n))
-    signum (Cauchy f) = Cauchy (\n -> signum (f n))
+    signum = error "signum is undecidable"
     fromInteger n = Cauchy (\_ -> fromInteger n)
 
 
@@ -31,5 +31,5 @@ instance Num Cauchy' where
     (*) = error "(*) not implemented"
     negate (Cauchy' f u) = Cauchy' (negate f) u
     abs (Cauchy' f u) = Cauchy' (abs f) u
-    signum (Cauchy' f u) = Cauchy' (signum f) u
+    signum = error "signum is undecidable"
     fromInteger n = Cauchy' (fromInteger n) (\_ -> 0)
