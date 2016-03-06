@@ -1,3 +1,5 @@
 # plusone
 
-Experiments in constructive analysis. More to come.
+Miscellaneous mathematical code.
+
+![Algebraic!](algebraic.jpg)
