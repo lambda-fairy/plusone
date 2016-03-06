@@ -1,4 +1,4 @@
-module Core where
+module Cauchy where
 
 
 import Numeric.Natural
