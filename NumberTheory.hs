@@ -100,11 +100,11 @@ babyGiant g h = babyGiant' g h (intSqrt n)
 
 -- | Like @babyGiant@, but with an explicit number of baby steps.
 babyGiant' :: forall n. Modulus n => Mod n -> Mod n -> Integer -> Maybe Integer
-babyGiant' g h k = headMay [i * k + j |
-    i <- [1 .. ceiling (n % k)],
-    j <- toList $ Map.lookup (h / g^(i * k)) baby]
+babyGiant' g h q = headMay [i * q + j |
+    i <- [0 .. ceiling (n % q) - 1],
+    j <- toList $ Map.lookup (h / g^(i * q)) baby]
   where
-    baby = Map.fromList [(g^j, j) | j <- [0 .. k]]
+    baby = Map.fromList [(g ^ j, j) | j <- [0 .. q - 1]]
     n = natVal (Proxy :: Proxy n)
 
 
