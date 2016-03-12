@@ -9,14 +9,14 @@ newtype Cauchy = Cauchy (Natural -> Rational)
 
 
 instance Num Cauchy where
-    Cauchy f + Cauchy g = Cauchy (\n -> f (1+n) + g (1+n))
-    Cauchy f - Cauchy g = Cauchy (\n -> f (1+n) - g (1+n))
-    Cauchy f * Cauchy g = Cauchy (\n -> f (1+kg+n) * g (1+kf+n))
+    Cauchy x + Cauchy y = Cauchy (\n -> x (1+n) + y (1+n))
+    Cauchy x - Cauchy y = Cauchy (\n -> x (1+n) - y (1+n))
+    Cauchy x * Cauchy y = Cauchy (\n -> x (1+kx+n) * y (1+ky+n))
       where
-        kf = log2 (abs (f 0) + 1)
-        kg = log2 (abs (g 0) + 1)
-    negate (Cauchy f) = Cauchy (\n -> negate (f n))
-    abs (Cauchy f) = Cauchy (\n -> abs (f n))
+        kx = log2 (abs (x 0) + 1)
+        ky = log2 (abs (y 0) + 1)
+    negate (Cauchy x) = Cauchy (\n -> negate (x n))
+    abs (Cauchy x) = Cauchy (\n -> abs (x n))
     signum = error "signum is undecidable"
     fromInteger n = Cauchy (\_ -> fromInteger n)
 
@@ -30,11 +30,11 @@ data Cauchy' = Cauchy' Cauchy (Natural -> Natural)
 
 
 instance Num Cauchy' where
-    Cauchy' f u + Cauchy' g v = Cauchy' (f + g) (\k -> max (u (1+k)) (v (1+k)))
-    Cauchy' f u - Cauchy' g v = Cauchy' (f - g) (\k -> max (u (1+k)) (v (1+k)))
+    Cauchy' x u + Cauchy' y v = Cauchy' (x + y) (\r -> max (u (1+r)) (v (1+r)))
+    Cauchy' x u - Cauchy' y v = Cauchy' (x - y) (\r -> max (u (1+r)) (v (1+r)))
     (*) = error "(*) not implemented"
-    negate (Cauchy' f u) = Cauchy' (negate f) u
-    abs (Cauchy' f u) = Cauchy' (abs f) u
+    negate (Cauchy' x u) = Cauchy' (negate x) u
+    abs (Cauchy' x u) = Cauchy' (abs x) u
     signum = error "signum is undecidable"
     fromInteger n = Cauchy' (fromInteger n) (\_ -> 0)
 
@@ -50,5 +50,5 @@ log2 x
         | otherwise = acc `seq` go (y / 2) (1 + acc)
 
 
-exp' :: Rational -> Cauchy
-exp' = Cauchy (\n -> sum (genericTake (1+n) (scanl (/) 1 [1 ..])))
+euler :: Cauchy
+euler = Cauchy (\n -> sum (genericTake (1+n) (scanl (/) 1 [1 ..])))
