@@ -1,6 +1,7 @@
 module Cauchy where
 
 
+import Control.Applicative
 import Data.List
 import Numeric.Natural
 
@@ -15,8 +16,8 @@ instance Num Cauchy where
       where
         kx = log2 (abs (x 0) + 1)
         ky = log2 (abs (y 0) + 1)
-    negate (Cauchy x) = Cauchy (\n -> negate (x n))
-    abs (Cauchy x) = Cauchy (\n -> abs (x n))
+    negate (Cauchy x) = Cauchy (negate . x)
+    abs (Cauchy x) = Cauchy (abs . x)
     signum = error "signum is undecidable"
     fromInteger n = Cauchy (\_ -> fromInteger n)
 
@@ -26,20 +27,26 @@ instance Num Cauchy where
 -- The second argument is a /modulus function/, @mu :: N -> N@, which
 -- for any @k@ gives the least index where the difference is less than
 -- @2^(-mu k)@.
-data Cauchy' = Cauchy' Cauchy (Natural -> Natural)
+data Cauchy' = Cauchy' (Natural -> Rational) (Natural -> Natural)
 
 
 instance Num Cauchy' where
-    Cauchy' x u + Cauchy' y v = Cauchy' (x + y) (\r -> max (u (1+r)) (v (1+r)))
-    Cauchy' x u - Cauchy' y v = Cauchy' (x - y) (\r -> max (u (1+r)) (v (1+r)))
-    Cauchy' x u * Cauchy' y v = Cauchy' (x * y) (\r -> max (1+kx+n) (1+ky+n))
+    Cauchy' x u + Cauchy' y v = Cauchy'
+        (liftA2 (+) x y)
+        (\r -> max (u (1+r)) (v (1+r)))
+    Cauchy' x u - Cauchy' y v = Cauchy'
+        (liftA2 (-) x y)
+        (\r -> max (u (1+r)) (v (1+r)))
+    Cauchy' x u * Cauchy' y v = Cauchy'
+        (liftA2 (*) x y)
+        (\r -> max (1+kx+r) (1+ky+r))
       where
         kx = log2 (abs (x 0) + 1)
         ky = log2 (abs (y 0) + 1)
-    negate (Cauchy' x u) = Cauchy' (negate x) u
-    abs (Cauchy' x u) = Cauchy' (abs x) u
+    negate (Cauchy' x u) = Cauchy' (negate . x) u
+    abs (Cauchy' x u) = Cauchy' (abs . x) u
     signum = error "signum is undecidable"
-    fromInteger n = Cauchy' (fromInteger n) (\_ -> 0)
+    fromInteger n = Cauchy' (\_ -> fromInteger n) (\_ -> 0)
 
 
 -- | Returns @max 0 (ceiling (logBase 2 x))@, where x is a rational number.
