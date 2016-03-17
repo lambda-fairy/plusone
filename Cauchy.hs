@@ -62,3 +62,18 @@ log2 x
 
 euler :: Cauchy
 euler = Cauchy (\n -> sum (genericTake (1+n) (scanl (/) 1 [1 ..])))
+
+
+class Index a where
+    (#) :: a -> Natural -> Rational
+infixl 9 #
+
+instance Index Cauchy where
+    Cauchy x # n = x n
+
+instance Index Cauchy' where
+    Cauchy' x u # n = x (u n)
+
+
+toDouble :: Real a => a -> Double
+toDouble = realToFrac
