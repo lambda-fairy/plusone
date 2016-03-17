@@ -32,7 +32,10 @@ data Cauchy' = Cauchy' Cauchy (Natural -> Natural)
 instance Num Cauchy' where
     Cauchy' x u + Cauchy' y v = Cauchy' (x + y) (\r -> max (u (1+r)) (v (1+r)))
     Cauchy' x u - Cauchy' y v = Cauchy' (x - y) (\r -> max (u (1+r)) (v (1+r)))
-    (*) = error "(*) not implemented"
+    Cauchy' x u * Cauchy' y v = Cauchy' (x * y) (\r -> max (1+kx+n) (1+ky+n))
+      where
+        kx = log2 (abs (x 0) + 1)
+        ky = log2 (abs (y 0) + 1)
     negate (Cauchy' x u) = Cauchy' (negate x) u
     abs (Cauchy' x u) = Cauchy' (abs x) u
     signum = error "signum is undecidable"
