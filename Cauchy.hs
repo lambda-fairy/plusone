@@ -12,7 +12,7 @@ newtype Cauchy = Cauchy (Natural -> Rational)
 instance Num Cauchy where
     Cauchy x + Cauchy y = Cauchy (\n -> x (1+n) + y (1+n))
     Cauchy x - Cauchy y = Cauchy (\n -> x (1+n) - y (1+n))
-    Cauchy x * Cauchy y = Cauchy (\n -> x (1+kx+n) * y (1+ky+n))
+    Cauchy x * Cauchy y = Cauchy (\n -> x (1+ky+n) * y (1+kx+n))
       where
         kx = log2 (abs (x 0) + 1)
         ky = log2 (abs (y 0) + 1)
@@ -39,7 +39,7 @@ instance Num Cauchy' where
         (\r -> max (u (1+r)) (v (1+r)))
     Cauchy' x u * Cauchy' y v = Cauchy'
         (liftA2 (*) x y)
-        (\r -> max (1+kx+r) (1+ky+r))
+        (\r -> max (1+ky+r) (1+kx+r))
       where
         kx = log2 (abs (x 0) + 1)
         ky = log2 (abs (y 0) + 1)
