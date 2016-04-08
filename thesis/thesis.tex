@@ -16,7 +16,7 @@ Insert introduction here.
 
 \begin{Proposition}[Addition]
     \label{add}
-    Let $x, y : \N \rightarrow \Q$ be \FCCS.
+    Let $x, y$ be \FCCS.
 
     The sum $x + y$, defined by $(x+y)_k \mapsto x_{k+1} + y_{k+1}$, is a \FCCS.
 \end{Proposition}
@@ -57,16 +57,46 @@ Insert introduction here.
 \end{Corollary}
 
 \begin{Proposition}[Multiplication]
-    $(xy)_k \mapsto x_{k+c_y+1} \cdot y_{k+c_x+1}$ is a \FCCS, where
+    $(xy)_k \mapsto x_{a(k)} \cdot y_{b(k)}$ is a \FCCS, where
     \begin{align*}
-        c_x &= \phi \left( \abs{x_0} + 1 \right) \\
-        c_y &= \phi \left( \abs{y_0} + 1 \right) \\
-        \phi(z) &= \max \menge{ 0,\, \left\lceil \log_2 z \right\rceil }
+        a(k) &= k + 1 + \phi(y_0) \\
+        b(k) &= k + 1 + \phi(x_0) \\
+        \phi(z) &= \max \menge{ 0,\, \left\lceil \log_2(\abs{z} + 1) \right\rceil }
     \end{align*}
 \end{Proposition}
 
 \begin{proof}
-    TODO
+    Given $m, n \in \N$, we need to choose $a,\, b : \N \rightarrow \N$ such that
+    \begin{align*}
+        \abs{(xy)_m - (xy)_{m+n}}
+        &= \abs{x_{a(m)} y_{b(m)} - x_{a(m+n)} y_{b(m+n)}} \\
+        &= \abs{x_{a(m)} y_{b(m)} - x_{a(m)} y_{b(m+n)} + x_{a(m)} y_{b(m+n)} - x_{a(m+n)} y_{b(m+n)}} \\
+        &\leq \abs{x_{a(m)} y_{b(m)} - x_{a(m)} y_{b(m+n)}} + \abs{x_{a(m)} y_{b(m+n)} - x_{a(m+n)} y_{b(m+n)}} \\
+        &= \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} + \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} \\
+        &< \frac{1}{2^{m+n}}
+    \end{align*}
+
+    For this inequality to hold, it must be true that
+    \[ \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} < \frac{1}{2^{m+n+1}} \]
+    and
+    \[ \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} < \frac{1}{2^{m+n+1}} \]
+
+    To complete the proof, we observe that $\abs{x_{a(m)}} < \abs{x_0} + 1$ and $\phi(x_0) \geq \log_2(\abs{x_0} + 1)$. Using these facts:
+    \begin{align*}
+        \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}}
+        &< (\abs{x_0} + 1) \cdot \frac{1}{2^{b(m+n)}} \\
+        &= \frac{\abs{x_0} + 1}{2^{m + n + 1 + \phi(x_0)}} \\
+        &\leq \frac{\abs{x_0} + 1}{2^{m + n + 1 + \log_2(\abs{x_0} + 1)}} \\
+        &= \frac{\abs{x_0} + 1}{2^{m + n + 1} \cdot (\abs{x_0} + 1)} \\
+        &= \frac{1}{2^{m + n + 1}}
+    \end{align*}
+
+    Similarly,
+    \begin{align*}
+        \abs{y_{a+b}}\abs{x_a - x_{a+b}}
+        &< (\abs{y_0} + 1) \cdot \frac{1}{2^{m + n + 1 + \log_2(\abs{y_0} + 1)}} \\
+        &= \frac{1}{2^{m + n + 1}}
+    \end{align*}
 \end{proof}
 
 \bibliographystyle{abbrv}
