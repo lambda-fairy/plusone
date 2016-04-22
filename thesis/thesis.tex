@@ -9,7 +9,7 @@ Insert introduction here.
 
 \begin{Definition}
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
-    \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^{m+n}} } \]
+    \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^{m+n}} } \ . \]
 \end{Definition}
 
 \section{Proofs}
@@ -32,6 +32,7 @@ Insert introduction here.
         &\leq \abs{x_{m+1} - x_{m+n+1}} + \abs{y_{m+1} - y_{m+n+1}} \\
         &< \frac{1}{2^{m+n+1}} + \frac{1}{2^{m+n+1}} \\
         &= \frac{1}{2^{m+n}}
+        \ . \qedhere
     \end{align*}
 \end{proof}
 
@@ -44,12 +45,13 @@ Insert introduction here.
     Let $m, n \in \N$ be arbitrary.
 
     Then
-    \begin{align*}
+    \[
         \abs{(-x)_m - (-x)_{m+n}}
         = \abs{-x_m - (-x_{m+n})}
         = \abs{x_m - x_{m+n}}
         < \frac{1}{2^{m+n}}
-    \end{align*}
+        \ . \qedhere
+    \]
 \end{proof}
 
 \begin{Corollary}[Subtraction]
@@ -62,6 +64,7 @@ Insert introduction here.
         a(k) &= k + 1 + \phi(y_0) \\
         b(k) &= k + 1 + \phi(x_0) \\
         \phi(z) &= \max \menge{ 0,\, \left\lceil \log_2(\abs{z} + 1) \right\rceil }
+        \ .
     \end{align*}
 \end{Proposition}
 
@@ -74,12 +77,13 @@ Insert introduction here.
         &\leq \abs{x_{a(m)} y_{b(m)} - x_{a(m)} y_{b(m+n)}} + \abs{x_{a(m)} y_{b(m+n)} - x_{a(m+n)} y_{b(m+n)}} \\
         &= \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} + \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} \\
         &< \frac{1}{2^{m+n}}
+        \ .
     \end{align*}
 
     For this inequality to hold, it is sufficient to show that
     \[ \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} < \frac{1}{2^{m+n+1}} \]
     and
-    \[ \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} < \frac{1}{2^{m+n+1}} \]
+    \[ \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} < \frac{1}{2^{m+n+1}} \ . \]
 
     To complete the proof, we observe that $\abs{x_{a(m)}} < \abs{x_0} + 1$ and $\phi(x_0) \geq \log_2(\abs{x_0} + 1)$. Using these facts:
     \begin{align*}
@@ -89,6 +93,7 @@ Insert introduction here.
         &\leq \frac{\abs{x_0} + 1}{2^{m + n + 1 + \log_2(\abs{x_0} + 1)}} \\
         &= \frac{\abs{x_0} + 1}{2^{m + n + 1} \cdot (\abs{x_0} + 1)} \\
         &= \frac{1}{2^{m + n + 1}}
+        \ .
     \end{align*}
 
     Similarly,
@@ -96,6 +101,7 @@ Insert introduction here.
         \abs{y_{a+b}}\abs{x_a - x_{a+b}}
         &< (\abs{y_0} + 1) \cdot \frac{1}{2^{m + n + 1 + \log_2(\abs{y_0} + 1)}} \\
         &= \frac{1}{2^{m + n + 1}}
+        \ . \qedhere
     \end{align*}
 \end{proof}
 
