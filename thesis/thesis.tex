@@ -105,6 +105,42 @@ Insert introduction here.
     \end{align*}
 \end{proof}
 
+\begin{Definition}[Zero]
+    A \FCCS \ $x$ is zero when
+    \[ \fa{n \in \N}{\abs{x_n} < \frac{1}{2^n}} \ . \]
+\end{Definition}
+
+\begin{Lemma}[Apartness]
+    Assume that Markov's principle is true. Then if $x$ is not zero, there exists $a \in \N$ where
+    \[ \fa{n \in \N}{\abs{x_{a+n}} > \frac{1}{2^a}} \ . \]
+\end{Lemma}
+
+\begin{proof}
+    If $x$ is not zero, then by Markov's principle
+    \[
+        \neg \left( \fa{n \in \N}{\abs{x_n} < \frac{1}{2^n}} \right)
+        \quad \Rightarrow \quad
+        \ex{n \in \N}{\abs{x_n} \geq \frac{1}{2^n}} \ .
+    \]
+
+    Applying the definition of a \FCCS,
+    \begin{align*}
+        \fa{k \in \N}{\frac{1}{2^{n+k+1}}}
+        &> \abs{x_n - x_{n+k+1}} \\
+        &\geq \abs{x_n} - \abs{x_{n+k+1}} \\
+        &\geq \frac{1}{2^n} - \abs{x_{n+k+1}} \ .
+    \end{align*}
+
+    Rearranging, we get
+    \[
+        \abs{x_{n+k+1}}
+        > \frac{1}{2^n} - \frac{1}{2^{n+k+1}}
+        \geq \frac{1}{2^{n+1}} \ .
+    \]
+
+    Let $a = n + 1$. Then $\abs{x_{a+k}} > 1/2^a$ for all $k$.
+\end{proof}
+
 \begin{Proposition}[Reciprocal]
     $\left(x^{-1}\right)_k \mapsto \left(x_{a(k)}\right)^{-1}$ is a \FCCS, where
     \begin{align*}
