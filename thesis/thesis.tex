@@ -9,7 +9,7 @@ Insert introduction here.
 
 \begin{Definition}
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
-    \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^{m+n}} } \ . \]
+    \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^m} } \ . \]
 \end{Definition}
 
 \section{Proofs}
@@ -30,8 +30,8 @@ Insert introduction here.
         &= \abs{(x_{m+1} + y_{m+1}) - (x_{m+n+1} + y_{m+n+1})} \\
         &= \abs{x_{m+1} - x_{m+n+1} + y_{m+1} - y_{m+n+1}} \\
         &\leq \abs{x_{m+1} - x_{m+n+1}} + \abs{y_{m+1} - y_{m+n+1}} \\
-        &< \frac{1}{2^{m+n+1}} + \frac{1}{2^{m+n+1}} \\
-        &= \frac{1}{2^{m+n}}
+        &< \frac{1}{2^{m+1}} + \frac{1}{2^{m+1}} \\
+        &= \frac{1}{2^m}
         \ . \qedhere
     \end{align*}
 \end{proof}
@@ -49,7 +49,7 @@ Insert introduction here.
         \abs{(-x)_m - (-x)_{m+n}}
         = \abs{-x_m - (-x_{m+n})}
         = \abs{x_m - x_{m+n}}
-        < \frac{1}{2^{m+n}}
+        < \frac{1}{2^m}
         \ . \qedhere
     \]
 \end{proof}
@@ -76,69 +76,71 @@ Insert introduction here.
         &= \abs{x_{a(m)} y_{b(m)} - x_{a(m)} y_{b(m+n)} + x_{a(m)} y_{b(m+n)} - x_{a(m+n)} y_{b(m+n)}} \\
         &\leq \abs{x_{a(m)} y_{b(m)} - x_{a(m)} y_{b(m+n)}} + \abs{x_{a(m)} y_{b(m+n)} - x_{a(m+n)} y_{b(m+n)}} \\
         &= \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} + \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} \\
-        &< \frac{1}{2^{m+n}}
+        &< \frac{1}{2^m}
         \ .
     \end{align*}
 
     For this inequality to hold, it is sufficient to show that
-    \[ \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} < \frac{1}{2^{m+n+1}} \]
+    \[ \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}} < \frac{1}{2^{m+1}} \]
     and
-    \[ \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} < \frac{1}{2^{m+n+1}} \ . \]
+    \[ \abs{y_{b(m+n)}}\abs{x_{a(m)} - x_{a(m+n)}} < \frac{1}{2^{m+1}} \ . \]
 
     To complete the proof, we observe that $\abs{x_{a(m)}} < \abs{x_0} + 1$ and $\phi(x_0) \geq \log_2(\abs{x_0} + 1)$. Using these facts:
     \begin{align*}
         \abs{x_{a(m)}}\abs{y_{b(m)} - y_{b(m+n)}}
-        &< (\abs{x_0} + 1) \cdot \frac{1}{2^{b(m+n)}} \\
-        &= \frac{\abs{x_0} + 1}{2^{m + n + 1 + \phi(x_0)}} \\
-        &\leq \frac{\abs{x_0} + 1}{2^{m + n + 1 + \log_2(\abs{x_0} + 1)}} \\
-        &= \frac{\abs{x_0} + 1}{2^{m + n + 1} \cdot (\abs{x_0} + 1)} \\
-        &= \frac{1}{2^{m + n + 1}}
+        &< (\abs{x_0} + 1) \cdot \frac{1}{2^{b(m)}} \\
+        &= \frac{\abs{x_0} + 1}{2^{m + 1 + \phi(x_0)}} \\
+        &\leq \frac{\abs{x_0} + 1}{2^{m + 1 + \log_2(\abs{x_0} + 1)}} \\
+        &= \frac{\abs{x_0} + 1}{2^{m + 1} \cdot (\abs{x_0} + 1)} \\
+        &= \frac{1}{2^{m + 1}}
         \ .
     \end{align*}
 
     Similarly,
     \begin{align*}
         \abs{y_{a+b}}\abs{x_a - x_{a+b}}
-        &< (\abs{y_0} + 1) \cdot \frac{1}{2^{m + n + 1 + \log_2(\abs{y_0} + 1)}} \\
-        &= \frac{1}{2^{m + n + 1}}
+        &< (\abs{y_0} + 1) \cdot \frac{1}{2^{m + 1 + \log_2(\abs{y_0} + 1)}} \\
+        &= \frac{1}{2^{m + 1}}
         \ . \qedhere
     \end{align*}
 \end{proof}
 
 \begin{Definition}[Zero]
     A \FCCS \ $x$ is zero when
-    \[ \fa{n \in \N}{\abs{x_n} < \frac{1}{2^n}} \ . \]
+    \[ \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \ . \]
 \end{Definition}
 
 \begin{Lemma}[Apartness]
     Assume that Markov's principle is true. Then if $x$ is not zero, there exists $a \in \N$ where
-    \[ \fa{n \in \N}{\abs{x_{a+n}} > \frac{1}{2^a}} \ . \]
+    \[ \fa{n \in \N}{\abs{x_{c+n}} > \frac{1}{2^c}} \ . \]
 \end{Lemma}
 
 \begin{proof}
     If $x$ is not zero, then by Markov's principle
     \[
-        \neg \left( \fa{n \in \N}{\abs{x_n} < \frac{1}{2^n}} \right)
+        \neg \left( \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \right)
         \quad \Rightarrow \quad
-        \ex{n \in \N}{\abs{x_n} \geq \frac{1}{2^n}} \ .
+        \ex{n \in \N}{\abs{x_n} > \frac{1}{2^n}} \ .
     \]
 
-    Applying the definition of a \FCCS,
-    \begin{align*}
-        \fa{k \in \N}{\frac{1}{2^{n+k+1}}}
-        &> \abs{x_n - x_{n+k+1}} \\
-        &\geq \abs{x_n} - \abs{x_{n+k+1}} \\
-        &\geq \frac{1}{2^n} - \abs{x_{n+k+1}} \ .
-    \end{align*}
-
-    Rearranging, we get
+    Applying the definition of a \FCCS, for all $k \in \N$
     \[
-        \abs{x_{n+k+1}}
-        > \frac{1}{2^n} - \frac{1}{2^{n+k+1}}
-        \geq \frac{1}{2^{n+1}} \ .
+        \abs{x_n} - \abs{x_{n + k}}
+        \leq \abs{x_n - x_{n + k}}
+        < \frac{1}{2^n} \ .
     \]
 
-    Let $a = n + 1$. Then $\abs{x_{a+k}} > 1/2^a$ for all $k$.
+    Rearranging we get
+    \[
+        \abs{x_n} - \frac{1}{2^n} < \abs{x_{n + k}}
+    \]
+
+    Now let $c \geq n$ be the smallest natural number such that
+    \[
+        \frac{1}{2^c} \leq \abs{x_n} - \frac{1}{2^n} < \abs{x_{n + k}}
+    \]
+
+    Then $\abs{x_{c + k}} > 1/2^c$ for all $k$.
 \end{proof}
 
 \begin{Proposition}[Reciprocal]
