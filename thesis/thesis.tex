@@ -111,8 +111,8 @@ Insert introduction here.
 \end{Definition}
 
 \begin{Lemma}[Apartness]
-    Assume that Markov's principle is true. Then if $x$ is not zero, there exists $a \in \N$ where
-    \[ \fa{n \in \N}{\abs{x_{c+n}} > \frac{1}{2^c}} \ . \]
+    Assume that Markov's principle is true. Then if $x$ is not zero, there exists $c \in \N$ where
+    \[ \fa{k \in \N}{\abs{x_{c+k}} > \frac{1}{2^c}} \ . \]
 \end{Lemma}
 
 \begin{proof}
@@ -124,23 +124,26 @@ Insert introduction here.
     \]
 
     Applying the definition of a \FCCS, for all $k \in \N$
+    \begin{align*}
+        \frac{1}{2^n}
+        > \abs{x_n - x_{n+k}}
+        \geq \abs{x_n} - \abs{x_{n+k}}
+        > \frac{1}{2^n} - \abs{x_{n+k}} \ .
+    \end{align*}
+
+    Since $\abs{x_n}$ is rational, we know that
+    $\abs{x_n} > 1/2^n \Rightarrow \abs{x_n} = 1/2^n + \epsilon$
+    for some $\epsilon \in \Q$.
+
+    Therefore
     \[
-        \abs{x_n} - \abs{x_{n + k}}
-        \leq \abs{x_n - x_{n + k}}
-        < \frac{1}{2^n} \ .
+        \frac{1}{2^n} > \frac{1}{2^n} + \epsilon - \abs{x_{n+k}}
+        \quad \Rightarrow \quad
+        \abs{x_{n+k}} > \epsilon \ .
     \]
 
-    Rearranging we get
-    \[
-        \abs{x_n} - \frac{1}{2^n} < \abs{x_{n + k}}
-    \]
-
-    Now let $c \geq n$ be the smallest natural number such that
-    \[
-        \frac{1}{2^c} \leq \abs{x_n} - \frac{1}{2^n} < \abs{x_{n + k}}
-    \]
-
-    Then $\abs{x_{c + k}} > 1/2^c$ for all $k$.
+    Let $c \geq n$ be the least natural number such that $1/2^c \leq \epsilon$. Then
+    \[ \abs{x_{c+k}} > \epsilon \geq 1/2^c \ . \qedhere \]
 \end{proof}
 
 \begin{Proposition}[Reciprocal]
