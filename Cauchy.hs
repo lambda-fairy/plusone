@@ -39,7 +39,7 @@ instance Num Cauchy' where
         (\r -> max (u (1+r)) (v (1+r)))
     Cauchy' x u * Cauchy' y v = Cauchy'
         (liftA2 (*) x y)
-        (\r -> max (1+ky+r) (1+kx+r))
+        (\r -> max (u (1+ky+r)) (v (1+kx+r)))
       where
         kx = log2 (abs (x 0) + 1)
         ky = log2 (abs (y 0) + 1)
