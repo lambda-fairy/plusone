@@ -110,7 +110,7 @@ Insert introduction here.
     \[ \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \ . \]
 \end{Definition}
 
-\begin{Lemma}[Apartness]
+\begin{Lemma}[Apartness] \label{apartness}
     Assume that Markov's principle is true. Then if $x$ is not zero, there exists $c \in \N$ where
     \[ \fa{k \in \N}{\abs{x_{c+k}} > \frac{1}{2^c}} \ . \]
 \end{Lemma}
@@ -147,12 +147,38 @@ Insert introduction here.
 \end{proof}
 
 \begin{Proposition}[Reciprocal]
-    $\left(x^{-1}\right)_k \mapsto \left(x_{a(k)}\right)^{-1}$ is a \FCCS, where TODO
+    Let $x$ be a \FCCS\ which is not zero. Then $\left(x^{-1}\right)_k \mapsto \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
 \end{Proposition}
 
 \begin{proof}
-    TODO
+    By the definition of a \FCCS, we know that
+    \[
+        \abs{x_{m+2c} - x_{m+n+2c}} < \frac{1}{2^{m+2c}} \ ;
+    \]
+
+    And by Lemma~\ref{apartness}, we know that
+    \begin{align*}
+        \abs{x_{m+2c}} > \frac{1}{2^c} \enspace\wedge\enspace
+        \abs{x_{m+n+2c}} > \frac{1}{2^c}
+        \enspace&\Rightarrow\enspace
+        \abs{x_{m+2c}} \abs{x_{m+n+2c}} > \frac{1}{2^{2c}} \\
+        &\Rightarrow\enspace
+        \frac{1}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} < 2^{2c} \ .
+    \end{align*}
+
+    Therefore
+    \begin{align*}
+        \abs{\left(x_{m+2c}\right)^{-1} - \left(x_{m+n+2c}\right)^{-1}}
+        &= \abs{\frac{x_{m+2c} - x_{m+n+2c}}{x_{m+2c} \cdot x_{m+n+2c}}} \\
+        &= \frac{\abs{x_{m+2c} - x_{m+n+2c}}}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} \\
+        &< \frac{1}{2^{m+2c}} \cdot 2^{2c} \\
+        &= \frac{1}{2^m} \ . \qedhere
+    \end{align*}
 \end{proof}
+
+\begin{Corollary}[Division]
+    $(x/y)_k \mapsto \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
+\end{Corollary}
 
 \bibliographystyle{abbrv}
 \bibliography{All}
