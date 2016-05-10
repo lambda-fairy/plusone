@@ -3,6 +3,7 @@ module Cauchy where
 
 import Control.Applicative
 import Data.List
+import Data.Ratio
 import Numeric.Natural
 
 
@@ -20,6 +21,13 @@ instance Num Cauchy where
     abs (Cauchy x) = Cauchy (abs . x)
     signum = error "signum is undecidable"
     fromInteger n = Cauchy (\_ -> fromInteger n)
+
+
+instance Fractional Cauchy where
+    fromRational x = fromInteger (numerator x) / fromInteger (denominator x)
+    recip x'@(Cauchy x) = Cauchy (\n -> recip $ x (n + 2*c))
+      where
+        c = findNonZero x'
 
 
 -- | Cauchy sequence with a modulus of convergence.
@@ -49,6 +57,13 @@ instance Num Cauchy' where
     fromInteger n = Cauchy' (\_ -> fromInteger n) (\_ -> 0)
 
 
+instance Fractional Cauchy' where
+    fromRational x = fromInteger (numerator x) / fromInteger (denominator x)
+    recip x'@(Cauchy' x u) = Cauchy' (recip . x) (\r -> u (r + 2*c))
+      where
+        c = findNonZero x'
+
+
 -- | Returns @max 0 (ceiling (logBase 2 x))@, where x is a rational number.
 log2 :: Rational -> Natural
 log2 x
@@ -58,6 +73,18 @@ log2 x
     go y acc
         | y <= 1 = acc
         | otherwise = acc `seq` go (y / 2) (1 + acc)
+
+
+-- | Given an @x@ which does not converge to zero, find the lowest index
+-- @c@ where @abs (x # (c + k)) > 1 / 2^c@ for every @k@.
+findNonZero :: Index a => a -> Natural
+findNonZero x = go 0
+  where
+    go n
+        | e <= 0 = go $! n + 1
+        | otherwise = log2 (recip e)
+      where
+        e = abs (x # n) - (1 % 2^n)
 
 
 euler :: Cauchy
