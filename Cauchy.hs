@@ -93,7 +93,7 @@ euler = Cauchy (\n -> sum (genericTake (1+n) (scanl (/) 1 [1 ..])))
 
 class Index a where
     (#) :: a -> Natural -> Rational
-infixl 9 #
+infixl 1 #
 
 instance Index Cauchy where
     Cauchy x # n = x n
