@@ -1,0 +1,112 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\begin{document}
+\author{Chris Wong}
+\title{Review of ``Period-3 implies chaos''}
+\maketitle
+
+``Period-3 implies chaos,''\cite{MR0385028} written by Tien-Yien Li and James A. Yorke, was a seminal paper in the study of dynamical systems. It showed that if a continuous mapping $f : I \rightarrow I$ on a compact interval $I \subset \R$ has an orbit of period 3, then it also has an orbit of every other period. In addition, it introduced a formal definition for ``chaos'' and proved that $f$ satisfies this property.
+
+The aim of this report is to summarize the results in this paper, and contrast it with other work such as Sharkovsky's theorem and Devaney's chaos definition.
+
+\section{Summary of main proof}
+
+The proof presented in the paper is remarkably simple. Suppose that $a, b, c \in \R$ form a period 3 orbit of $f$, that is, $f(a) = b$, $f(b) = c$, $f(c) = a$. We then make the assumption that $a < b < c$; the other case $a < c < b$ can be dealt with in a similar way.
+
+Write $K = [a, b]$ and $L = [b, c]$. Now since $f(a) = b$ and $f(b) = c$, by continuity $f(K) \supset [b, c] = L$. In a similar way $f(L) \supset [a, c] = K \cup L$.
+
+After this initial setup, we then define an infinite sequence of intervals
+
+\[
+    I_n := \begin{cases}
+        K & n \equiv -1 \mod k \\
+        L & \textrm{otherwise}
+    \end{cases}
+\]
+
+for every positive integer $k$. Clearly $f(I_n) \supset I_{n+1}$ for every $n$, and so by the intermediate value theorem $f^k$ has a fixed point.
+
+Since $k$ is arbitrary, this means that $f$ has an orbit of every period.
+
+\section{Sharkovsky's theorem}
+
+Li and Yorke's theorem can be generalized to other periods as well. In fact, Oleksandr Mikolaiovich Sharkovsky had proven a more general result a decade before.\cite{MR0159905} His eponymous theorem defines a total order for the positive integers as follows:
+\begin{align*}
+    3 \prec 5 \prec 7 \prec\ldots\prec
+    2 \cdot 3 \prec 2 \cdot 5 \prec 2 \cdot 7 \prec\ldots\prec
+    2^2 \cdot 3 \prec 2^2 \cdot 5 \prec\ldots\prec
+    2^3 \prec 2^2 \prec 2 \prec 1
+\end{align*}
+
+Then if $x \prec y$, any mapping $f$ with a period-$x$ point also has a period-$y$ point. Since $3$ is the least number in this ordering, the period-3 theorem is implied as a corollary.
+
+This general theorem can be proven using a similar method to that used for the period-3 case. If we observe how the intervals between period-$x$ points are mapped under $f$, then we can use this information to build a $y$-periodic sequence of intervals $(I_n)_{n=0}^\infty$. From this sequence, we again invoke the intermediate value theorem to find a point of period $y$.
+
+\section{Symbolic dynamics}
+
+At first glance, the period-3 proof appears heavy with analysis. It works with continuous mappings on real intervals, and uses the intermediate value theorem in the process. But with some clever definitions we can reason about these systems \emph{symbolically} without reference to real numbers at all. Through this lens, we discover connections to areas as disparate such as linear algebra and graph theory.
+
+As its name would suggest, symbolic dynamics is built upon the idea of \emph{symbols} drawn from a finite \emph{alphabet} $\Sigma$. A dynamical system is then modelled as an infinite \emph{sequence} of symbols $(a_n) : \Z^+ \rightarrow \Sigma$. The head of the sequence $a_1$ is the current state of the system, and the shift map $\sigma(a) = n \mapsto a_{n+1}$ moves the system forward in time.
+
+The language of compact sets and continuous mappings can be translated as follows. Label each subset with a different symbol, for example $A := [a, b]$ and $B := [b, c]$. Now if the image of a set covers another set, i.e. $f([a, b]) \supset [b, c]$, then the corresponding symbols can be placed next to each other in the sequence, i.e. $a = \ldots AB \ldots \in \Sigma_f$. In this way, all possible orbits of $f$ correspond to a sequence of symbols in $\Sigma_f$.
+
+The symbolic dynamics can be represented by a graph. Create a vertex for each symbol in $\Sigma$, then draw an edge between two vertices when the former vertex can be mapped to the latter. This representation is a powerful tool for studying discrete maps, since many concepts in graph theory correspond to those in dynamical systems. For example, periodic orbits can be seen as cycles in the graph, and invariant sets are strongly connected components. Perhaps the most prominent example of this relationship lies in Sharkovsky's theorem itself, which has been proven countless times using these tools.\cite{Sharkovsky:2008}
+
+\section{Li/Yorke and Devaney's definitions of chaos}
+
+The second contribution of Li and Yorke was a formal definition of chaos. Under their definition, a continuous map $f : I \rightarrow I$ on a compact interval $I$ is \emph{chaotic} when there is an uncountable \emph{scrambled set} $S \subset I$ that satisfies the following conditions:
+
+\begin{enumerate}
+    \item For every $x, y \in S$, $x \neq y$:
+        \begin{itemize}
+            \item
+                $\underset{n\rightarrow\infty}{\lim\sup} \left| f^n(x) - f^n(y) \right| > 0$
+            \item
+                $\underset{n\rightarrow\infty}{\lim\inf} \left| f^n(x) - f^n(y) \right| = 0$
+        \end{itemize}
+    \item
+        $\underset{n\rightarrow\infty}{\lim\inf} \left| f^n(x) - f^n(p) \right| > 0$
+        for every $x \in S$ and periodic point $p \in I$.
+\end{enumerate}
+
+These conditions can be understood intuitively as follows:
+
+\begin{enumerate}
+    \item
+        Every pair of chaotic points $x, y \in S$ will either drift apart or come together. Furthermore, if they are drifting apart, they will eventually drift back together again; and if they are coming together, they will eventually break apart.
+    \item
+        Every chaotic point $x \in S$ does not converge to a periodic point.
+\end{enumerate}
+
+Later, Robert L. Devaney introduced another definition of chaos. Under his definition, a dynamical system is chaotic when it has the following properties:
+
+\begin{enumerate}
+    \item It is \textbf{sensitive to initial conditions}: small changes to the starting values lead to large changes over time;
+    \item It is \textbf{topologically transitive}: a point in some open subset will eventually visit any other open subset;
+    \item \textbf{Periodic points are dense} in the space.\cite{MR1157223}
+\end{enumerate}
+
+It can be shown that the first criteria of each definition are equivalent. If we pick two points in $S$ which are close together, then by Li/Yorke's definition they will eventually drift apart. This is the sensitivity to initial conditions stated by Devaney.
+
+But the other conditions are not so clear cut. Devaney's definition requires the set of periodic points to be dense, whereas with Li and Yorke's definition, the set is only guaranteed to be infinite. In fact, it can be shown that while Devaney chaos implies Li/Yorke chaos, the converse is not true.\cite{MR1989572}
+
+In their paper, Aulbach and Kieninger (2001) provide an example of a map---one of a family of \emph{truncated tent maps}---which is Li/Yorke chaotic but not Devaney chaotic. This family is defined by
+\[
+    g_\lambda : [0, 1] \rightarrow [0, 1],\quad
+    g_\lambda(x) = \min\{\lambda, g(x)\},\quad
+    \lambda \in [0, 1]
+\]
+where $g$ is the usual tent map $g(x) = 2\cdot\min\{x, 1 - x\}$.
+
+The authors then derive a bifurcation point $\lambda_*$ at which the truncated tent map develops chaotic behavior. When $\lambda < \lambda_*$ the map is not chaotic in either sense, and when $\lambda > \lambda_*$ the map is both Li/Yorke chaotic and Devaney chaotic. But at the bifurcation itself $g_{\lambda_*}$ is chaotic only in the sense of Li/Yorke.
+
+\bibliographystyle{abbrv}
+\bibliography{sources}
+
+\end{document}
