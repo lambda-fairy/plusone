@@ -5,14 +5,38 @@
 \title{Properties of fast converging Cauchy sequences}
 \maketitle
 
-Insert introduction here.
+When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and give useful results most of the time.
+
+However, these methods are not without their flaws. It is possible for a handful of floating-point operations to yield a completely incorrect result. And in use cases such as computer-assisted proofs, we can often trade a little performance for certainty in our answers.
+
+\chapter{Approaches to exact reals}
+
+There are many ways to represent real numbers in a computer program. Some of these methods are outlined below.
+
+\section{Decimal expansion}
+
+One naive approach is to represent a real number by a sequence of digits in some base $b$. This base can be any integer greater than 1, but is usually set to 2 or 10. In the latter case, this is our usual \textit{decimal representation}.
+
+Formally, a non-negative real number $r = a_0 . a_1 a_2 a_3 \ldots$ is defined as the sum
+\[
+    r = \sum_{k=0}^\infty \frac{a_k}{b^{-k}},\quad
+\]
+where $a_0$ forms the integer part, and $0 \leq a_1, a_2, \ldots < b$ form the fractional part. If the expansion ends in zeroes, then it is said to be \textit{finite}.
+
+While this representation is easy to understand, it has drawbacks that make it hard to use in practice. First, it is not unique: the base-10 expansions $0.999\ldots$ and $1.000\ldots$ are two different representations of 1. Second, the majority of rational numbers do not have finite expansions, one example being $1/3 = 0.333\ldots$.
+
+TODO: explain why decimal representations don't work
+
+\section{Cauchy sequences}
+
+\section{Continued fractions}
+
+\chapter{Fast converging Cauchy sequences}
 
 \begin{Definition}
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
     \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^m} } \ . \]
 \end{Definition}
-
-\section{Proofs}
 
 \begin{Proposition}[Addition]
     \label{add}
