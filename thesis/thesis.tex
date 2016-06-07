@@ -33,10 +33,26 @@ TODO: explain why decimal representations don't work
 
 \chapter{Fast converging Cauchy sequences}
 
+For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS\ are equivalent to Cauchy sequences, and hence form a model for the (computable) real numbers.
+
 \begin{Definition}
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
     \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^m} } \ . \]
 \end{Definition}
+
+\begin{Proposition}
+    Every fast converging Cauchy sequence is a Cauchy sequence, and vice versa.
+\end{Proposition}
+
+\begin{proof}
+    ($\Rightarrow$) Let $x$ be a \FCCS, $\varepsilon > 0$ arbitrary. Let $m$ be the least natural number such that $1/2^m \leq \varepsilon$. Then for all $n \in \N$, $\abs{x_m - x_{m+n}} < 1/2^m \leq \varepsilon$.
+
+    ($\Leftarrow$) Let $x$ be a Cauchy sequence. Define $y_m \mapsto x_{N(1/2^m)}$ where $N(\varepsilon)$ is the index where all subsequent points differ by less than $\varepsilon$. Then $y$ is a \FCCS.
+\end{proof}
+
+\section{Arithmetic and closure properties}
+
+With Cauchy sequences, we define arithmetic operations simply by working pointwise on each element. But with \FCCS, we need to do extra work to preserve the fast convergence property. For example, when two approximations are added together, their errors are added as well; this means that the error of the result is \textit{twice} that of the inputs. So the addition routine must shift the inputs one step to the right, halving the error to compensate.
 
 \begin{Proposition}[Addition]
     \label{add}
