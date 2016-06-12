@@ -7,13 +7,15 @@
 
 When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and give useful results most of the time.
 
-However, these methods are not without their flaws. It is possible for a handful of floating-point operations to yield a completely incorrect result. And in use cases such as computer-assisted proofs, we can often trade a little performance for certainty in our answers.
+However, these methods are not without their flaws. It is possible for a handful of floating-point operations to yield a completely incorrect result. For use cases such as computer-assisted proofs, even the slightest chance of error is not acceptable.
+
+TODO something something exact reals
 
 \chapter{Approaches to exact reals}
 
 There are many ways to represent real numbers in a computer program. Some of these methods are outlined below.
 
-\section{Decimal expansion}
+\section{Decimal representation}
 
 One naive approach is to represent a real number by a sequence of digits in some base $b$. This base can be any integer greater than 1, but is usually set to 2 or 10. In the latter case, this is our usual \textit{decimal representation}.
 
@@ -52,7 +54,7 @@ For the remainder of this thesis, we will discuss \textit{fast converging Cauchy
 
 \section{Arithmetic and closure properties}
 
-With Cauchy sequences, we define arithmetic operations simply by working pointwise on each element. But with \FCCS, we need to do extra work to preserve the fast convergence property. For example, when two approximations are added together, their errors are added as well; this means that the error of the result is \textit{twice} that of the inputs. So the addition routine must shift the inputs one step to the right, halving the error to compensate.
+With Cauchy sequences, we define arithmetic operations simply by working pointwise on each element. But with \FCCS, we need to do extra work to preserve the fast convergence property. Take addition, for example: when two approximations are added together, their errors are added as well. In general, this means that the error of the result is \textit{twice} that of the inputs. Hence the addition routine must shift the inputs one step to the right, halving the error to compensate.
 
 \begin{Proposition}[Addition]
     \label{add}
@@ -97,6 +99,8 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
 \begin{Corollary}[Subtraction]
     $(x-y)_k \mapsto x_{k+1} - y_{k+1}$ is a \FCCS.
 \end{Corollary}
+
+Multiplication is more subtle. Unlike with addition, the shift under multiplication is not constant. A larger input would necessitate a larger shift, since the multiplication operation scales the error up by a corresponding amount.
 
 \begin{Proposition}[Multiplication]
     $(xy)_k \mapsto x_{a(k)} \cdot y_{b(k)}$ is a \FCCS, where
@@ -144,6 +148,8 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
         \ . \qedhere
     \end{align*}
 \end{proof}
+
+The definition of the reciprocal is also wonky. TODO commentary
 
 \begin{Definition}[Zero]
     A \FCCS \ $x$ is zero when
