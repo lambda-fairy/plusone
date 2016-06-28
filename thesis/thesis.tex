@@ -49,7 +49,7 @@ For the remainder of this thesis, we will discuss \textit{fast converging Cauchy
 \begin{proof}
     ($\Rightarrow$) Let $x$ be a \FCCS, $\varepsilon > 0$ arbitrary. Let $m$ be the least natural number such that $1/2^m \leq \varepsilon$. Then for all $n \in \N$, $\abs{x_m - x_{m+n}} < 1/2^m \leq \varepsilon$.
 
-    ($\Leftarrow$) Let $x$ be a Cauchy sequence. Define $y_m \mapsto x_{N(1/2^m)}$ where $N(\varepsilon)$ is the index where all subsequent points differ by less than $\varepsilon$. Then $y$ is a \FCCS.
+    ($\Leftarrow$) Let $x$ be a Cauchy sequence. Define $y_m := x_{N(1/2^m)}$ where $N(\varepsilon)$ is the index where all subsequent points differ by less than $\varepsilon$. Then $y$ is a \FCCS.
 \end{proof}
 
 \section{Arithmetic and closure properties}
@@ -60,7 +60,7 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
     \label{add}
     Let $x, y$ be \FCCS.
 
-    The sum $x + y$, defined by $(x+y)_k \mapsto x_{k+1} + y_{k+1}$, is a \FCCS.
+    The sum $x + y$, defined by $(x+y)_k := x_{k+1} + y_{k+1}$, is a \FCCS.
 \end{Proposition}
 
 \begin{proof}
@@ -80,7 +80,7 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
 
 \begin{Proposition}[Negation]
     \label{neg}
-    If $x$ is a \FCCS, then $(-x)_k \mapsto -(x_k)$ is a \FCCS.
+    If $x$ is a \FCCS, then $(-x)_k := -(x_k)$ is a \FCCS.
 \end{Proposition}
 
 \begin{proof}
@@ -97,13 +97,13 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
 \end{proof}
 
 \begin{Corollary}[Subtraction]
-    $(x-y)_k \mapsto x_{k+1} - y_{k+1}$ is a \FCCS.
+    $(x-y)_k := x_{k+1} - y_{k+1}$ is a \FCCS.
 \end{Corollary}
 
 Multiplication is more subtle. Unlike with addition, the shift under multiplication is not constant. A larger input would necessitate a larger shift, since the multiplication operation scales the error up by a corresponding amount.
 
 \begin{Proposition}[Multiplication]
-    $(xy)_k \mapsto x_{a(k)} \cdot y_{b(k)}$ is a \FCCS, where
+    $(xy)_k := x_{a(k)} \cdot y_{b(k)}$ is a \FCCS, where
     \begin{align*}
         a(k) &= k + 1 + \phi(y_0) \\
         b(k) &= k + 1 + \phi(x_0) \\
@@ -193,7 +193,7 @@ The definition of the reciprocal is also wonky. TODO commentary
 \end{proof}
 
 \begin{Proposition}[Reciprocal]
-    Let $x$ be a \FCCS\ which is not zero. Then $\left(x^{-1}\right)_k \mapsto \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
+    Let $x$ be a \FCCS\ which is not zero. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
 \end{Proposition}
 
 \begin{proof}
@@ -223,7 +223,7 @@ The definition of the reciprocal is also wonky. TODO commentary
 \end{proof}
 
 \begin{Corollary}[Division]
-    $(x/y)_k \mapsto \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
+    $(x/y)_k := \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
 \end{Corollary}
 
 \section{Exponentials}
@@ -242,7 +242,7 @@ In particular, this definition is useful because when $x$ is small, each term is
 \begin{Proposition}[Exponential on {$[-1, 1]$}]
     Let $x$ be a rational number where $-1 \leq x \leq 1$. Then the exponential $\exp_{[-1,1]}(x)$, defined by
     \[
-        \left[\exp_{[-1,1]}(x)\right]_n \mapsto \sum_{k=0}^{n+1} \frac{x^k}{k!},
+        \left[\exp_{[-1,1]}(x)\right]_n := \sum_{k=0}^{n+1} \frac{x^k}{k!},
     \]
     is a \FCCS.
 \end{Proposition}
@@ -269,7 +269,7 @@ We can then extend this definition to all rational numbers using the property $\
 \begin{Corollary}[Exponential on $\Q$]
     Let $x$ be a rational number. Then the exponential $\exp(x)$, defined by
     \[
-        \exp(x) \mapsto \begin{cases}
+        \exp(x) := \begin{cases}
             \exp_{[-1,1]}(x) & -1 \leq x \leq 1 \\
             \exp(x/2)^2 & \textrm{otherwise}
         \end{cases}
