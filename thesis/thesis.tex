@@ -15,9 +15,9 @@ TODO something something exact reals
 
 There are many ways to represent real numbers in a computer program. Some of these methods are outlined below.
 
-\section{Decimal representation}
+\section{Decimal expansion}
 
-One naive approach is to represent a real number by a sequence of digits in some base $b$. This base can be any integer greater than 1, but is usually set to 2 or 10. In the latter case, this is our usual \textit{decimal representation}.
+One naive approach is to represent a real number by a sequence of digits in some base $b$. This base can be any integer greater than 1, but is usually set to 2 or 10. In the latter case, this is our usual \textit{decimal expansion}.
 
 Formally, a non-negative real number $r = a_0 . a_1 a_2 a_3 \ldots$ is defined as the sum
 \[
@@ -25,9 +25,9 @@ Formally, a non-negative real number $r = a_0 . a_1 a_2 a_3 \ldots$ is defined a
 \]
 where $a_0$ forms the integer part, and $0 \leq a_1, a_2, \ldots < b$ form the fractional part. If the expansion ends in zeroes, then it is said to be \textit{finite}.
 
-While this representation is easy to understand, it has drawbacks that make it hard to use in practice. First, it is not unique: the base-10 expansions $0.999\ldots$ and $1.000\ldots$ are two different representations of 1. Second, the majority of rational numbers do not have finite expansions, one example being $1/3 = 0.333\ldots$.
+While this representation is easy to understand, it has drawbacks that make it hard to use in practice. First, it is not unique: the decimal expansions $0.999\ldots$ and $1.000\ldots$ are two different representations of 1. We can preserve uniqueness by removing sequences that end in nines, but that leads to issues elsewhere. For example, given the expression $0.\overline{09} + 0.\overline{90}$, it would take an infinite number of steps to decide whether the first digit is $0$ or $1$.
 
-TODO: explain why decimal representations don't work
+This problem touches on a fundamental weakness of the decimal representation. Since computing more digits can only \emph{increase} the approximation, not decrease it, each term then forms a lower bound to the true value. In other words, if we know that the number $x$ starts with the digit $1$, then we also know that $x \geq 1$. But as the addition example shows, it is undecidable in general whether or not a real number satisfies such a bound. For this reason, decimal expansions are not suited to constructive analysis.
 
 \section{Cauchy sequences}
 
