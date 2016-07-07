@@ -226,6 +226,43 @@ The definition of the reciprocal is also wonky. TODO commentary
     $(x/y)_k := \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
 \end{Corollary}
 
+\section{Equality and extensionality}
+
+For \FCCS\ to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
+
+Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) = x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
+
+\begin{Definition}[Equality]
+    A pair of \FCCS\ $x$ and $y$ are equal when their difference $x - y$ is zero.
+\end{Definition}
+
+\begin{Definition}[Extensionality]
+    A function $f : \FCCS \rightarrow \FCCS$ is extensional when $x = y$ implies $f(x) = f(y)$.
+\end{Definition}
+
+\begin{Proposition}
+    Addition is extensional.
+\end{Proposition}
+
+\begin{proof}
+    Let $x$, $y$, $z$ be arbitrary \FCCS\ where $x = y$.
+
+    Then for any $n \in \N$,
+    \begin{align*}
+        \abs{ \left[ (x + z) - (y + z) \right]_n }
+        &= \abs{ (x + z)_{n+1} - (y + z)_{n+1} } \\
+        &= \abs{ (x_{n+2} + z_{n+2}) - (y_{n+2} + z_{n+2}) } \\
+        &= \abs{ x_{n+2} - y_{n+2} } \\
+        &\leq \frac{1}{2^{n+1}} \leq \frac{1}{2^n}
+    \end{align*}
+
+    Hence $x + z = y + z$ and addition is extensional in its first parameter.
+
+    The dual $z + x = z + y$ can be proved in a similar way. Hence addition is extensional.
+\end{proof}
+
+The other operations can be verified using a similar argument. For brevity their extensionality will be assumed without proof.
+
 \section{Exponentials}
 
 With elementary arithmetic under our belt, we can turn our attention to more advanced functions such as the exponential map $\exp(x)$.
