@@ -1,2 +1,2 @@
 thesis.pdf: thesis.tex base.tex
-	latexmk -pdf $<
+	latexmk -pdf -halt-on-error $<
