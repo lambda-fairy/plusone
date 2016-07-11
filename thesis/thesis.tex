@@ -5,11 +5,9 @@
 \title{Properties of fast converging Cauchy sequences}
 \maketitle
 
-When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and give useful results most of the time.
+When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and widely supported, and give useful results most of the time.
 
-However, these methods are not without their flaws. It is possible for a handful of floating-point operations to yield a completely incorrect result. For use cases such as computer-assisted proofs, even the slightest chance of error is not acceptable.
-
-TODO something something exact reals
+However, these methods are not without their flaws. For use cases such as computer-assisted proofs, even the slightest chance of error is not acceptable. And even in cases which allow imprecision, is possible for a handful of floating-point operations to yield a completely incorrect result. It is these issues that motivate the study of exact representations of computable real numbers.
 
 \chapter{Approaches to exact reals}
 
@@ -31,7 +29,19 @@ This problem touches on a fundamental weakness of the decimal representation. Si
 
 \section{Cauchy sequences}
 
+An alternative formulation is \textit{Cauchy sequences}, a sequence of rational numbers which become ``arbitrarily close'' to each other as the sequence progresses. In the classical definition, a sequence is Cauchy when for any bound $\varepsilon > 0$, there is an index $N$ after which any pair of points differ by less than $\varepsilon$.
+
+For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory.
+
 \section{Continued fractions}
+
+A \textit{(simple) continued fraction} is a possibly-infinite sequence of integers $[a_0; a_1, a_2, \ldots, a_n]$, which represents the real number
+\[
+    a_0 + \cfrac{1}{a_1 + \cfrac{1}{a_2 + \cfrac{1}{\ddots + \cfrac{1}{a_n}}}}
+    \ .
+\]
+
+This representation has many useful properties. It is unique; it is rational if and only if the sequence is finite; the sequences for $e$, $\sqrt{n}$ for any integer $n$, and the golden ratio $\phi$ are easy to compute. Compared to Cauchy sequences it has two drawbacks: the underlying theory is not as easy to understand; and in practice its operations are slower by a constant factor.
 
 \chapter{Fast converging Cauchy sequences}
 
