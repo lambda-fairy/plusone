@@ -159,84 +159,7 @@ Multiplication is more subtle. Unlike with addition, the shift under multiplicat
     \end{align*}
 \end{proof}
 
-To derive the reciprocal, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal.
-
-\begin{Definition}[Zero]
-    A \FCCS \ $x$ is zero when
-    \[ \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \ . \]
-\end{Definition}
-
-\begin{Lemma}[Apartness] \label{apartness}
-    Assume that Markov's principle is true. Then if $x$ is not zero, there exists $c \in \N$ where
-    \[ \fa{k \in \N}{\abs{x_{c+k}} > \frac{1}{2^c}} \ . \]
-\end{Lemma}
-
-\begin{proof}
-    If $x$ is not zero, then by Markov's principle
-    \[
-        \neg \left( \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \right)
-        \quad \Rightarrow \quad
-        \ex{n \in \N}{\abs{x_n} > \frac{1}{2^n}} \ .
-    \]
-
-    Applying the definition of a \FCCS, for all $k \in \N$
-    \begin{align*}
-        \frac{1}{2^n}
-        > \abs{x_n - x_{n+k}}
-        \geq \abs{x_n} - \abs{x_{n+k}}
-        > \frac{1}{2^n} - \abs{x_{n+k}} \ .
-    \end{align*}
-
-    Since $\abs{x_n}$ is rational, we know that
-    $\abs{x_n} > 1/2^n \Rightarrow \abs{x_n} = 1/2^n + \varepsilon$
-    for some $\varepsilon \in \Q$.
-
-    Therefore
-    \[
-        \frac{1}{2^n} > \frac{1}{2^n} + \varepsilon - \abs{x_{n+k}}
-        \quad \Rightarrow \quad
-        \abs{x_{n+k}} > \varepsilon \ .
-    \]
-
-    Let $c \geq n$ be the least natural number such that $1/2^c \leq \varepsilon$. Then
-    \[ \abs{x_{c+k}} > \varepsilon \geq 1/2^c \ . \qedhere \]
-\end{proof}
-
-The use of Markov's principle here is interesting, because it operationally represents an unbounded search. If the input number is in fact zero, then the proof would search forever for evidence that does not exist. Since equality of real numbers is undecidable, this behavior is the best we can hope for.
-
-\begin{Proposition}[Reciprocal]
-    Let $x$ be a \FCCS{} which is not zero. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
-\end{Proposition}
-
-\begin{proof}
-    By the definition of a \FCCS, we know that
-    \[
-        \abs{x_{m+2c} - x_{m+n+2c}} < \frac{1}{2^{m+2c}} \ ;
-    \]
-
-    And by Lemma~\ref{apartness}, we know that
-    \begin{align*}
-        \abs{x_{m+2c}} > \frac{1}{2^c} \enspace\wedge\enspace
-        \abs{x_{m+n+2c}} > \frac{1}{2^c}
-        \enspace&\Rightarrow\enspace
-        \abs{x_{m+2c}} \abs{x_{m+n+2c}} > \frac{1}{2^{2c}} \\
-        &\Rightarrow\enspace
-        \frac{1}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} < 2^{2c} \ .
-    \end{align*}
-
-    Therefore
-    \begin{align*}
-        \abs{\left(x_{m+2c}\right)^{-1} - \left(x_{m+n+2c}\right)^{-1}}
-        &= \abs{\frac{x_{m+2c} - x_{m+n+2c}}{x_{m+2c} \cdot x_{m+n+2c}}} \\
-        &= \frac{\abs{x_{m+2c} - x_{m+n+2c}}}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} \\
-        &< \frac{1}{2^{m+2c}} \cdot 2^{2c} \\
-        &= \frac{1}{2^m} \ . \qedhere
-    \end{align*}
-\end{proof}
-
-\begin{Corollary}[Division]
-    $(x/y)_k := \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
-\end{Corollary}
+To derive the final arithmetic operation, division, we must introduce the idea of equality first.
 
 \section{Ordering}
 
@@ -266,6 +189,90 @@ Constructive analysis presents unique challenges in defining a total order on th
 
 \begin{Corollary}
     The sign function is undecidable.
+\end{Corollary}
+
+\begin{Definition}[Ordering operators]
+    $x < y$ when there exists $c \in \N$ such that
+    \[ \fa{k \in \N}{y_{n+k} - x_{n+k} > \frac{1}{2^c}} \ . \]
+
+    $x \leq y$ is equivalent to $\neg (y < x)$.
+
+    $x \neq y$ is equivalent to $\neg (x = y)$.
+\end{Definition}
+
+\begin{Proposition}[Apartness from zero] \label{apartness}
+    Assume that Markov's principle is true. Then if $x \neq 0$, either $x < 0$ or $x > 0$.
+\end{Proposition}
+
+\begin{proof}
+    If $x \neq 0$, then by Markov's principle
+    \[
+        \neg \left( \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \right)
+        \quad \Rightarrow \quad
+        \ex{n \in \N}{\abs{x_n} > \frac{1}{2^n}} \ .
+    \]
+
+    If $\abs{x_n} > 1/2^n$, then either $x_n > 1/2^n$ or $-x_n > 1/2^n$. Assume the former case.
+
+    Applying the definition of a \FCCS, for all $k \in \N$
+    \begin{align*}
+        \abs{x_n - x_{n+k}} < \frac{1}{2^n}
+        \enspace&\Rightarrow\enspace x_n - x_{n+k} < \frac{1}{2^n} \\
+        \enspace&\Rightarrow\enspace x_n - \frac{1}{2^n} < x_{n+k} \ .
+    \end{align*}
+
+    Let $c \geq n$ be the least natural number such that $1/2^c \leq x_n - 1/2^n$. Then
+    \[ x_{c+k} > x_n - \frac{1}{2^n} \geq \frac{1}{2^c} \]
+
+    Since $k$ is arbitrary, this shows that $x > 0$. With a similar argument, it can be shown that the other case implies $x < 0$.
+\end{proof}
+
+\begin{Corollary}[Apartness]
+    If $x \neq y$, then by Markov's principle either $x < y$ or $x > y$.
+\end{Corollary}
+
+\begin{proof}
+    Let $z := x - y$. TODO PROVE THAT $Z \neq 0$. Then by Proposition~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively.
+\end{proof}
+
+The use of Markov's principle here is interesting, because it operationally represents an unbounded search. If the inputs are in fact equal, then the proof would search forever for evidence that does not exist. Since equality of real numbers is undecidable, this behavior is the best we can hope for.
+
+\section{Division}
+
+To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal.
+
+\begin{Proposition}[Reciprocal]
+    Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Proposition~\ref{apartness}.
+\end{Proposition}
+
+\begin{proof}
+    By the definition of a \FCCS, we know that
+    \[
+        \abs{x_{m+2c} - x_{m+n+2c}} < \frac{1}{2^{m+2c}} \ ;
+    \]
+
+    And by Proposition~\ref{apartness}, we know that
+    \begin{align*}
+        \abs{x_{m+2c}} > \frac{1}{2^c} \enspace\wedge\enspace
+        \abs{x_{m+n+2c}} > \frac{1}{2^c}
+        \enspace&\Rightarrow\enspace
+        \abs{x_{m+2c}} \abs{x_{m+n+2c}} > \frac{1}{2^{2c}} \\
+        &\Rightarrow\enspace
+        \frac{1}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} < 2^{2c} \ .
+    \end{align*}
+
+    Therefore
+    \begin{align*}
+        \abs{\left(x_{m+2c}\right)^{-1} - \left(x_{m+n+2c}\right)^{-1}}
+        &= \abs{\frac{x_{m+2c} - x_{m+n+2c}}{x_{m+2c} \cdot x_{m+n+2c}}} \\
+        &= \frac{\abs{x_{m+2c} - x_{m+n+2c}}}{\abs{x_{m+2c}} \abs{x_{m+n+2c}}} \\
+        &< \frac{1}{2^{m+2c}} \cdot 2^{2c} \\
+        &= \frac{1}{2^m} \ . \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{Corollary}[Division]
+    $(x/y)_k := \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
 \end{Corollary}
 
 \section{Extensionality}
