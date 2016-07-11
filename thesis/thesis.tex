@@ -45,7 +45,7 @@ This representation has many useful properties. It is unique; it is rational if 
 
 \chapter{Fast converging Cauchy sequences}
 
-For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS\ are equivalent to Cauchy sequences, and hence form a model for the (computable) real numbers.
+For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS{} are equivalent to Cauchy sequences, and hence form a model for the (computable) real numbers.
 
 \begin{Definition}
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
@@ -205,7 +205,7 @@ To derive the reciprocal, observe that $x^{-1}$ is defined only when $x$ is not 
 The use of Markov's principle here is interesting, because it operationally represents an unbounded search. If the input number is in fact zero, then the proof would search forever for evidence that does not exist. Since equality of real numbers is undecidable, this behavior is the best we can hope for.
 
 \begin{Proposition}[Reciprocal]
-    Let $x$ be a \FCCS\ which is not zero. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
+    Let $x$ be a \FCCS{} which is not zero. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
 \end{Proposition}
 
 \begin{proof}
@@ -243,18 +243,18 @@ The use of Markov's principle here is interesting, because it operationally repr
 Constructive analysis presents unique challenges in defining a total order on the reals. Without double negation elimination, $a < b$ and $a \geq b$ are not full inverses; we are forced to favor one over the other. Many classical concepts, such as the sign function or equality (!), fall apart in a constructive setting.
 
 \begin{Definition}[Equality]
-    A pair of \FCCS\ $x$ and $y$ are equal when
+    A pair of \FCCS{} $x$ and $y$ are equal when
     \[
         \fa{n \in \N}{\abs{x_n - y_n} \leq \frac{1}{2^n}}
     \]
 \end{Definition}
 
 \begin{Proposition}
-    Equality on \FCCS\ is undecidable.
+    Equality on \FCCS{} is undecidable.
 \end{Proposition}
 
 \begin{proof}
-    Let $P$ be an arbitrary computer program. Define the \FCCS\ $x$ as follows:
+    Let $P$ be an arbitrary computer program. Define the \FCCS{} $x$ as follows:
     \begin{itemize}
         \item If $P$ terminates in $p$ steps, let $x_n := 1/2^{\min\menge{p, n}}$.
         \item Otherwise, let $x_n := 1/2^n$.
@@ -270,7 +270,7 @@ Constructive analysis presents unique challenges in defining a total order on th
 
 \section{Extensionality}
 
-For \FCCS\ to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
+For \FCCS{} to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
 
 Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) = x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
 
@@ -283,7 +283,7 @@ Most operations are extensional, including the arithmetic operations defined abo
 \end{Proposition}
 
 \begin{proof}
-    Let $x$, $y$, $z$ be arbitrary \FCCS\ where $x = y$.
+    Let $x$, $y$, $z$ be arbitrary \FCCS{} where $x = y$.
 
     Then for any $n \in \N$,
     \begin{align*}
