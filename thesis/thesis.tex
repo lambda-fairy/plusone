@@ -159,7 +159,7 @@ Multiplication is more subtle. Unlike with addition, the shift under multiplicat
     \end{align*}
 \end{proof}
 
-The definition of the reciprocal is also wonky. TODO commentary
+To derive the reciprocal, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal.
 
 \begin{Definition}[Zero]
     A \FCCS \ $x$ is zero when
@@ -202,6 +202,8 @@ The definition of the reciprocal is also wonky. TODO commentary
     \[ \abs{x_{c+k}} > \varepsilon \geq 1/2^c \ . \qedhere \]
 \end{proof}
 
+The use of Markov's principle here is interesting, because it operationally represents an unbounded search. If the input number is in fact zero, then the proof would search forever for evidence that does not exist. Since equality of real numbers is undecidable, this behavior is the best we can hope for.
+
 \begin{Proposition}[Reciprocal]
     Let $x$ be a \FCCS\ which is not zero. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
 \end{Proposition}
@@ -236,15 +238,41 @@ The definition of the reciprocal is also wonky. TODO commentary
     $(x/y)_k := \left(x \cdot y^{-1}\right)_k$ is a \FCCS.
 \end{Corollary}
 
-\section{Equality and extensionality}
+\section{Ordering}
+
+Constructive analysis presents unique challenges in defining a total order on the reals. Without double negation elimination, $a < b$ and $a \geq b$ are not full inverses; we are forced to favor one over the other. Many classical concepts, such as the sign function or equality (!), fall apart in a constructive setting.
+
+\begin{Definition}[Equality]
+    A pair of \FCCS\ $x$ and $y$ are equal when
+    \[
+        \fa{n \in \N}{\abs{x_n - y_n} \leq \frac{1}{2^n}}
+    \]
+\end{Definition}
+
+\begin{Proposition}
+    Equality on \FCCS\ is undecidable.
+\end{Proposition}
+
+\begin{proof}
+    Let $P$ be an arbitrary computer program. Define the \FCCS\ $x$ as follows:
+    \begin{itemize}
+        \item If $P$ terminates in $p$ steps, let $x_n := 1/2^{\min\menge{p, n}}$.
+        \item Otherwise, let $x_n := 1/2^n$.
+    \end{itemize}
+    In other words, $x \rightarrow 1/2^p \neq 0$ if and only if $P$ terminates.
+
+    Suppose there is an algorithm for deciding whether $x = 0$. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
+\end{proof}
+
+\begin{Corollary}
+    The sign function is undecidable.
+\end{Corollary}
+
+\section{Extensionality}
 
 For \FCCS\ to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
 
 Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) = x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
-
-\begin{Definition}[Equality]
-    A pair of \FCCS\ $x$ and $y$ are equal when their difference $x - y$ is zero.
-\end{Definition}
 
 \begin{Definition}[Extensionality]
     A function $f : \FCCS \rightarrow \FCCS$ is extensional when $x = y$ implies $f(x) = f(y)$.
@@ -259,10 +287,9 @@ Most operations are extensional, including the arithmetic operations defined abo
 
     Then for any $n \in \N$,
     \begin{align*}
-        \abs{ \left[ (x + z) - (y + z) \right]_n }
-        &= \abs{ (x + z)_{n+1} - (y + z)_{n+1} } \\
-        &= \abs{ (x_{n+2} + z_{n+2}) - (y_{n+2} + z_{n+2}) } \\
-        &= \abs{ x_{n+2} - y_{n+2} } \\
+        \abs{ (x + z)_n - (y + z)_n }
+        &= \abs{ (x_{n+1} + z_{n+1}) - (y_{n+1} + z_{n+1}) } \\
+        &= \abs{ x_{n+1} - y_{n+1} } \\
         &\leq \frac{1}{2^{n+1}} \leq \frac{1}{2^n}
     \end{align*}
 
