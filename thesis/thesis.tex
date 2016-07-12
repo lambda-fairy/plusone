@@ -358,6 +358,22 @@ We can then extend this definition to all rational numbers using the property $\
     is a \FCCS.
 \end{Corollary}
 
+\chapter{Implementation notes}
+
+There are many different ways to implement fast converging Cauchy sequences on a computer. One aspect in which an implementation can differ is in how it treats the \textit{modulus function}.
+
+A modulus function $\mu(\varepsilon) : \Q \rightarrow \N$ of a sequence returns the index of an element with error at most $\varepsilon$. In the context of \FCCS, we can simplify the definition by requiring $\varepsilon = 1/2^n$ for some natural $n$; then the modulus function can take this $n$ directly.
+
+The \FCCS{} operations described thus far handle the modulus function implicitly---they shift their inputs such that $\mu$ is just the identity function. But it is possible to avoid shifting at all, and modify $\mu$ instead. In the attached code, the \texttt{Cauchy'} type implements this idea.
+
+To decide which approach to use, the author ran benchmarks to compare the performance of each method. The two methods were tasked with evaluating the expression
+
+\[ \sum_{k = 0}^{100} k! = 1 + 2! + 3! + \ldots + 100! \]
+
+within an error of $1/2^{50}$. This expression was chosen because the operations used---addition, multiplication, lifting of integers---are supported by both methods. The benchmarks were run using the \texttt{criterion} library on an Intel Core i7 laptop.
+
+The variant without the modulus function is clearly faster: it runs in an average 1.97~ms (standard deviation 29.6~$\mu$s) compared to an average 2.93~ms (133~$\mu$s) with the modulus function. This is likely because the modulus function variant involves two function calls instead of one.
+
 \bibliographystyle{abbrv}
 \bibliography{All}
 
