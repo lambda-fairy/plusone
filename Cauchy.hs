@@ -88,12 +88,21 @@ findNonZero x = go 0
 
 
 -- | Find the exponential of a rational number.
-exp' :: Rational -> Cauchy
-exp' x
+expC :: Rational -> Cauchy
+expC x
     | -1 <= x && x <= 1 = exp01 x
-    | otherwise = let y = exp' (x / 2) in y * y
+    | otherwise = let y = expC (x / 2) in y * y
   where
     exp01 x = Cauchy $ \n -> sum [ x^k / (realToFrac (factorial k)) | k <- [0 .. n+1] ]
+
+
+-- | Like @exp@, but returns a @Cauchy'@ instead.
+expC' :: Rational -> Cauchy'
+expC' x
+    | -1 <= x && x <= 1 = exp01 x
+    | otherwise = let y = expC' (x / 2) in y * y
+  where
+    exp01 x = Cauchy' (\n -> sum [ x^k / (realToFrac (factorial k)) | k <- [0 .. n] ]) (\r -> r+1)
 
 
 -- | Super simple factorial function.

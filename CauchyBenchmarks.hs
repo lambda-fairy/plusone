@@ -6,7 +6,7 @@
 -- $ ./CauchyBenchmarks -o cauchy-benchmarks.html
 
 
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE RankNTypes #-}
 
 
 import Criterion.Main
@@ -17,16 +17,24 @@ import Numeric.Natural
 import Cauchy
 
 
+class (Fractional a, Index a) => CauchyImpl a where
+    euler :: a
+
+instance CauchyImpl Cauchy where
+    euler = expC 1
+
+instance CauchyImpl Cauchy' where
+    euler = expC' 1
+
+
+main :: IO ()
 main = defaultMain [
-    bgroup "cauchy" [
-        bench "single-function" (nf (test (Proxy :: Proxy Cauchy)) 50),
-        bench "double-function" (nf (test (Proxy :: Proxy Cauchy')) 50)
-        ]
+    benchmark "simple" $ (euler * euler + euler) / euler,
+    benchmark "complicated" $ sum [fromInteger n * euler | n <- [1 .. 50]]
     ]
-
-
--- test n = nth approximation of (1! + 2! + ... + 100!)
-test :: (Num a, Index a) => Proxy a -> Natural -> Rational
-test p n = (x `asProxyTypeOf` p) # n
   where
-    x = sum . map product . inits $ map fromInteger [1 .. 100]
+    benchmark :: String -> (forall a. CauchyImpl a => a) -> Benchmark
+    benchmark label expr = bgroup label [
+        bench "single-function" (nf (# 50) (expr :: Cauchy)),
+        bench "double-function" (nf (# 50) (expr :: Cauchy'))
+        ]
