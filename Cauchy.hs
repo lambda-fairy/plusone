@@ -97,7 +97,7 @@ exp' x
 
 
 -- | Super simple factorial function.
-factorial :: Integer -> Integer
+factorial :: Natural -> Natural
 factorial n = product [2..n]
 
 
