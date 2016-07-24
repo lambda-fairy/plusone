@@ -307,7 +307,7 @@ Most operations are extensional, including the arithmetic operations defined abo
 
 The other operations can be verified using a similar argument. For brevity their extensionality will be assumed without proof.
 
-\section{Exponentials}
+\section{Exponentials and trigonometric functions}
 
 With elementary arithmetic under our belt, we can turn our attention to more advanced functions such as the exponential map $\exp(x)$.
 
@@ -357,6 +357,34 @@ We can then extend this definition to all rational numbers using the property $\
     \]
     is a \FCCS.
 \end{Corollary}
+
+The trigonometric functions $\sin$, $\cos$, and $\tan$ can be defined in a similar way.
+
+\begin{Proposition}[Trigonometric functions]
+    Let $x$ be a rational number such that $-1 \leq x \leq 1$. Then the functions $\cos_{[-1,1]}(x)$ and $\sin_{[-1,1]}(x)$, defined by
+    \[
+        \left[\cos(x)_{[-1,1]}\right]_n
+        := \sum_{k=0}^{n+1} \begin{cases}
+            (-1)^{\floor{k/2}} \cdot \cfrac{x^k}{k!} & k\ \mathrm{even} \\
+            0 & \mathrm{otherwise}
+        \end{cases}
+    \]
+    and
+    \[
+        \left[\sin(x)_{[-1,1]}\right]_n
+        := \sum_{k=0}^{n+1} \begin{cases}
+            (-1)^{\floor{k/2}} \cdot \cfrac{x^k}{k!} & k\ \mathrm{odd} \\
+            0 & \mathrm{otherwise}
+        \end{cases}
+    \]
+    are \FCCS. Using the double angle formulae $\cos(2x) = 2 \cos^2 x - 1$ and $\sin(2x) = 2 \sin x \cos x$, these functions can be extended to all of $\Q$.
+
+    $\tan(x)$ is then defined as $\sin(x) / \cos(x)$.
+\end{Proposition}
+
+\begin{proof}
+    Observe that in the definitions of $\cos_{[-1,1]}$ and $\sin_{[-1,1]}$, the magnitude of each term is less than or equal to that of $\exp_{[-1,1]}$. Therefore the fact that $\exp_{[-1,1]}(x)$ is a \FCCS{} implies that the former are \FCCS{} as well.
+\end{proof}
 
 \chapter{Implementation notes}
 
