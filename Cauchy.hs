@@ -31,6 +31,10 @@ instance Fractional Cauchy where
         c = findNonZero x'
 
 
+instance Show Cauchy where
+    showsPrec p x = showsPrec p (toDouble $ x # 64) . ("..." ++)
+
+
 -- | Cauchy sequence with a modulus of convergence.
 --
 -- The second argument is a /modulus function/, @mu :: N -> N@, which
