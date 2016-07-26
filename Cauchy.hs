@@ -1,8 +1,9 @@
+{-# OPTIONS_GHC -Wno-name-shadowing #-}
+
 module Cauchy where
 
 
 import Control.Applicative
-import Data.List
 import Data.Ratio
 import Numeric.Natural
 
@@ -93,7 +94,7 @@ expC x
     | -1 <= x && x <= 1 = exp01 x
     | otherwise = let y = expC (x / 2) in y * y
   where
-    exp01 x = Cauchy $ \n -> sum [ x^k / (realToFrac (factorial k)) | k <- [0 .. n+1] ]
+    exp01 x = Cauchy $ \n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n+1] ]
 
 
 -- | Like @exp@, but returns a @Cauchy'@ instead.
@@ -102,7 +103,34 @@ expC' x
     | -1 <= x && x <= 1 = exp01 x
     | otherwise = let y = expC' (x / 2) in y * y
   where
-    exp01 x = Cauchy' (\n -> sum [ x^k / (realToFrac (factorial k)) | k <- [0 .. n] ]) (\r -> r+1)
+    exp01 x = Cauchy' (\n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n] ]) (\r -> r+1)
+
+
+-- | Find the sine of a rational number.
+sinC :: Rational -> Cauchy
+sinC x
+    | -1 <= x && x <= 1 = sin01 x
+    | otherwise = 2 * sinC (x / 2) * cosC (x / 2)
+  where
+    sin01 x = Cauchy $ \n -> sum [
+        (-1)^(k `quot` 2) * x^k / realToFrac (factorial k) |
+        k <- [1, 3 .. n+1] ]
+
+
+-- | Find the cosine of a rational number.
+cosC :: Rational -> Cauchy
+cosC x
+    | -1 <= x && x <= 1 = cos01 x
+    | otherwise = let c = cosC (x / 2) in 2 * c * c - 1
+  where
+    cos01 x = Cauchy $ \n -> sum [
+        (-1)^(k `quot` 2) * x^k / realToFrac (factorial k) |
+        k <- [0, 2 .. n+1] ]
+
+
+-- | Find the tangent of a rational number.
+tanC :: Rational -> Cauchy
+tanC x = sinC x / cosC x
 
 
 -- | Super simple factorial function.
