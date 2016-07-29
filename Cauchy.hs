@@ -4,7 +4,6 @@ module Cauchy where
 
 
 import Control.Applicative
-import Data.List
 import Data.Ratio
 import Numeric.Natural
 
@@ -143,9 +142,9 @@ factorial :: Natural -> Natural
 factorial n = product [2..n]
 
 
--- | Given a (possibly infinite) list of numbers, find a number that is apart
--- from all of them.
-cantor :: [Cauchy] -> Cauchy
+-- | Given a sequence of numbers, find a number that is apart from all
+-- of them.
+cantor :: (Natural -> Cauchy) -> Cauchy
 cantor xs = Cauchy $ fst . step
   where
     step :: Natural -> (Rational, Rational)
@@ -161,7 +160,7 @@ cantor xs = Cauchy $ fst . step
       where
         (a, b) = step (n - 1)
         offset = (b - a) / 4
-        xn = genericIndex xs (n `quot` 2) # n
+        xn = xs (n `quot` 2) # (n + 1)
 
 
 class Index a where
