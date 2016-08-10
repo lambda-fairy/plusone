@@ -172,7 +172,7 @@ Constructive analysis presents unique challenges in defining a total order on th
     \]
 \end{Definition}
 
-\begin{Proposition}
+\begin{Proposition} \label{equality_undecidable}
     Equality on \FCCS{} is undecidable.
 \end{Proposition}
 
@@ -188,8 +188,20 @@ Constructive analysis presents unique challenges in defining a total order on th
 \end{proof}
 
 \begin{Corollary}
-    The sign function is undecidable.
+    The sign function
+    \[
+        \mathrm{sgn}(x) := \begin{cases}
+            -1 & x < 0 \\
+            0 & x = 0 \\
+            1 & x > 0
+        \end{cases}
+    \]
+    is undecidable.
 \end{Corollary}
+
+\begin{proof}
+    If the sign function was computable, then we could determine whether $x$ and $y$ are equal by evaluating $\mathrm{sgn}(x - y)$. This contradicts Proposition~\ref{equality_undecidable}.
+\end{proof}
 
 \begin{Definition}[Ordering operators]
     $x < y$ when there exists $c \in \N$ such that
