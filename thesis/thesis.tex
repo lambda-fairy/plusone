@@ -398,6 +398,30 @@ The trigonometric functions $\sin$, $\cos$, and $\tan$ can be defined in a simil
     Observe that in the definitions of $\cos_{[-1,1]}$ and $\sin_{[-1,1]}$, the magnitude of each term is less than or equal to that of $\exp_{[-1,1]}$. Therefore we can use a similar argument to prove the convergence of the former.
 \end{proof}
 
+\section{Cantor's diagonal argument}
+
+One important result in set theory is the uncountability of the real line: that is, there is no bijective mapping that relates $\N$ and $\R$. This result applies within constructive analysis as well, if we restrict the theorem to the computable reals (or \FCCS) instead.
+
+A typical proof of this result uses Cantor's \textit{diagonal argument}. Given any sequence of (computable) real numbers, we can construct a number that is apart from every number in the list. Hence there cannot be an enumeration of all real numbers---if there were, then the diagonal argument would yield one that it missed. Furthermore, since this argument is constructive, it can be implemented on a computer as well.
+
+\begin{Proposition}[Cantor's diagonal argument]
+    Let $x : \N \rightarrow \FCCS$ be a sequence of fast converging Cauchy sequences. Then there exists a \FCCS{} $\mathrm{cantor}(x)$ that is apart from every element in $x$.
+\end{Proposition}
+
+\begin{proof}
+    Define the sequence of intervals $(X_n)$ as follows:
+    \begin{align*}
+        X_0 &:= [0, 1) \\
+        X_{2n+1} &:= \begin{cases}
+            [a, a + \frac{b - a}{4}) & [x_n]_{2n+2} \geq \frac{a + b}{2} \\
+            [b - \frac{b - a}{4}, b) & [x_n]_{2n+2} < \frac{a + b}{2}
+        \end{cases} \\
+        & \mathrm{where}\ [a, b) = X_{2n} \\
+        X_{2n+2} &:= X_{2n+1}
+    \end{align*}
+    ???
+\end{proof}
+
 \chapter{Implementation notes}
 
 There are many different ways to implement fast converging Cauchy sequences on a computer. One aspect in which an implementation can differ is in how it treats the \textit{modulus function}.
