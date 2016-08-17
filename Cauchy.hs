@@ -145,22 +145,20 @@ factorial n = product [2..n]
 -- | Given a sequence of numbers, find a number that is apart from all
 -- of them.
 cantor :: (Natural -> Cauchy) -> Cauchy
-cantor xs = Cauchy $ fst . step
+cantor xs = Cauchy $ \n -> let (a, _) = step (n `quot` 2) in a
   where
     step :: Natural -> (Rational, Rational)
-    step 0 = (0, 1)
+    step 0 = (x00 - 2, x00 - 1)
+      where
+        x00 = xs 0 # 0
     step n
-        -- Since we're zooming in by a factor of 1/4 each time,
-        -- we only have to refine the approximation every two steps
-        | even n = (a, b)
-        -- If the number is in the right half, move to the left
-        | xn >= (a + b) / 2 = (a, a + offset)
-        -- If the number is in the left half, move to the right
-        | otherwise = (b - offset, b)
+        | xn >= c = (a, a + h)
+        | otherwise = (b - h, b)
       where
         (a, b) = step (n - 1)
-        offset = (b - a) / 4
-        xn = xs (n `quot` 2) # (n + 1)
+        c = (a + b) / 2
+        h = (b - a) / 4
+        xn = xs n # 2 * n + 2
 
 
 class Index a where
