@@ -293,7 +293,7 @@ To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined
 
 For \FCCS{} to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
 
-Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) = x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
+Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) := x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
 
 \begin{Definition}[Extensionality]
     A function $f : \FCCS \rightarrow \FCCS$ is extensional when $x = y$ implies $f(x) = f(y)$.
