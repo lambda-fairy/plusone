@@ -167,10 +167,12 @@ To derive the final arithmetic operation, division, we must introduce the idea o
 
 Constructive analysis presents unique challenges in defining a total order on the reals. Without double negation elimination, $a < b$ and $a \geq b$ are not full inverses; we are forced to favor one over the other. Many classical concepts, such as the sign function or equality (!), fall apart in a constructive setting.
 
-\begin{Definition}[Equality]
-    A pair of \FCCS{} $x$ and $y$ are equal when
+In particular, constructive analysis forces a distinction between constructive and non-constructive inequality. A statement that two numbers are \textit{not equal} is just a negation of the statement that they are equal. But for two numbers to be \textit{apart}, we must provide an index after which the sequences will never come closer together. While it is easy to show that apartness implies not-equality, the converse requires an additional axiom: Markov's principle.
+
+\begin{Definition}[Zero]
+    A \FCCS{} $x$ is zero when
     \[
-        \fa{n \in \N}{\abs{x_n - y_n} \leq \frac{1}{2^n}}
+        \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \ .
     \]
 \end{Definition}
 
@@ -186,7 +188,7 @@ Constructive analysis presents unique challenges in defining a total order on th
     \end{itemize}
     In other words, $x \rightarrow 1/2^p \neq 0$ if and only if $P$ terminates.
 
-    Suppose there is an algorithm for deciding whether $x = 0$. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
+    Suppose there is an algorithm for deciding whether $x$ is zero. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
 \end{proof}
 
 \begin{Corollary}
@@ -205,13 +207,24 @@ Constructive analysis presents unique challenges in defining a total order on th
     If the sign function was computable, then we could determine whether $x$ and $y$ are equal by evaluating $\mathrm{sgn}(x - y)$. This contradicts Proposition~\ref{equality_undecidable}.
 \end{proof}
 
+\begin{Definition}[Equality]
+    A pair of \FCCS{} $x$ and $y$ are equal, written $x = y$, when either of the following equivalent properties hold:
+    \begin{itemize}
+        \item The difference $x - y$ is zero;
+        \item For any $n \in \N$, $\abs{x_{n+1} - y_{n+1}} \leq 1/2^n$.
+    \end{itemize}
+    $x \neq y$ is defined as $\neg (x = y)$.
+\end{Definition}
+
+Note that in the definition of equality, we compare the terms $x_{n+1}$ and $y_{n+1}$, not $x_n$ and $y_n$. This shifting can be justified with an example. Suppose $x$ and $y$ are \FCCS{} where $x := (0, \frac{1}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$ and $y := (1, \frac{7}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$. Clearly $x$ and $y$ should be equal. But since $\abs{x_1 - y_1} = 3/4 > 1/2^1$, without the shift we would be forced to deem them unequal. With the shift in place, the modified bound $\abs{x_1 - y_1} \leq 1/2^0$ holds as required.
+
 \begin{Definition}[Ordering operators]
-    $x < y$ when there exists $c \in \N$ such that
-    \[ \fa{k \in \N}{y_{c+k} - x_{c+k} > \frac{1}{2^c}} \ . \]
+    $x$ is positive when there exists $c \in \N$ such that
+    \[ \fa{k \in \N}{x_{c+k} > \frac{1}{2^c}} \ . \]
+
+    $x < y$ when $y - x$ is positive.
 
     $x \leq y$ is equivalent to $\neg (y < x)$.
-
-    $x \neq y$ is equivalent to $\neg (x = y)$.
 \end{Definition}
 
 \begin{Proposition}[Apartness from zero] \label{apartness}
@@ -246,14 +259,14 @@ Constructive analysis presents unique challenges in defining a total order on th
 \end{Corollary}
 
 \begin{proof}
-    Let $z := x - y$. TODO PROVE THAT $Z \neq 0$. Then by Proposition~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively.
+    Let $z := x - y$. Then by definition $z \neq 0$; and by Proposition~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively.
 \end{proof}
 
-The use of Markov's principle here is interesting, because it operationally represents an unbounded search. If the inputs are in fact equal, then the proof would search forever for evidence that does not exist. Since equality of real numbers is undecidable, this behavior is the best we can hope for.
+The use of Markov's principle here is interesting, because it operationally represents an unbounded search. For example, consider the sequence $x$ whose first $N$ terms are zero, with the rest defined as $1/2^N$. Then $x$ is not equal to zero, but it would take $N$ steps to show that it is apart. Furthermore, if the input were in fact equal, then the algorithm would search forever for evidence that does not exist. Since equality of real numbers is undecidable, there cannot be an algorithm that has a better worst case.
 
 \section{Division}
 
-To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal.
+To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal. Indeed this is this the case: the lower bound provided by apartness translates to an upper bound on the result.
 
 \begin{Proposition}[Reciprocal]
     Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Proposition~\ref{apartness}.
