@@ -9,6 +9,8 @@ When computing with real numbers, we often use approximate representations such 
 
 However, these methods are not without their flaws. For use cases such as computer-assisted proofs, even the slightest chance of error is not acceptable. And even in cases which allow imprecision, is possible for a handful of floating-point operations to yield a completely incorrect result. It is these issues that motivate the study of exact representations of computable real numbers.
 
+TODO outline the contents of this thesis
+
 \chapter{Approaches to exact reals}
 
 There are many ways to represent real numbers in a computer program. Some of these methods are outlined below.
@@ -31,7 +33,7 @@ This problem touches on a fundamental weakness of the decimal representation. Si
 
 An alternative formulation is \textit{Cauchy sequences}, a sequence of rational numbers which become ``arbitrarily close'' to each other as the sequence progresses. In the classical definition, a sequence is Cauchy when for any bound $\varepsilon > 0$, there is an index $N$ after which any pair of points differ by less than $\varepsilon$.
 
-For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory.
+For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The \texttt{exact-real} package (TODO ref) is an existing Haskell library that implements both of these restrictions.
 
 \section{Continued fractions}
 
@@ -447,11 +449,11 @@ There are many different ways to implement fast converging Cauchy sequences on a
 
 A modulus function $\mu(\varepsilon) : \Q \rightarrow \N$ of a sequence returns the index of an element with error at most $\varepsilon$. In the context of \FCCS, we can simplify the definition by requiring $\varepsilon = 1/2^n$ for some natural $n$; then the modulus function can take this $n$ directly.
 
-The \FCCS{} operations described thus far handle the modulus function implicitly---they shift their inputs such that $\mu$ is just the identity function. But it is possible to avoid shifting at all, and modify $\mu$ instead. In the attached code, the \texttt{Cauchy'} type implements this idea.
+The \FCCS{} operations described thus far handle the modulus function implicitly---they shift the sequence such that $\mu$ is just the identity function. But it is possible to avoid shifting at all, and modify $\mu$ instead. In the attached code, the \texttt{Cauchy'} type implements this idea.
 
 To decide which approach to use, the author ran benchmarks to compare the performance of each method. The two methods were tasked with evaluating two expressions:
 \begin{itemize}
-    \item A ``simple'' expression, $(e \cdot e + e) / e$, where $e$ is Euler's constant; and
+    \item A ``simple'' expression, $(e \cdot e + e) / e$, where $e = \exp 1$ is Euler's constant; and
     \item A ``complicated'' expression, which is $e$ added to itself 50 times.
 \end{itemize}
 
