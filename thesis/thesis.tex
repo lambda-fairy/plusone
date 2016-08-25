@@ -33,7 +33,7 @@ This problem touches on a fundamental weakness of the decimal representation. Si
 
 An alternative formulation is \textit{Cauchy sequences}, a sequence of rational numbers which become ``arbitrarily close'' to each other as the sequence progresses. In the classical definition, a sequence is Cauchy when for any bound $\varepsilon > 0$, there is an index $N$ after which any pair of points differ by less than $\varepsilon$.
 
-For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The \texttt{exact-real} package (TODO ref) is an existing Haskell library that implements both of these restrictions.
+For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The system designed by \citet{gowland2000correctness} implements both of these techniques.
 
 \section{Continued fractions}
 
@@ -49,7 +49,7 @@ This representation has many useful properties. It is unique; it is rational if 
 
 For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS{} are equivalent to Cauchy sequences, and hence form a model for the (computable) real numbers.
 
-\begin{Definition}
+\begin{Definition}[\citet{simpson2009subsystems}]
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
     \[ \fa{m, n \in \N}{ \abs{x_m - x_{m+n}} < \frac{1}{2^m} } \ . \]
 \end{Definition}
@@ -487,7 +487,7 @@ Both expressions were evaluated within an error of $1/2^{50}$. The benchmarks we
 
 It is interesting to note that while there is little difference in the ``simple'' benchmark, the no-modulus-function method is almost twice as fast in the ``complicated'' benchmark. This is likely because the modulus function variant involves two function calls instead of one. Over many arithmetic operations, these extra calls can cause a significant slowdown.
 
-\bibliographystyle{abbrv}
-\bibliography{All}
+\bibliographystyle{abbrvnat}
+\bibliography{sources}
 
 \end{document}
