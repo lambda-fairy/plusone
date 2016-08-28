@@ -2,8 +2,10 @@
 \input{base.tex}
 \begin{document}
 \author{Chris Wong}
-\title{Properties of fast converging Cauchy sequences}
+\title{Computable analysis via fast converging Cauchy sequences}
 \maketitle
+
+\chapter*{Preface}
 
 When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and widely supported, and give useful results most of the time.
 
@@ -13,7 +15,7 @@ TODO outline the contents of this thesis
 
 \chapter{Approaches to exact reals}
 
-There are many ways to represent real numbers in a computer program. Some of these methods are outlined below.
+There are many possible ways to represent real numbers in a computer program. Some of these methods are outlined below.
 
 \section{Decimal expansion}
 
@@ -47,7 +49,7 @@ This representation has many useful properties. It is unique; it is rational if 
 
 \chapter{Fast converging Cauchy sequences}
 
-For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS{} are equivalent to Cauchy sequences, and hence form a model for the (computable) real numbers.
+For the remainder of this thesis, we will discuss \textit{fast converging Cauchy sequences} (\FCCS). These differ from the usual definition in that they must converge exponentially to their limit point. Despite this restriction, \FCCS{} are equivalent to Cauchy sequences---at least in a mathematical sense---and hence form a model for the (computable) real numbers.
 
 \begin{Definition}[\citet{simpson2009subsystems}]
     A fast converging Cauchy sequence (\FCCS) $x : \N \rightarrow \Q$ has the property that
@@ -109,10 +111,12 @@ With Cauchy sequences, we define arithmetic operations simply by working pointwi
 \end{proof}
 
 \begin{Corollary}[Subtraction]
-    $(x-y)_k := x_{k+1} - y_{k+1}$ is a \FCCS.
+    $(x - y)_k := (x + (-y))_k = x_{k+1} - y_{k+1}$ is a \FCCS.
 \end{Corollary}
 
 Multiplication is more subtle. Unlike with addition, the shift under multiplication is not constant. A larger input would necessitate a larger shift, since the multiplication operation scales the error up by a corresponding amount.
+
+For example, consider the sequences $x := (1, \frac{1}{2}, \frac{1}{4}, \ldots)$ and $y := (16, 16, \ldots)$. It can be shown that $x$ and $y$ are \FCCS; but if we multiply them pointwise, the result $(16, 8, 4, \ldots)$ is not fast converging. To recover fast convergence, this sequence must be shifted not once, but $\log_2 16 = 4$ times.
 
 \begin{Proposition}[Multiplication]
     $(xy)_k := x_{a(k)} \cdot y_{b(k)}$ is a \FCCS, where
@@ -165,16 +169,19 @@ To derive the final arithmetic operation, division, we must introduce the idea o
 
 \section{Ordering}
 
-Constructive analysis presents unique challenges in defining a total order on the reals. Without double negation elimination, $a < b$ and $a \geq b$ are not full inverses; we are forced to favor one over the other. Many classical concepts, such as the sign function or equality (!), fall apart in a constructive setting.
+Constructive analysis presents unique challenges in defining a total order on the reals. Without additional axioms, $a < b$ and $a \geq b$ are not full inverses; we are forced to favor one over the other. Many classical concepts, such as the sign function or equality (!), fall apart in a constructive setting. In this section we will define these concepts in terms of \FCCS{}, and explore the consequences in terms of computability.
 
-In particular, constructive analysis forces a distinction between constructive and non-constructive inequality. A statement that two numbers are \textit{not equal} is just a negation of the statement that they are equal. But for two numbers to be \textit{apart}, we must provide an index after which the sequences will never come closer together. While it is easy to show that apartness implies not-equality, the converse requires an additional axiom: Markov's principle.
-
-\begin{Definition}[Zero]
-    A \FCCS{} $x$ is zero when
+\begin{Definition}[Equality]
+    A pair of \FCCS{} $x$ and $y$ are equal, written $x = y$, when
     \[
-        \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \ .
+        \fa{n \in \N}{\abs{x_{n+1} - y_{n+1}} \leq \frac{1}{2^n}} \ .
     \]
+    $x$ is not equal to $y$, written $x \neq y$, when $\neg (x = y)$.
 \end{Definition}
+
+Note that in the definition of equality, we compare the terms $x_{n+1}$ and $y_{n+1}$, not $x_n$ and $y_n$. This shifting can be justified with an example. Suppose $x$ and $y$ are sequences where $x := (0, \frac{1}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$ and $y := (1, \frac{7}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$. It can be shown that $x$ and $y$ are fast converging. Clearly $x$ and $y$ should be equal. But since $\abs{x_1 - y_1} = 3/4 > 1/2^1$, without the shift we would be forced to deem them unequal. With the shift in place, the modified bound $\abs{x_1 - y_1} \leq 1/2^0$ holds as required.
+
+An important result of constructive analysis is that equality of real numbers is undecidable---that is, there is no algorithm that can determine whether two arbitrary numbers are equal or not. This is a consequence of the Halting Problem \citep{turing1936computable}: since the execution of a computer program can be encoded as a real number, deciding equality would solve the Halting Problem as well.
 
 \begin{Proposition} \label{equality_undecidable}
     Equality on \FCCS{} is undecidable.
@@ -188,7 +195,7 @@ In particular, constructive analysis forces a distinction between constructive a
     \end{itemize}
     In other words, $x \rightarrow 1/2^p \neq 0$ if and only if $P$ terminates.
 
-    Suppose there is an algorithm for deciding whether $x$ is zero. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
+    Suppose there is an algorithm for deciding whether $x = 0$. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
 \end{proof}
 
 \begin{Corollary}
@@ -200,45 +207,32 @@ In particular, constructive analysis forces a distinction between constructive a
             1 & x > 0
         \end{cases}
     \]
-    is undecidable.
+    is not computable.
 \end{Corollary}
 
 \begin{proof}
     If the sign function was computable, then we could determine whether $x$ and $y$ are equal by evaluating $\mathrm{sgn}(x - y)$. This contradicts Proposition~\ref{equality_undecidable}.
 \end{proof}
 
-\begin{Definition}[Equality]
-    A pair of \FCCS{} $x$ and $y$ are equal, written $x = y$, when either of the following equivalent properties hold:
-    \begin{itemize}
-        \item The difference $x - y$ is zero;
-        \item For any $n \in \N$, $\abs{x_{n+1} - y_{n+1}} \leq 1/2^n$.
-    \end{itemize}
-    $x \neq y$ is defined as $\neg (x = y)$.
-\end{Definition}
+In particular, constructive analysis forces a distinction between constructive and non-constructive inequality. A statement that two numbers are \textit{not equal} is just a negation of the statement that they are equal. But for two numbers to be \textit{apart}, we must provide an index after which the sequences will never come closer together. While it is easy to show that apartness implies not-equality, the converse requires an additional axiom: Markov's principle.
 
-Note that in the definition of equality, we compare the terms $x_{n+1}$ and $y_{n+1}$, not $x_n$ and $y_n$. This shifting can be justified with an example. Suppose $x$ and $y$ are \FCCS{} where $x := (0, \frac{1}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$ and $y := (1, \frac{7}{8}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \ldots)$. Clearly $x$ and $y$ should be equal. But since $\abs{x_1 - y_1} = 3/4 > 1/2^1$, without the shift we would be forced to deem them unequal. With the shift in place, the modified bound $\abs{x_1 - y_1} \leq 1/2^0$ holds as required.
-
-\begin{Definition}[Ordering operators]
-    $x$ is positive when there exists $c \in \N$ such that
-    \[ \fa{k \in \N}{x_{c+k} > \frac{1}{2^c}} \ . \]
-
-    $x < y$ when $y - x$ is positive.
+\begin{Definition}[Ordering]
+    $x < y$ when there exists $c \in \N$ such that
+    \[ \fa{k \in \N}{y_{c+k} - x_{c+k} > \frac{1}{2^c}} \ . \]
 
     $x \leq y$ is equivalent to $\neg (y < x)$.
 \end{Definition}
 
-\begin{Proposition}[Apartness from zero] \label{apartness}
-    Assume that Markov's principle is true. Then if $x \neq 0$, either $x < 0$ or $x > 0$.
-\end{Proposition}
+\begin{Definition}[Apartness]
+    $x$ and $y$ are apart when $x < y$ or $y < x$.
+\end{Definition}
+
+\begin{Lemma}[Apartness from zero] \label{apartness}
+    Suppose there exists $n \in \N$ such that $\abs{x_n} > 1/2^n$.
+    Then either $x < 0$ or $x > 0$.
+\end{Lemma}
 
 \begin{proof}
-    If $x \neq 0$, then by Markov's principle
-    \[
-        \neg \left( \fa{n \in \N}{\abs{x_n} \leq \frac{1}{2^n}} \right)
-        \quad \Rightarrow \quad
-        \ex{n \in \N}{\abs{x_n} > \frac{1}{2^n}} \ .
-    \]
-
     If $\abs{x_n} > 1/2^n$, then either $x_n > 1/2^n$ or $-x_n > 1/2^n$. Assume the former case.
 
     Applying the definition of a \FCCS, for all $k \in \N$
@@ -254,15 +248,31 @@ Note that in the definition of equality, we compare the terms $x_{n+1}$ and $y_{
     Since $k$ is arbitrary, this shows that $x > 0$. With a similar argument, it can be shown that the other case implies $x < 0$.
 \end{proof}
 
-\begin{Corollary}[Apartness]
-    If $x \neq y$, then by Markov's principle either $x < y$ or $x > y$.
-\end{Corollary}
+\begin{Definition}[Markov's principle]
+    Suppose $x : \N \rightarrow X$ is a sequence, and $P$ is a decidable predicate on $X$ (that is, $P(a) \vee \neg P(a)$ for any $a \in X$). Then
+    \[
+        \neg \forall n\ P(x_n)
+        \ \Rightarrow\ \exists n\ \neg P(x_n) \ .
+    \]
+\end{Definition}
+
+\begin{Proposition}[Apartness]
+    If $x \neq y$, then by Markov's principle $x$ is apart from $y$.
+\end{Proposition}
 
 \begin{proof}
-    Let $z := x - y$. Then by definition $z \neq 0$; and by Proposition~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively.
+    Let $z := x - y$. Applying Markov's principle,
+    \[
+        \neg \left( \fa{n \in \N}{\abs{x_{n+1} - y_{n+1}} \leq \frac{1}{2^n}} \right)
+        \quad \Rightarrow \quad
+        \ex{n \in \N}{\abs{x_{n+1} - y_{n+1}} > \frac{1}{2^n}} \ .
+    \]
+    Hence $\abs{z_n} = \abs{x_{n+1} - y_{n+1}} > 1/2^n$, and by Lemma~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively. Therefore $x$ and $y$ are apart.
 \end{proof}
 
-The use of Markov's principle here is interesting, because it operationally represents an unbounded search. For example, consider the sequence $x$ whose first $N$ terms are zero, with the rest defined as $1/2^N$. Then $x$ is not equal to zero, but it would take $N$ steps to show that it is apart. Furthermore, if the input were in fact equal, then the algorithm would search forever for evidence that does not exist. Since equality of real numbers is undecidable, there cannot be an algorithm that has a better worst case.
+Operationally, Markov's principle represents an unbounded search. In the case of say, multiplication, we only need to check four elements: $x_0$, $y_0$, $x_a$, and $y_b$. While the indices $a$ and $b$ are unbounded, the number of indexing operations (four) is not. But when finding evidence of apartness, the number of operations is not bounded in this way.
+
+For example, consider the sequence $x$ whose first $N$ terms are zero, with the rest defined as $1/2^N$. Then $x$ is not equal to zero, but it would take $N$ steps to show that it is apart. Furthermore, if the input were in fact equal, then the algorithm would search forever for evidence that does not exist. Since equality of real numbers is undecidable, there cannot be an algorithm that has a better worst case.
 
 \section{Division}
 
@@ -303,6 +313,8 @@ To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined
 \end{Corollary}
 
 \section{Extensionality}
+
+TODO well-definedness
 
 For \FCCS{} to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
 
