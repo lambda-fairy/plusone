@@ -1,4 +1,4 @@
-thesis.pdf: thesis.tex base.tex
+thesis.pdf: thesis.tex base.tex sources.bib
 	latexmk -pdf -halt-on-error $<
 
 .PHONY: clean
