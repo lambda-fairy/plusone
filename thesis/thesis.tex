@@ -455,7 +455,7 @@ A typical proof of this result uses Cantor's \textit{diagonal argument}. Given a
 
 \begin{proof}
     We want to define a sequence of rational half-open intervals $[a_n, b_n) : \N \rightarrow \Q \times \Q$ such that the following properties hold:
-    \begin{enumerate}[label=(A\arabic*)]
+    \begin{enumerate}[label=(C\arabic*)]
         \item $\abs{a_n - b_n} \leq 1/4^n$;
         \item $[a_{n+1}, b_{n+1}) \subset [a_n, b_n)$;
         \item $x_n \notin [a_n, b_n)$.
@@ -470,9 +470,9 @@ A typical proof of this result uses Cantor's \textit{diagonal argument}. Given a
             [b_n - h_n, b_n) & [x_n]_{2n+2} < c_n
         \end{cases}
     \]
-    where $c_n := (a_n + b_n) / 2$ and $h_n := (b_n - a_n) / 4 = 1/4^{n+1} = 1/2^{2n+2}$. Clearly (A1) and (A2) hold, as we shrink the interval by a factor of $1/4$ on each step.
+    where $c_n := (a_n + b_n) / 2$ and $h_n := (b_n - a_n) / 4 = 1/4^{n+1} = 1/2^{2n+2}$. Clearly (C1) and (C2) hold, as we shrink the interval by a factor of $1/4$ on each step.
 
-    Proof of (A3). Clearly $x_0 \notin [a_0, b_0)$. For $n > 0$, if $[x_n]_{2n+2} \geq c_n$ then $x_n \geq c_n - 1/2^{2n+2} = c_n - h_n = a_n + h_n$. Using a similar argument, if $[x_n]_{2n+2} < c_n$ then $x_n < b_n - h_n$. Hence (A3) holds.
+    Proof of (C3). Clearly $x_0 \notin [a_0, b_0)$. For the inductive case, if $[x_n]_{2n+2} \geq c_n$ then $x_n \geq c_n - 1/2^{2n+2} = c_n - h_n = a_n + h_n$. Using a similar argument, if $[x_n]_{2n+2} < c_n$ then $x_n < b_n - h_n$. Hence (C3) holds.
 
     Now define $[\mathrm{cantor}(x)]_n := a_{\floor{n/2}}$. Then for any $m, n \in \N$,
     \begin{align*}
@@ -483,7 +483,7 @@ A typical proof of this result uses Cantor's \textit{diagonal argument}. Given a
     \end{align*}
     shows that $\mathrm{cantor}(x)$ is a \FCCS.
 
-    By (A3) and Proposition~\ref{apartness}, this is apart from every element of $x$.
+    By (C3) and Proposition~\ref{apartness}, this is apart from every element of $x$.
 \end{proof}
 
 \chapter{Implementation notes}
