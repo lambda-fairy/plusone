@@ -517,6 +517,11 @@ Both expressions were evaluated within an error of $1/2^{50}$. The benchmarks we
 
 It is interesting to note that while there is little difference in the ``simple'' benchmark, the no-modulus-function method is almost twice as fast in the ``complicated'' benchmark. This is likely because the modulus function variant involves two function calls instead of one. Over many arithmetic operations, these extra calls can cause a significant slowdown.
 
+\appendix
+\chapter{Haskell code}
+
+\inputminted[linenos,breaklines,mathescape]{haskell}{../Cauchy.hs}
+
 \bibliographystyle{abbrvnat}
 \bibliography{sources}
 

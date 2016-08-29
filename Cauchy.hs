@@ -35,11 +35,11 @@ instance Show Cauchy where
     showsPrec p x = showsPrec p (toDouble $ x # 64) . ("..." ++)
 
 
--- | Cauchy sequence with a modulus of convergence.
+-- Cauchy sequence with a modulus of convergence.
 --
--- The second argument is a /modulus function/, @mu :: N -> N@, which
--- for any @k@ gives the least index where the difference is less than
--- @2^(-mu k)@.
+-- The second argument is a /modulus function/, $\mu : \N \rightarrow \N$, which
+-- for any $k$ gives the least index -- where the difference is less than
+-- $1/2^{\mu(k)}$.
 data Cauchy' = Cauchy' (Natural -> Rational) (Natural -> Natural)
 
 
@@ -69,7 +69,7 @@ instance Fractional Cauchy' where
         c = findNonZero x'
 
 
--- | Returns @max 0 (ceiling (logBase 2 x))@, where x is a rational number.
+-- Returns $\max\menge{0, \ceil{\log_2 x}}$, where x is a rational number.
 log2 :: Rational -> Natural
 log2 x
     | x <= 0 = error "log2: negative argument"
@@ -80,8 +80,8 @@ log2 x
         | otherwise = acc `seq` go (y / 2) (1 + acc)
 
 
--- | Given an @x@ which does not converge to zero, find the lowest index
--- @c@ where @abs (x # (c + k)) > 1 / 2^c@ for every @k@.
+-- Given an $x$ which does not converge to zero, find the lowest index $c$ where
+-- $\abs{x_{c+k}} > 1/2^c$ for every $k$.
 findNonZero :: Index a => a -> Natural
 findNonZero x = go 0
   where
@@ -92,7 +92,7 @@ findNonZero x = go 0
         e = abs (x # n) - (1 % 2^n)
 
 
--- | Find the exponential of a rational number.
+-- Find the exponential of a rational number.
 expC :: Rational -> Cauchy
 expC x
     | -1 <= x && x <= 1 = exp01 x
@@ -101,7 +101,7 @@ expC x
     exp01 x = Cauchy $ \n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n+1] ]
 
 
--- | Like @exp@, but returns a @Cauchy'@ instead.
+-- Like expC, but returns a Cauchy' instead.
 expC' :: Rational -> Cauchy'
 expC' x
     | -1 <= x && x <= 1 = exp01 x
@@ -110,7 +110,7 @@ expC' x
     exp01 x = Cauchy' (\n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n] ]) (\r -> r+1)
 
 
--- | Find the sine of a rational number.
+-- Find the sine of a rational number.
 sinC :: Rational -> Cauchy
 sinC x
     | -1 <= x && x <= 1 = sin01 x
@@ -121,7 +121,7 @@ sinC x
         k <- [1, 3 .. n+1] ]
 
 
--- | Find the cosine of a rational number.
+-- Find the cosine of a rational number.
 cosC :: Rational -> Cauchy
 cosC x
     | -1 <= x && x <= 1 = cos01 x
@@ -132,18 +132,17 @@ cosC x
         k <- [0, 2 .. n+1] ]
 
 
--- | Find the tangent of a rational number.
+-- Find the tangent of a rational number.
 tanC :: Rational -> Cauchy
 tanC x = sinC x / cosC x
 
 
--- | Super simple factorial function.
+-- Super simple factorial function.
 factorial :: Natural -> Natural
 factorial n = product [2..n]
 
 
--- | Given a sequence of numbers, find a number that is apart from all
--- of them.
+-- Given a sequence of numbers, find a number that is apart from all of them.
 cantor :: (Natural -> Cauchy) -> Cauchy
 cantor xs = Cauchy $ \n -> let (a, _) = step (n `quot` 2) in a
   where

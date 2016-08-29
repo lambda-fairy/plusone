@@ -16,3 +16,4 @@ cabal-dev
 *.log
 *.out
 *.pdf
+_minted-thesis/

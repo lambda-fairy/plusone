@@ -1,5 +1,5 @@
-thesis.pdf: thesis.tex base.tex sources.bib
-	latexmk -pdf -halt-on-error $<
+thesis.pdf: thesis.tex base.tex sources.bib ../Cauchy.hs
+	latexmk -pdf -halt-on-error -shell-escape $<
 
 .PHONY: clean
 clean:
