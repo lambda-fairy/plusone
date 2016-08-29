@@ -3,4 +3,4 @@ thesis.pdf: thesis.tex base.tex sources.bib ../Cauchy.hs
 
 .PHONY: clean
 clean:
-	rm *.aux *.bbl *.blg *.fdb_latexmk *.fls *.log *.out *.pdf
+	rm -f *.aux *.bbl *.blg *.fdb_latexmk *.fls *.log *.out *.pdf
