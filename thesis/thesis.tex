@@ -7,17 +7,31 @@
 
 \chapter*{Preface}
 
-When computing with real numbers, we often use approximate representations such as IEEE-754 floating point. These approximations are efficient and widely supported, and give useful results most of the time.
+In classical mathematics, one often proves a result without constructing the object in question. The archetypal \textit{non-constructive} proof would be the result by \citet{jarden1953simple}:
 
-However, these methods are not without their flaws. For use cases such as computer-assisted proofs, even the slightest chance of error is not acceptable. And even in cases which allow imprecision, is possible for a handful of floating-point operations to yield a completely incorrect result. It is these issues that motivate the study of exact representations of computable real numbers.
+\begin{Theorem}
+    A power of an irrational number to an irrational exponent may be rational.
+\end{Theorem}
 
-\todo[inline]{Decide on what I'm going to write here}
+\begin{proof}
+    $\sqrt{2}^{\sqrt{2}}$ is either rational or irrational. If it is rational, our statement is proved. If it is irrational, $(\sqrt{2}^{\sqrt{2}})^{\sqrt{2}} = 2$ proves our statement.
+\end{proof}
+
+What makes this non-constructive is the claim that any number is either rational or not rational. While the proof handles both cases, it does not show which of these is correct. The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for any proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
+
+As with many areas of mathematics, the theory preceded its application. Constructive proofs can be written as computer programs, a fact known as the Curry--Howard correspondence \citep{wadler2015}. In particular, \textit{constructive analysis}---the study of convergence and continuity in a constructive setting---has consequences in numerical methods and computability theory. It is this relationship between construction and computability that will be explored in this thesis.
 
 \todo[inline]{Outline the contents of this thesis}
 
-\chapter{Approaches to exact reals}
+\section{Definitions}
 
-There are many possible ways to represent real numbers in a computer program. Some of these methods are outlined below.
+A function or number is \textit{computable} when it can be derived by a computer program. The program itself can be written as either a Turing machine, or (equivalently) a lambda calculus expression. For the purposes of this project, we will consider all values to be computable unless stated otherwise.
+
+A predicate $P$ is \textit{decidable} when $P(a) \vee \neg P(a)$ for any $a$.
+
+\chapter{Representations of real numbers}
+
+There are many possible ways to represent real numbers in a computational setting. While this thesis will primarily cover Cauchy sequences, other common representations are worth mentioning as well.
 
 \section{Decimal expansion}
 
@@ -37,7 +51,9 @@ This problem touches on a fundamental weakness of the decimal representation. Si
 
 An alternative formulation is \textit{Cauchy sequences}, a sequence of rational numbers which become ``arbitrarily close'' to each other as the sequence progresses. In the classical definition, a sequence is Cauchy when for any bound $\varepsilon > 0$, there is an index $N$ after which any pair of points differ by less than $\varepsilon$.
 
-For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. This restriction lets us find a suitable approximation in reasonable time. Other formulations require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The system designed by \citet{gowland2000correctness} implements both of these techniques.
+For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. Formally, we require that there is some fixed \textit{modulus function} $\mu$ such that for any natural numbers $m$ and $n$, $\abs{x_{\mu(m)} - x_{\mu(m)+n}} < 1/2^m$. This restriction lets us find a suitable approximation in reasonable time.
+
+Other formulations also require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The system designed by \citet{gowland2000correctness} uses this technique.
 
 \section{Continued fractions}
 
