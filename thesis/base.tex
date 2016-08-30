@@ -39,10 +39,34 @@
 \newcommand{\fa}[2]{\forall {#1} \quad {#2}}
 \newcommand{\ex}[2]{\exists {#1} \quad {#2}}
 
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
-\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
-\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
-\DeclarePairedDelimiter\menge{\{}{\}}
+% http://tex.stackexchange.com/a/23181/36565
+\makeatletter
+\MHInternalSyntaxOn
+\newcommand*\DeclarePairedDelimiterAlt[3]{%
+  \@ifdefinable{#1}{
+    \@namedef{MT_delim_\MH_cs_to_str:N #1 _star:}##1
+        {\mathopen{}\mathclose\bgroup\left#2 ##1 \aftergroup\egroup\right #3}%
+    \@xp\@xp\@xp
+      \newcommand
+        \@xp\csname MT_delim_\MH_cs_to_str:N #1 _nostar:\endcsname
+        [2][\\@gobble]
+        {
+          \mathopen{\@nameuse {\MH_cs_to_str:N ##1 l} #2} ##2
+          \mathclose{\@nameuse {\MH_cs_to_str:N ##1 r} #3}}
+    \DeclareRobustCommand{#1}{
+      \@ifstar
+        {\@nameuse{MT_delim_\MH_cs_to_str:N #1 _nostar:}}
+        {\@nameuse{MT_delim_\MH_cs_to_str:N #1 _star:}}
+    }
+  }
+}
+\MHInternalSyntaxOff
+\makeatother
+
+\DeclarePairedDelimiterAlt\abs{\lvert}{\rvert}
+\DeclarePairedDelimiterAlt\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiterAlt\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiterAlt\menge{\{}{\}}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Q}{\mathbb{Q}}
