@@ -292,6 +292,61 @@ Operationally, Markov's principle represents an unbounded search. In the case of
 
 For example, consider the sequence $x$ whose first $N$ terms are zero, with the rest defined as $1/2^N$. Then $x$ is not equal to zero, but it would take $N$ steps to show that it is apart. Furthermore, if the input were in fact equal, then the algorithm would search forever for evidence that does not exist. Since equality of real numbers is undecidable, there cannot be an algorithm that has a better worst case.
 
+Finally, we note that though the law of trichotomy is undecidable, the related notions of absolute value and minimum/maximum are not.
+
+\begin{Proposition}[Absolute value]
+    If $x$ is a \FCCS, then $\abs{x}_n := \abs{x_n}$ is a \FCCS.
+\end{Proposition}
+
+\begin{proof}
+    For any $m, n \in \N$,
+    \begin{align*}
+        \abs{\abs{x}_m - \abs{x}_{m+n}}
+        &= \abs{\abs{x_m} - \abs{x_{m+n}}} \\
+        &\leq \abs{x_m - x_{m+n}} \\
+        &< \frac{1}{2^m}
+    \end{align*}
+    by the reverse triangle inequality.
+\end{proof}
+
+\begin{Lemma}[Maximum as absolute value] \label{max_abs}
+    If $x$ and $y$ are rational numbers, then
+    \[
+        \max(x, y) = \frac{x + y + \abs{x - y}}{2} \ .
+    \]
+\end{Lemma}
+
+\begin{proof}
+    If $x \geq y$, then $\abs{x - y} = x - y$. Hence
+    \[
+        \frac{x + y + (x - y)}{2} = x = \max(x, y) \ .
+    \]
+    On the contrary, if $x < y$ then $\abs{x - y} = -(x - y)$. Hence
+    \[
+        \frac{x + y - (x - y)}{2} = y = \max(x, y) \ . \qedhere
+    \]
+\end{proof}
+
+\begin{Proposition}[Maximum and minimum]
+    Let $x$ and $y$ be \FCCS. Then the maximum, defined by $\max(x, y)_n := \max\left(x_{n+1}, y_{n+1}\right)$, is a \FCCS. Furthermore, the minimum $\min(x, y) := -\max(-x, -y)$ is also a \FCCS.
+\end{Proposition}
+
+\begin{proof}
+    Let $m, n \in \N$ be arbitrary.
+
+    Then by Lemma~\ref{max_abs},
+    \begin{align*}
+        \abs{\max(x, y)_m - \max(x, y)_{m+n}}
+        &= \abs{\max(x_{m+1}, y_{m+1}) - \max(x_{m+n+1}, y_{m+n+1})} \\
+        &= \frac{1}{2} \abs{x_{m+1} + y_{m+1} + \abs{x_{m+1} - y_{m+1}} - x_{m+n+1} - y_{m+n+1} - \abs{x_{m+n+1} - y_{m+n+1}}} \\
+        &\leq \frac{1}{2} \left( \abs{x_{m+1} - x_{m+n+1}} + \abs{y_{m+1} - y_{m+n+1}} + \abs{x_{m+1} - x_{m+n+1}} + \abs{y_{m+1} - y_{m+n+1}} \right) \\
+        &< \frac{1}{2} \left( \frac{1}{2^{m+1}} + \frac{1}{2^{m+1}} + \frac{1}{2^{m+1}} + \frac{1}{2^{m+1}} \right) \\
+        &= \frac{1}{2^m} \ .
+    \end{align*}
+
+    The fast convergence of $\min(x, y)$ then follows from Proposition~\ref{neg}.
+\end{proof}
+
 \section{Division}
 
 To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal. Indeed this is this the case: the lower bound provided by apartness translates to an upper bound on the result.
