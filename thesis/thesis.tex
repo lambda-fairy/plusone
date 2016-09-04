@@ -17,15 +17,17 @@ In classical mathematics, one often proves a result without constructing the obj
     $\sqrt{2}^{\sqrt{2}}$ is either rational or irrational. If it is rational, our statement is proved. If it is irrational, $(\sqrt{2}^{\sqrt{2}})^{\sqrt{2}} = 2$ proves our statement.
 \end{proof}
 
-What makes this non-constructive is the claim that any number is either rational or not rational. While the proof handles both cases, it does not show which of these is correct. The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for any proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
+What makes this non-constructive is the claim that any number is either rational or not rational. While the proof handles both cases, it does not show which of these is correct.\footnote{It can be shown that $\sqrt{2}^{\sqrt{2}}$ is indeed irrational by the Gelfond--Schneider theorem; this can then be used to complete the original proof, provided there exists a constructive proof of Gelfond--Schneider as well.} The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for any proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
 
-As with many areas of mathematics, the theory preceded its application. Constructive proofs can be written as computer programs, a fact known as the Curry--Howard correspondence \citep{wadler2015}. In particular, \textit{constructive analysis}---the study of convergence and continuity in a constructive setting---has consequences in numerical methods and computability theory. It is this relationship between construction and computability that will be explored in this thesis.
+As with many areas of mathematics, the theory preceded its application. Constructive proofs can be seen as computer programs, a fact known as the Curry--Howard correspondence \citep{wadler2015}. In particular, the study of \textit{constructive analysis}---real numbers, convergence and continuity in a constructive setting---can often lead to novel, proven-correct numerical algorithms. It is this relationship between constructive analysis and computation that will be explored in this thesis.
 
-\todo[inline]{Outline the contents of this thesis}
+Past treatments, such as the aptly named \textit{Constructive Analysis} \citep{bishop1985constructive}, have often favored a more theoretical approach; using definitions that are mathematically simple but computationally inefficient. We propose an alternative system based on \textit{fast converging Cauchy sequences} (\FCCS). Since a \FCCS{} converges exponentially to its limit point, to compute another digit of precision only requires a handful of extra operations. The theory of \FCCS{} then becomes a practical, efficient implementation of exact real arithmetic.
+
+In Chapter 1 we discuss different representations of real numbers, and the advantages and disadvantages thereof. In Chapter 2 we introduce the definition of \FCCS, along with associated operations and proofs. Chapter 3 evaluates the performance of this system, and justifies the requirement of fast convergence. Finally, the Appendix comprises a sample implementation of \FCCS{} written in the Haskell programming language.
 
 \section{Definitions}
 
-A number is \textit{computable} when it can be approximated to arbitrary precision by a computer program. The program itself can be written as either a Turing machine, or (equivalently) a lambda calculus expression. A function is computable when any finite prefix of its result can be computed from a finite prefix of its argument. For the purposes of this project, we will consider all values to be computable unless stated otherwise.
+A number is \textit{computable} when it can be approximated to arbitrary precision by a (finite, terminating) computer program. The program itself can be written as either a Turing machine, a lambda calculus expression, or in any other equivalent model of computation. A function $\R \rightarrow \R$ is computable when any finite prefix of its result can be computed from a finite prefix of its argument. For the purposes of this project, we will consider all real numbers to be computable unless stated otherwise.
 
 A predicate $P$ is \textit{decidable} when $P(a) \vee \neg P(a)$ for any $a$.
 
@@ -53,7 +55,7 @@ An alternative formulation is \textit{Cauchy sequences}, a sequence of rational 
 
 For the purposes of computation, we also require that the sequence is \textit{fast converging}; that is, the sequence converges exponentially to its limit point. Formally, we require that there is some fixed \textit{modulus function} $\mu$ such that for any natural numbers $m$ and $n$, $\abs{x_{\mu(m)} - x_{\mu(m)+n}} < 1/2^m$. This restriction lets us find a suitable approximation in reasonable time.
 
-Other formulations also require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of complicating the theory. The system designed by \citet{gowland2000correctness} uses this technique.
+Other formulations also require the denominator of each element to be a successive power of $2$. This restriction simplifies the implementation, at the cost of further complicating the theory. The system designed by \citet{gowland2000correctness} uses this technique. To avoid duplicating their work, we do not apply this idea in our implementation.
 
 \section{Continued fractions}
 
@@ -470,6 +472,10 @@ We can then extend this definition to all rational numbers using the property $\
     is a \FCCS.
 \end{Corollary}
 
+\begin{proof}
+    Since $x$ is rational, by the Archimedean property $\exp(x)$ is guaranteed to terminate. The fast convergence of $\exp(x)$ then follows.
+\end{proof}
+
 The trigonometric functions $\sin$, $\cos$, and $\tan$ can be defined in a similar way.
 
 \begin{Proposition}[Trigonometric functions]
@@ -502,7 +508,9 @@ The trigonometric functions $\sin$, $\cos$, and $\tan$ can be defined in a simil
 
 One important result in set theory is the uncountability of the real line: that is, there is no bijective mapping that relates $\N$ and $\R$. This result applies within constructive analysis as well, if we restrict the theorem to the computable reals (or \FCCS) instead.
 
-A typical proof of this result uses Cantor's \textit{diagonal argument}. Given any sequence of (computable) real numbers, we can construct a number that is apart from every number in the list. Hence there cannot be an enumeration of all real numbers---if there were, then the diagonal argument would yield one that it missed. Furthermore, since this argument is constructive, it can be implemented as a computer program as well.
+A typical proof of this result uses Cantor's \textit{diagonal argument}. Given any sequence of (computable) real numbers, we can construct a number that is apart from every number in the list. Hence there cannot be an enumeration of all real numbers---if there were, then the diagonal argument would yield one that it missed. The computable reals are then an example of a set that is \textit{countable} but not \textit{enumerable}: every program can be written as a natural number, but there is no algorithm that can list every terminating program.
+
+Furthermore, since this argument is constructive, it can be implemented as a computer program as well. The Haskell implementation includes an enumeration of the rationals, which on application of this argument results in an arbitrary irrational number.
 
 \begin{Proposition}[Cantor's diagonal argument]
     Let $x : \N \rightarrow \FCCS$ be a sequence of fast converging Cauchy sequences. Then there exists a \FCCS{} $\mathrm{cantor}(x)$ that is apart from every element in $x$.
@@ -579,5 +587,7 @@ It is interesting to note that while there is little difference in the ``simple'
 
 \bibliographystyle{abbrvnat}
 \bibliography{sources}
+
+\nocite{haskell2010}  % Show this reference even though we haven't use it thus far
 
 \end{document}
