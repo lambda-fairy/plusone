@@ -1,9 +1,9 @@
 -- Cauchy sequence benchmarks
 --
 -- Run them like so:
--- $ cabal install criterion
--- $ ghc CauchyBenchmarks.hs
--- $ ./CauchyBenchmarks -o cauchy-benchmarks.html
+-- > cabal install criterion
+-- > ghc CauchyBenchmarks.hs
+-- > ./CauchyBenchmarks -o cauchy-benchmarks.html
 
 
 {-# LANGUAGE RankNTypes #-}

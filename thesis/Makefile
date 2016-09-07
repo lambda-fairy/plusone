@@ -1,4 +1,4 @@
-thesis.pdf: thesis.tex base.tex sources.bib ../Cauchy.hs
+thesis.pdf: thesis.tex base.tex sources.bib ../Cauchy.hs ../CalkinWilf.hs ../CauchyBenchmarks.hs
 	latexmk -pdf -halt-on-error -shell-escape $<
 
 .PHONY: clean
