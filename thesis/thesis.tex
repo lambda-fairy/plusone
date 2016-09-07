@@ -19,7 +19,7 @@ In classical mathematics, one often proves a result without constructing the obj
 
 What makes this non-constructive is the claim that we can decide whether or not any number is rational. While the proof handles both cases, it does not show which of these is correct.\footnote{It can be shown that $\sqrt{2}^{\sqrt{2}}$ is indeed irrational by the Gelfond--Schneider theorem; this can then be used to complete the original proof, provided there exists a constructive proof of Gelfond--Schneider as well.} The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for \emph{any} proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
 
-(Note that this law may still hold in specific cases. For example, given any natural number $n$ we can still determine which of $n = 1$ or $n \neq 1$ is true. A proposition which has this property is called \textit{decidable}.)
+(Note that this law may still hold in specific cases. For example, given any natural number $n$ we can still determine which of $n = 1$ or $n \neq 1$ is true. A predicate which has this property is called \textit{decidable}.)
 
 As with many areas of mathematics, the theory preceded its application. Constructive proofs can be seen as computer programs, a fact known as the Curry--Howard correspondence \citep{wadler2015}. In particular, the study of \textit{constructive analysis}---real numbers, convergence and continuity in a constructive setting---can often lead to novel, proven-correct numerical algorithms. It is this relationship between constructive analysis and computation that will be explored in this thesis.
 
@@ -268,7 +268,7 @@ In particular, constructive analysis forces a distinction between constructive a
 \end{proof}
 
 \begin{Definition}[Markov's principle]
-    Suppose $x : \N \rightarrow X$ is a sequence, and $P$ is a decidable predicate on $X$ (that is, $P(a) \vee \neg P(a)$ for any $a \in X$). Then
+    Suppose $x : \N \rightarrow X$ is a sequence, and $P$ is a decidable predicate on $X$ (that is, as noted in the preface, $P(a) \vee \neg P(a)$ for any $a \in X$). Then
     \[
         \neg \forall n\ P(x_n)
         \ \Rightarrow\ \exists n\ \neg P(x_n) \ .
