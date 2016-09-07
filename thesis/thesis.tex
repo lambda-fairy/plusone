@@ -14,22 +14,24 @@ In classical mathematics, one often proves a result without constructing the obj
 \end{Theorem}
 
 \begin{proof}
-    $\sqrt{2}^{\sqrt{2}}$ is either rational or irrational. If it is rational, our statement is proved. If it is irrational, $(\sqrt{2}^{\sqrt{2}})^{\sqrt{2}} = 2$ proves our statement.
+    $\sqrt{2}^{\sqrt{2}}$ is either rational or irrational. If it is rational, our statement is proved. If it is irrational, $(\sqrt{2}^{\sqrt{2}})^{\sqrt{2}} = (\sqrt{2})^2 = 2$ proves our statement.
 \end{proof}
 
-What makes this non-constructive is the claim that any number is either rational or not rational. While the proof handles both cases, it does not show which of these is correct.\footnote{It can be shown that $\sqrt{2}^{\sqrt{2}}$ is indeed irrational by the Gelfond--Schneider theorem; this can then be used to complete the original proof, provided there exists a constructive proof of Gelfond--Schneider as well.} The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for any proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
+What makes this non-constructive is the claim that we can decide whether or not any number is rational. While the proof handles both cases, it does not show which of these is correct.\footnote{It can be shown that $\sqrt{2}^{\sqrt{2}}$ is indeed irrational by the Gelfond--Schneider theorem; this can then be used to complete the original proof, provided there exists a constructive proof of Gelfond--Schneider as well.} The crux of the issue is the \textit{law of excluded middle}, which states that $A \vee \neg A$ for \emph{any} proposition $A$. Constructive mathematicians reject this law in general, as it yields no information on the construction of either $A$ or $\neg A$.
+
+(Note that this law may still hold in specific cases. For example, given any natural number $n$ we can still determine which of $n = 1$ or $n \neq 1$ is true. A proposition which has this property is called \textit{decidable}.)
 
 As with many areas of mathematics, the theory preceded its application. Constructive proofs can be seen as computer programs, a fact known as the Curry--Howard correspondence \citep{wadler2015}. In particular, the study of \textit{constructive analysis}---real numbers, convergence and continuity in a constructive setting---can often lead to novel, proven-correct numerical algorithms. It is this relationship between constructive analysis and computation that will be explored in this thesis.
 
-Past treatments, such as the aptly named \textit{Constructive Analysis} \citep{bishop1985constructive}, have often favored a more theoretical approach; using definitions that are mathematically simple but computationally inefficient. We propose an alternative system based on \textit{fast converging Cauchy sequences} (\FCCS). Since a \FCCS{} converges exponentially to its limit point, to compute another digit of precision only requires a handful of extra operations. The theory of \FCCS{} then becomes a practical, efficient implementation of exact real arithmetic.
+Past treatments, such as the aptly named \textit{Constructive Analysis} \citep{bishop1985constructive}, have often favored a more theoretical approach; using a definition of the reals that is mathematically simple but computationally inefficient. The typical definition of Cauchy sequences includes a \textit{modulus function} $\mu$, which maps an error threshold $\varepsilon$ to an index $n := \mu(\varepsilon)$. A naïve implementation of Cauchy sequences would then comprise two steps: compute the index $n$, then compute the element $x_n$ at said index. But as we will see later, the overhead of separating these steps can eclipse the running time of the steps themselves.
+
+We propose an alternative system based on \textit{fast converging Cauchy sequences} (\FCCS), which combines the modulus and indexing functions into a single operation. Furthermore, since a \FCCS{} converges exponentially to its limit point, to compute another digit of precision only requires a handful of extra operations. The theory of \FCCS{} then becomes a practical, efficient implementation of exact real arithmetic.
 
 In Chapter 1 we discuss different representations of real numbers, and the advantages and disadvantages thereof. In Chapter 2 we introduce the definition of \FCCS, along with associated operations and proofs. Chapter 3 evaluates the performance of this system, and justifies the requirement of fast convergence. Finally, the Appendix comprises a sample implementation of \FCCS{} written in the Haskell programming language.
 
-\section{Definitions}
+\section{Computability}
 
 A number is \textit{computable} when it can be approximated to arbitrary precision by a (finite, terminating) computer program. The program itself can be written as either a Turing machine, a lambda calculus expression, or in any other equivalent model of computation. A function $\R \rightarrow \R$ is computable when any finite prefix of its result can be computed from a finite prefix of its argument. For the purposes of this project, we will consider all real numbers to be computable unless stated otherwise.
-
-A predicate $P$ is \textit{decidable} when $P(a) \vee \neg P(a)$ for any $a$.
 
 \chapter{Representations of real numbers}
 
@@ -45,9 +47,9 @@ Formally, a non-negative real number $r = a_0 . a_1 a_2 a_3 \ldots$ is defined a
 \]
 where $a_0$ forms the integer part, and $0 \leq a_1, a_2, \ldots < b$ form the fractional part. If the expansion ends in zeroes, then it is said to be \textit{finite}.
 
-While this representation is easy to understand, it has drawbacks that make it hard to use in practice. First, it is not unique: the decimal expansions $0.999\ldots$ and $1.000\ldots$ are two different representations of 1. We can preserve uniqueness by removing sequences that end in nines, but that leads to issues elsewhere. For example, given the expression $0.\overline{09} + 0.\overline{90}$, it would take an infinite number of steps to decide whether the first digit is $0$ or $1$.
+While this representation is easy to understand, it has drawbacks that make it hard to use in practice. First, it is not unique: the decimal expansions $0.999\ldots$ and $1.000\ldots$ are two different representations of 1. We can preserve uniqueness by removing sequences that end in nines, but that leads to issues elsewhere. For example, suppose $x = 0.090909\ldots$ and $y = 0.909090\ldots$ are real numbers. While we could be tempted to conclude that $x + y = 1$, this may not be the case. It may turn out that after a million digits, $x$ contains a `0' instead of a `9', resulting in a sum that is less than 1. In fact, it would take an infinite number of steps to be sure whether the leading digit of $x + y$ is `1' or `0'.
 
-This problem touches on a fundamental weakness of the decimal representation. Since computing more digits can only \emph{increase} the approximation, not decrease it, each term then forms a lower bound to the true value. In other words, if we know that the number $x$ starts with the digit $1$, then we also know that $x \geq 1$. But as the addition example shows, it is undecidable in general whether or not a real number satisfies such a bound. For this reason, decimal expansions are not suited to constructive analysis.
+This problem touches on a fundamental weakness of the decimal representation. Since computing more digits can only \emph{increase} the approximation, not decrease it, each term then forms a lower bound to the true value. In other words, if we know that the number $x$ starts with the digit $1$, then we also know that $x \geq 1$. But as the addition example shows, it is undecidable in general whether or not a real number satisfies such a bound. For this reason, decimal expansions are not suited to computable analysis.
 
 \section{Cauchy sequences}
 
@@ -59,13 +61,13 @@ Other formulations also require the denominator of each element to be a successi
 
 \section{Continued fractions}
 
-A \textit{(simple) continued fraction} is a possibly-infinite sequence of integers $[a_0; a_1, a_2, \ldots, a_n]$, which represents the real number
+A \textit{(simple) continued fraction} is a possibly-infinite sequence of integers $[a_0; a_1, a_2, \ldots, a_n]$, where $a_1, a_2, \ldots$ are positive, which represents the real number
 \[
     a_0 + \cfrac{1}{a_1 + \cfrac{1}{a_2 + \cfrac{1}{\ddots + \cfrac{1}{a_n}}}}
     \ .
 \]
 
-This representation has many useful properties. It is unique; it is rational if and only if the sequence is finite; the sequences for $e$, $\sqrt{n}$ for any integer $n$, and the golden ratio $\phi$ are easy to compute. Compared to Cauchy sequences it has two drawbacks: the underlying theory is not as easy to understand; and in practice its operations are slower by a constant factor.
+This representation has many useful properties. It is unique; it is rational if and only if the sequence is finite; the sequences for $e$, $\sqrt{n}$ for any integer $n$, and the golden ratio $\phi$ are easy to compute. Compared to Cauchy sequences it has two drawbacks: the underlying theory is not as easy to understand; and its implementations are slower in practice.
 
 \chapter{Fast converging Cauchy sequences}
 
@@ -185,7 +187,7 @@ For example, consider the sequences $x := (1, \frac{1}{2}, \frac{1}{4}, \ldots)$
     \end{align*}
 \end{proof}
 
-To derive the final arithmetic operation, division, we must introduce the idea of equality first.
+To derive the final arithmetic operation, division, we must introduce the idea of (in-)equality first.
 
 \section{Ordering}
 
@@ -208,12 +210,9 @@ An important result of constructive analysis is that equality of real numbers is
 \end{Proposition}
 
 \begin{proof}
-    Let $P$ be an arbitrary computer program. Define the \FCCS{} $x$ as follows:
-    \begin{itemize}
-        \item If $P$ terminates in $p$ steps, let $x_n := 1/2^{\min\menge{p, n}}$.
-        \item Otherwise, let $x_n := 1/2^n$.
-    \end{itemize}
-    In other words, $x \rightarrow 1/2^p \neq 0$ if and only if $P$ terminates.
+    Let $P$ be an arbitrary computer program. Define the \FCCS{} $x$ as follows.
+
+    Given an arbitrary index $n$, run the program $P$ for at most $n$ steps. If the program terminates in $p \leq n$ steps, then define $x_n := 1/2^p$. Otherwise, set $x_n := 1/2^n$. In other words, $x \rightarrow 1/2^p \neq 0$ if and only if $P$ terminates.
 
     Suppose there is an algorithm for deciding whether $x = 0$. Then we also have an algorithm that decides whether an arbitrary program terminates. Hence the Halting Problem is solved, and we have a contradiction.
 \end{proof}
@@ -237,7 +236,7 @@ An important result of constructive analysis is that equality of real numbers is
 In particular, constructive analysis forces a distinction between constructive and non-constructive inequality. A statement that two numbers are \textit{not equal} is just a negation of the statement that they are equal. But for two numbers to be \textit{apart}, we must provide an index after which the sequences will never come closer together. While it is easy to show that apartness implies not-equality, the converse requires an additional axiom: Markov's principle.
 
 \begin{Definition}[Ordering]
-    $x < y$ when there exists $c \in \N$ such that
+    We say that $x < y$ when there exists $c \in \N$ such that
     \[ \fa{k \in \N}{y_{c+k} - x_{c+k} > \frac{1}{2^c}} \ . \]
 
     $x \leq y$ is equivalent to $\neg (y < x)$.
@@ -290,7 +289,7 @@ In particular, constructive analysis forces a distinction between constructive a
     Hence $\abs{z_n} = \abs{x_{n+1} - y_{n+1}} > 1/2^n$, and by Lemma~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively. Therefore $x$ and $y$ are apart.
 \end{proof}
 
-Operationally, Markov's principle represents an unbounded search. In the case of say, multiplication, we only need to check four elements: $x_0$, $y_0$, $x_a$, and $y_b$. While the indices $a$ and $b$ are unbounded, the number of indexing operations (four) is not. But when finding evidence of apartness, the number of operations is not bounded in this way.
+Operationally, Markov's principle represents an unbounded search. The operations described thus far have all been bounded. Even in the case of multiplication, to compute $(x \cdot y)_n$ we only need to check four elements: $x_0$, $y_0$, $x_{a(n)}$, and $y_{b(n)}$. While the indices $a$ and $b$ can be large, they are determined solely by the initial approximations $x_0$ and $y_0$. But when finding evidence of apartness, we must inspect each element of the sequence until this evidence is found. There is no guarantee as to how many elements we need to inspect, other than that it will be found eventually. This unboundedness is what justifies the use of Markov's principle.
 
 For example, consider the sequence $x$ whose first $N$ terms are zero, with the rest defined as $1/2^N$. Then $x$ is not equal to zero, but it would take $N$ steps to show that it is apart. Furthermore, if the input were in fact equal, then the algorithm would search forever for evidence that does not exist. Since equality of real numbers is undecidable, there cannot be an algorithm that has a better worst case.
 
@@ -351,10 +350,10 @@ Finally, we note that though the law of trichotomy is undecidable, the related n
 
 \section{Division}
 
-To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, any constructive evidence that a number is not zero should assist in computing its reciprocal. Indeed this is this the case: the lower bound provided by apartness translates to an upper bound on the result.
+To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, some constructive evidence that a number is not zero should assist in computing its reciprocal. Indeed this is this the case: the lower bound provided by apartness translates to an upper bound on the result.
 
 \begin{Proposition}[Reciprocal]
-    Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Proposition~\ref{apartness}.
+    Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
 \end{Proposition}
 
 \begin{proof}
@@ -416,7 +415,7 @@ Most operations are extensional, including the arithmetic operations defined abo
 
     Hence $x + z = y + z$ and addition is extensional in its first parameter.
 
-    The dual $z + x = z + y$ can be proved in a similar way. Hence addition is extensional.
+    The dual $z + x = z + y$ follows from commutativity. Hence addition is extensional.
 \end{proof}
 
 The other operations can be verified using a similar argument. For brevity their extensionality will be assumed without proof.
@@ -435,7 +434,7 @@ Recall that the exponential can be defined as
 In particular, this definition is useful because when $x$ is small, each term is exponentially smaller than the one before it. Hence the sequence of partial sums can be easily adapted to a \FCCS.
 
 \begin{Proposition}[Exponential on $\abs{x} \leq 1$]
-    Let $x$ be a rational number where $-1 \leq x \leq 1$. Then the exponential $\exp_{[-1,1]}(x)$, defined by
+    Let $x$ be a \emph{rational} number where $-1 \leq x \leq 1$. Then the exponential $\exp_{[-1,1]}(x)$, defined by
     \[
         \left[\exp_{[-1,1]}(x)\right]_n := \sum_{k=0}^{n+1} \frac{x^k}{k!},
     \]
@@ -473,7 +472,7 @@ We can then extend this definition to all rational numbers using the property $\
 \end{Corollary}
 
 \begin{proof}
-    Since $x$ is rational, by the Archimedean property $\exp(x)$ is guaranteed to terminate. The fast convergence of $\exp(x)$ then follows.
+    Since $x$ is rational, it is decidable whether it lies in the interval $[-1, 1]$. Moreover, the Archimedean property $\exp(x)$ is guaranteed to terminate. The fast convergence of $\exp(x)$ then follows.
 \end{proof}
 
 The trigonometric functions $\sin$, $\cos$, and $\tan$ can be defined in a similar way.
@@ -513,7 +512,7 @@ A typical proof of this result uses Cantor's \textit{diagonal argument}. Given a
 Furthermore, since this argument is constructive, it can be implemented as a computer program as well. The Haskell implementation includes an enumeration of the rationals, which on application of this argument results in an arbitrary irrational number.
 
 \begin{Proposition}[Cantor's diagonal argument]
-    Let $x : \N \rightarrow \FCCS$ be a sequence of fast converging Cauchy sequences. Then there exists a \FCCS{} $\mathrm{cantor}(x)$ that is apart from every element in $x$.
+    Let $x : \N \rightarrow \FCCS$ be a sequence of fast converging Cauchy sequences such that $x = (x^{(0)}, x^{(1)}, \ldots)$. Then there exists a \FCCS{} $\mathrm{cantor}(x)$ that is apart from every element in $x$.
 \end{Proposition}
 
 \begin{proof}
@@ -521,21 +520,21 @@ Furthermore, since this argument is constructive, it can be implemented as a com
     \begin{enumerate}[label=(C\arabic*)]
         \item $\abs{a_n - b_n} \leq 1/4^n$;
         \item $[a_{n+1}, b_{n+1}) \subset [a_n, b_n)$;
-        \item $x_n \notin [a_n, b_n)$.
+        \item $x^{(n)} \notin [a_n, b_n)$.
     \end{enumerate}
     for all $n \in \N$.
 
-    Define $a_0 := [x_0]_0 - 2$, $b_0 := [x_0]_0 - 1$.
+    Define $a_0 := x^{(0)}_0 - 2$, $b_0 := x^{(0)}_0 - 1$.
     For $n > 0$, suppose $[a_n, b_n)$ satisfies the properties above. Then define $a_{n+1}, b_{n+1}$ by the equation
     \[
         [a_{n+1}, b_{n+1}) := \begin{cases}
-            [a_n, a_n + h_n) & [x_n]_{2n+2} \geq c_n \\
-            [b_n - h_n, b_n) & [x_n]_{2n+2} < c_n
+            [a_n, a_n + h_n) & x^{(n)}_{2n+2} \geq c_n \\
+            [b_n - h_n, b_n) & x^{(n)}_{2n+2} < c_n
         \end{cases}
     \]
     where $c_n := (a_n + b_n) / 2$ and $h_n := (b_n - a_n) / 4 = 1/4^{n+1} = 1/2^{2n+2}$. Clearly (C1) and (C2) hold, as we shrink the interval by a factor of $1/4$ on each step.
 
-    Proof of (C3). Clearly $x_0 \notin [a_0, b_0)$. For the inductive case, if $[x_n]_{2n+2} \geq c_n$ then $x_n \geq c_n - 1/2^{2n+2} = c_n - h_n = a_n + h_n$. Using a similar argument, if $[x_n]_{2n+2} < c_n$ then $x_n < b_n - h_n$. Hence (C3) holds.
+    Proof of (C3). Clearly $x^{(0)} \notin [a_0, b_0)$. For the inductive case, if $x^{(n)}_{2n+2} \geq c_n$ then $x^{(n)} \geq c_n - 1/2^{2n+2} = c_n - h_n = a_n + h_n$. Using a similar argument, if $x^{(n)}_{2n+2} < c_n$ then $x^{(n)} < b_n - h_n$. Hence (C3) holds.
 
     Now define $[\mathrm{cantor}(x)]_n := a_{\floor{n/2}}$. Then for any $m, n \in \N$,
     \begin{align*}
@@ -565,7 +564,7 @@ To decide which approach to use, the author ran benchmarks to compare the perfor
 
 Both expressions were evaluated within an error of $1/2^{50}$. The benchmarks were run using the \texttt{criterion} library on an Intel Core i7 laptop.
 
-\begin{tabular}{lllll}
+\begin{center} \begin{tabular}{lllll}
     \toprule
     \multirow{2}{*}{Benchmark} &
     \multicolumn{2}{c}{No modulus} &
@@ -576,7 +575,7 @@ Both expressions were evaluated within an error of $1/2^{50}$. The benchmarks we
     Simple & 3.41 & 11.1 & 3.51 & 264 \\
     Complicated & 369 & 85.0 & 706 & 598 \\
     \bottomrule
-\end{tabular}
+\end{tabular} \end{center}
 
 It is interesting to note that while there is little difference in the ``simple'' benchmark, the no-modulus-function method is almost twice as fast in the ``complicated'' benchmark. This is likely because the modulus function variant involves two function calls instead of one. Over many arithmetic operations, these extra calls can cause a significant slowdown.
 
@@ -588,6 +587,6 @@ It is interesting to note that while there is little difference in the ``simple'
 \bibliographystyle{abbrvnat}
 \bibliography{sources}
 
-\nocite{haskell2010}  % Show this reference even though we haven't use it thus far
+\nocite{haskell2010}  % Show this reference even though we haven't used it thus far
 
 \end{document}
