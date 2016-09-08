@@ -388,11 +388,13 @@ To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined
 
 \section{Extensionality}
 
-\todo[inline]{Explain the role of extensionality/well-definedness re modelling the computable reals}
+So far, we have talked about computable real numbers in terms of \FCCS. It was assumed, implicitly, that a result derived in terms of \FCCS{} should apply to the computable reals as well. This argument can be seen in \cref{equality_undecidable}, which showed that equality on real numbers is undecidable by constructing an appropriate \FCCS.
 
-For \FCCS{} to form a suitable model of computable real numbers, we need to introduce one more property: \textit{extensionality}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented internally. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way.
+We must note, however, that not all operations on \FCCS{} apply to computable reals as a whole. For example, consider the indexing operator $\iota_0 : \FCCS \rightarrow \Q$, $\iota_0(x) := x_0$. While this is a valid function on \FCCS{}, it is not clear how this can be seen as a function on $\R$. After all, for any real number there are many different \FCCS{} that can represent it, all of which could yield different answers under $\iota_0$.
 
-Most operations are extensional, including the arithmetic operations defined above. An example of a non-extensional function is the indexing operator $\iota : \FCCS \times \N \rightarrow \Q$, $\iota(x, n) := x_n$. If we let $x_n = 1/2^n$ and $y_n = -1/2^n$, then it is clear that $x = y$ but $\iota(x, n) \neq \iota(y, n)$. Intuitively, $\iota$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
+The problem here is that $\iota_0$ is not \textit{well-defined} as a function on real numbers; in other words, it is not \textit{extensional}. A function is extensional when it maps equal inputs to equal outputs, regardless of how the inputs are represented underneath. In the context of \FCCS, this means that the function only concerns itself with what a sequence converges to, not the approximations along the way. Now it is easy to see how $\iota_0$ is not extensional: if we let $x_n := 1/2^n$ and $y_n := -1/2^n$, then $x = y = 0$ but $\iota_0(x) \neq \iota_0(y)$. Intuitively, $\iota_0$ breaks the abstraction of a ``real number,'' exposing the Cauchy sequence representation underneath.
+
+Most operations are extensional, including the arithmetic operations defined above. We will prove that addition is extensional below; the other operations can be verified using a similar argument. For brevity their extensionality will be assumed without proof.
 
 \begin{Definition}[Extensionality]
     A function $f : \FCCS \rightarrow \FCCS$ is extensional when $x = y$ implies $f(x) = f(y)$.
@@ -417,8 +419,6 @@ Most operations are extensional, including the arithmetic operations defined abo
 
     The dual $z + x = z + y$ follows from commutativity. Hence addition is extensional.
 \end{proof}
-
-The other operations can be verified using a similar argument. For brevity their extensionality will be assumed without proof.
 
 \section{Exponentials and trigonometric functions}
 
