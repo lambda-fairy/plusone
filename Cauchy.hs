@@ -107,7 +107,9 @@ expC' x
     | -1 <= x && x <= 1 = exp01 x
     | otherwise = let y = expC' (x / 2) in y * y
   where
-    exp01 x = Cauchy' (\n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n] ]) (\r -> r+1)
+    exp01 x = Cauchy'
+        (\n -> sum [ x^k / realToFrac (factorial k) | k <- [0 .. n] ])
+        (\r -> r+1)
 
 
 -- Find the sine of a rational number.
