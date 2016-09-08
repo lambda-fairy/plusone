@@ -38,7 +38,7 @@ instance Show Cauchy where
 -- Cauchy sequence with a modulus of convergence.
 --
 -- The second argument is a /modulus function/, $\mu : \N \rightarrow \N$, which
--- for any $k$ gives the least index -- where the difference is less than
+-- for any $k$ gives the least index where the difference is less than
 -- $1/2^{\mu(k)}$.
 data Cauchy' = Cauchy' (Natural -> Rational) (Natural -> Natural)
 
