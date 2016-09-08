@@ -16,25 +16,22 @@
 \usepackage{nicefrac}
 \usepackage{xspace}
 
-\usepackage{algpseudocode}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage[capitalize,nameinlink]{cleveref}
 \usepackage[colorinlistoftodos]{todonotes}
 
 \allowdisplaybreaks
 
-\theoremstyle{definition}
-\newtheorem{Definition}{Definition}
-
 \theoremstyle{plain}
-\newtheorem{Thm}{Theorem}
-\newtheorem{Conjecture}{Conjecture}
+\newtheorem{Thm}{Theorem}[section]
 \newtheorem{Corollary}[Thm]{Corollary}
 \newtheorem{Example}[Thm]{Example}
 \newtheorem{Lemma}[Thm]{Lemma}
 \newtheorem{Proposition}[Thm]{Proposition}
-\newtheorem{Question}{Question}
-\newtheorem{Remark}[Thm]{Remark}
 \newtheorem{Theorem}[Thm]{Theorem}
+
+\theoremstyle{definition}
+\newtheorem{Definition}[Thm]{Definition}
 
 \newcommand{\fa}[2]{\forall {#1} \quad {#2}}
 \newcommand{\ex}[2]{\exists {#1} \quad {#2}}

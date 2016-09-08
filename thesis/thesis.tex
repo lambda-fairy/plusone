@@ -230,7 +230,7 @@ An important result of constructive analysis is that equality of real numbers is
 \end{Corollary}
 
 \begin{proof}
-    If the sign function was computable, then we could determine whether $x$ and $y$ are equal by evaluating $\mathrm{sgn}(x - y)$. This contradicts Proposition~\ref{equality_undecidable}.
+    If the sign function was computable, then we could determine whether $x$ and $y$ are equal by evaluating $\mathrm{sgn}(x - y)$. This contradicts \cref{equality_undecidable}.
 \end{proof}
 
 In particular, constructive analysis forces a distinction between constructive and non-constructive inequality. A statement that two numbers are \textit{not equal} is just a negation of the statement that they are equal. But for two numbers to be \textit{apart}, we must provide an index after which the sequences will never come closer together. While it is easy to show that apartness implies not-equality, the converse requires an additional axiom: Markov's principle.
@@ -286,7 +286,7 @@ In particular, constructive analysis forces a distinction between constructive a
         \quad \Rightarrow \quad
         \ex{n \in \N}{\abs{x_{n+1} - y_{n+1}} > \frac{1}{2^n}} \ .
     \]
-    Hence $\abs{z_n} = \abs{x_{n+1} - y_{n+1}} > 1/2^n$, and by Lemma~\ref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively. Therefore $x$ and $y$ are apart.
+    Hence $\abs{z_n} = \abs{x_{n+1} - y_{n+1}} > 1/2^n$, and by \cref{apartness}, either $z < 0$ or $z > 0$. From that we conclude $x < y$ or $x > y$ respectively. Therefore $x$ and $y$ are apart.
 \end{proof}
 
 Operationally, Markov's principle represents an unbounded search. The operations described thus far have all been bounded. Even in the case of multiplication, to compute $(x \cdot y)_n$ we only need to check four elements: $x_0$, $y_0$, $x_{a(n)}$, and $y_{b(n)}$. While the indices $a$ and $b$ can be large, they are determined solely by the initial approximations $x_0$ and $y_0$. But when finding evidence of apartness, we must inspect each element of the sequence until this evidence is found. There is no guarantee as to how many elements we need to inspect, other than that it will be found eventually. This unboundedness is what justifies the use of Markov's principle.
@@ -335,7 +335,7 @@ Finally, we note that though the law of trichotomy is undecidable, the related n
 \begin{proof}
     Let $m, n \in \N$ be arbitrary.
 
-    Then by Lemma~\ref{max_abs},
+    Then by \cref{max_abs},
     \begin{align*}
         \abs{\max(x, y)_m - \max(x, y)_{m+n}}
         &= \abs{\max(x_{m+1}, y_{m+1}) - \max(x_{m+n+1}, y_{m+n+1})} \\
@@ -345,7 +345,7 @@ Finally, we note that though the law of trichotomy is undecidable, the related n
         &= \frac{1}{2^m} \ .
     \end{align*}
 
-    The fast convergence of $\min(x, y)$ then follows from Proposition~\ref{neg}.
+    The fast convergence of $\min(x, y)$ then follows from \cref{neg}.
 \end{proof}
 
 \section{Division}
@@ -353,7 +353,7 @@ Finally, we note that though the law of trichotomy is undecidable, the related n
 To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined only when $x$ is not zero. Hence intuitively, some constructive evidence that a number is not zero should assist in computing its reciprocal. Indeed this is this the case: the lower bound provided by apartness translates to an upper bound on the result.
 
 \begin{Proposition}[Reciprocal]
-    Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in Lemma~\ref{apartness}.
+    Let $x$ be a \FCCS{} where $x \neq 0$. Then $\left(x^{-1}\right)_k := \left(x_{k+2c}\right)^{-1}$ is a \FCCS, where $c$ is defined as in \cref{apartness}.
 \end{Proposition}
 
 \begin{proof}
@@ -362,7 +362,7 @@ To derive the reciprocal, and with it division, observe that $x^{-1}$ is defined
         \abs{x_{m+2c} - x_{m+n+2c}} < \frac{1}{2^{m+2c}} \ ;
     \]
 
-    And by Proposition~\ref{apartness}, we know that
+    And by \cref{apartness}, we know that
     \begin{align*}
         \abs{x_{m+2c}} > \frac{1}{2^c} \enspace\wedge\enspace
         \abs{x_{m+n+2c}} > \frac{1}{2^c}
@@ -545,7 +545,7 @@ Furthermore, since this argument is constructive, it can be implemented as a com
     \end{align*}
     shows that $\mathrm{cantor}(x)$ is a \FCCS.
 
-    By (C3) and Proposition~\ref{apartness}, this is apart from every element of $x$.
+    By (C3) and \cref{apartness}, this is apart from every element of $x$.
 \end{proof}
 
 \chapter{Implementation notes}
