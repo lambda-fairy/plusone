@@ -1,5 +1,5 @@
-ramsey.pdf: ramsey.tex sources.bib
-	latexmk -pdf $<
+ramsey.pdf: ramsey.tex base.tex sources.bib
+	latexmk -halt-on-error -pdf $<
 
 .PHONY: clean
 clean:

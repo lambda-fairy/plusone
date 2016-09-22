@@ -1,10 +1,46 @@
 \documentclass{article}
-
+\input{base.tex}
 \begin{document}
 \author{Chris Wong}
 \title{The Ramsey number $R(5,5)$}
 \maketitle
 
 Hello, world!
+
+\section{Probabilistic proofs}
+
+\begin{Lemma} \label{binomial_bound}
+    For all positive integers $n$ and $k$,
+    \[ {n \choose k} \leq \frac{n^k}{2^{k-1}} \ . \]
+\end{Lemma}
+
+\begin{Theorem}
+    For all $k \geq 4$, the following lower bound holds for the Ramsey numbers:
+    \[ R(k,k) \geq 2^{\frac k 2} \ . \]
+\end{Theorem}
+
+\begin{proof}
+    Let $k \geq 4$. Consider the complete graph $K_n$ on $n$ vertices, where $n < 2^{\frac k 2}$. Since every pair of vertices in this graph is connected by an edge, there must be $n \choose 2$ edges in total.
+
+    Now, suppose that each edge is colored red or blue independently with probability $\frac 1 2$. As each of these $2^{n \choose 2}$ colorings is equally likely, the probability of choosing a particular coloring is $2^{-{n \choose 2}}$.
+
+    Let $A$ be a subset of vertices of size $k$. The probability of the event $A_\red$ that all edges within $A$ are colored red is then $2^{-{k \choose 2}}$. Hence it follows that the probability $p_\red$ that \emph{some} $k$-set is colored all red is bounded by
+    \[
+        p_\red = \Pr(\bigcup_{\abs{A} = k} A_\red)
+        \leq \sum_{\abs{A} = k} \Pr(A_\red)
+        = {n \choose k} 2^{-{k \choose 2}} \ .
+    \]
+
+Now, applying \cref{binomial_bound}, we use the fact that $n < 2^{\frac k 2}$ to conclude that
+    \[
+        {n \choose k} 2^{-{k \choose 2}}
+        \leq \frac{n^k}{2^{k-1}} 2^{-{k \choose 2}}
+        < 2^{\frac{k^2}{2} - {k \choose 2} - k + 1}
+        = 2^{-\frac k 2 + 1}
+        \leq \frac 1 2 \ .
+    \]
+
+Hence $p_\red < \frac 1 2$, and by symmetry $p_\blue < \frac 1 2$ for the probability that some $k$ vertices have all edges between them colored blue. It follows that $p_\red + p_\blue < 1$, so there must exist a coloring with no red or blue $K_k$. This means that $K_n$ does not have the Ramsey property for $(k, k)$, and the Ramsey number $R(k,k) \geq 2^{\frac k 2}$.
+\end{proof}
 
 \end{document}

@@ -1,0 +1,59 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage[round]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage[capitalize]{cleveref}
+
+\allowdisplaybreaks
+
+\theoremstyle{plain}
+\newtheorem{Thm}{Theorem}[section]
+\newtheorem{Corollary}[Thm]{Corollary}
+\newtheorem{Example}[Thm]{Example}
+\newtheorem{Lemma}[Thm]{Lemma}
+\newtheorem{Proposition}[Thm]{Proposition}
+\newtheorem{Theorem}[Thm]{Theorem}
+
+\theoremstyle{definition}
+\newtheorem{Definition}[Thm]{Definition}
+
+% http://tex.stackexchange.com/a/23181/36565
+\makeatletter
+\MHInternalSyntaxOn
+\newcommand*\DeclarePairedDelimiterAlt[3]{%
+  \@ifdefinable{#1}{
+    \@namedef{MT_delim_\MH_cs_to_str:N #1 _star:}##1
+        {\mathopen{}\mathclose\bgroup\left#2 ##1 \aftergroup\egroup\right #3}%
+    \@xp\@xp\@xp
+      \newcommand
+        \@xp\csname MT_delim_\MH_cs_to_str:N #1 _nostar:\endcsname
+        [2][\\@gobble]
+        {
+          \mathopen{\@nameuse {\MH_cs_to_str:N ##1 l} #2} ##2
+          \mathclose{\@nameuse {\MH_cs_to_str:N ##1 r} #3}}
+    \DeclareRobustCommand{#1}{
+      \@ifstar
+        {\@nameuse{MT_delim_\MH_cs_to_str:N #1 _nostar:}}
+        {\@nameuse{MT_delim_\MH_cs_to_str:N #1 _star:}}
+    }
+  }
+}
+\MHInternalSyntaxOff
+\makeatother
+
+\DeclarePairedDelimiterAlt\abs{\lvert}{\rvert}
+\DeclarePairedDelimiterAlt\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiterAlt\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiterAlt\menge{\{}{\}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\red}{\mathrm{red}}
+\newcommand{\blue}{\mathrm{blue}}
