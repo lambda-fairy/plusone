@@ -7,12 +7,55 @@
 
 Hello, world!
 
+\section{Introduction}
+
+Before we introduce the Ramsey numbers, we must first define a few terms.
+
+A \textit{graph} $G = (V, E)$ consists of a set of \textit{vertices} $V$ connected by a set of \textit{edges} $E$. For the purposes of this paper, we assume that the graphs are \textit{simple}: that is, every pair of vertices has at most one edge between them.
+
+A graph is \textit{complete} when every pair of vertices are connected by an edge. For each positive integer $n$, the complete graph on $n$ vertices is denoted $K_n$.
+
+An \textit{(edge-induced) subgraph} $G' \subseteq G$ is formed from a subset of the edges of $G$, along with the vertices incident to them. When a subgraph is complete, it is called a \textit{clique}.
+
+An \textit{(edge) coloring} labels every edge of a graph by elements from a given set of colors. By tradition, we use the colors \textit{red} and \textit{blue}.
+
+With these definitions, we can state Ramsey's theorem:
+
+\begin{Theorem}[Ramsey's theorem] \label{ramseys_theorem}
+    Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every red-blue edge coloring of $K_n$ either has a fully red clique of size $s$, or a fully blue clique of size $t$.
+\end{Theorem}
+
+\begin{Definition}[Ramsey numbers]
+    Define $R(s,t)$ as the smallest $n$ such that the conclusion of \cref{ramseys_theorem} holds. This is the \textit{Ramsey number} of $(s,t)$.
+\end{Definition}
+
 \section{Probabilistic proofs}
 
 \begin{Lemma} \label{binomial_bound}
     For all positive integers $n$ and $k$,
     \[ {n \choose k} \leq \frac{n^k}{2^{k-1}} \ . \]
 \end{Lemma}
+
+\begin{proof}
+    Expanding the definition of the binomial coefficient, we see that
+    \[
+        {n \choose k}
+        = \frac{n!}{(n-k)!k!}
+        = \frac{n(n-1)\ldots(n-(k-1))}{k!}
+        \leq \frac{n^k}{k!} \ .
+    \]
+    To complete the proof, we use the identity
+    \[
+        2^{k-1}
+        = 1 \times 2 \times 2 \times \ldots \times 2
+        \leq 1 \times 2 \times 3 \times \ldots \times k
+        = k!
+    \]
+    to conclude that
+    \[
+        {n \choose k} \leq \frac{n^k}{2^{k-1}} \ . \qedhere
+    \]
+\end{proof}
 
 \begin{Theorem}
     For all $k \geq 4$, the following lower bound holds for the Ramsey numbers:
