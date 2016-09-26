@@ -29,7 +29,27 @@ With these definitions, we can state Ramsey's theorem:
     Define $R(s,t)$ as the smallest $n$ such that the conclusion of \cref{ramseys_theorem} holds. This is the \textit{Ramsey number} of $(s,t)$.
 \end{Definition}
 
+\section{Computing Ramsey numbers}
+
+The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proven by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$.
+
+This difficulty stems from the sheer number of combinations that must be checked. Since a Ramsey number is a statement about \emph{all} colorings of a particular graph, it is not enough to find a single example---we have to account for them all. Moreover, as the number of possible colorings grows exponentially with the number of vertices, it is almost never feasible to check every coloring. In fact, there is no known polynomial-time algorithm for computing Ramsey numbers in general; mathematicians so far have used a separate, ad-hoc proof for each result.
+
+\section{Upper and lower bounds}
+
+While it can be difficult to compute a Ramsey number exactly, we can often derive bounds on what values the number can take. These bounds can be an important step toward finding the exact result. In particular, if we can show that $R(s,t) \geq n$ and $R(s,t) \leq n$, then it follows that $R(s,t) = n$.
+
+To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we must construct a counterexample: a coloring on $K_n$ which does \emph{not} have a red clique of size $s$ or a blue clique of size $t$. \todo{explain why this works} This coloring is called a \textit{Ramsey graph} of size $n$.
+
+\todo{explain why upper bounds are harder}
+
 \section{Probabilistic proofs}
+
+In finding Ramsey numbers, one often uses the \textit{probabilistic method} in their proofs. This technique was pioneered by Paul Erdős in \todo{find date}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
+
+This argument is non-constructive: it shows that such a counterexample exists, but does not tell us what it is. Despite this caveat, the method is valid and its conclusion is definitely correct.
+
+To illustrate the probabilistic method, we give a proof of the lower bound $R(k,k) \geq 2^{\frac k 2}$. This proof depends on a short lemma, which we will introduce first.
 
 \begin{Lemma} \label{binomial_bound}
     For all positive integers $n$ and $k$,
@@ -58,12 +78,12 @@ With these definitions, we can state Ramsey's theorem:
 \end{proof}
 
 \begin{Theorem}
-    For all $k \geq 4$, the following lower bound holds for the Ramsey numbers:
+    For all $k \geq 2$, the following lower bound holds for the Ramsey numbers:
     \[ R(k,k) \geq 2^{\frac k 2} \ . \]
 \end{Theorem}
 
 \begin{proof}
-    Let $k \geq 4$. Consider the complete graph $K_n$ on $n$ vertices, where $n < 2^{\frac k 2}$. Since every pair of vertices in this graph is connected by an edge, there must be $n \choose 2$ edges in total.
+    Let $k \geq 2$. Consider the complete graph $K_n$ on $n$ vertices, where $n < 2^{\frac k 2}$. Since every pair of vertices in this graph is connected by an edge, there must be $n \choose 2$ edges in total.
 
     Now, suppose that each edge is colored red or blue independently with probability $\frac 1 2$. As each of these $2^{n \choose 2}$ colorings is equally likely, the probability of choosing a particular coloring is $2^{-{n \choose 2}}$.
 
@@ -85,5 +105,8 @@ Now, applying \cref{binomial_bound}, we use the fact that $n < 2^{\frac k 2}$ to
 
 Hence $p_\red < \frac 1 2$, and by symmetry $p_\blue < \frac 1 2$ for the probability that some $k$ vertices have all edges between them colored blue. It follows that $p_\red + p_\blue < 1$, so there must exist a coloring with no red or blue $K_k$. This means that $K_n$ does not have the Ramsey property for $(k, k)$, and the Ramsey number $R(k,k) \geq 2^{\frac k 2}$.
 \end{proof}
+
+\bibliographystyle{abbrvnat}
+\bibliography{sources}
 
 \end{document}
