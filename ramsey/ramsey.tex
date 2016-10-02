@@ -13,13 +13,13 @@ Before we introduce the Ramsey numbers, we must first define a few terms.
 
 A \textit{graph} $G = (V, E)$ consists of a set of \textit{vertices} $V$ connected by a set of \textit{edges} $E$. For the purposes of this paper, we assume that the graphs are \textit{simple}: that is, every pair of vertices has at most one edge between them.
 
-A graph is \textit{complete} when every pair of vertices are connected by an edge. For each positive integer $n$, the complete graph on $n$ vertices is denoted $K_n$.
+A graph is \textit{complete} when every pair of vertices is connected by an edge. For each positive integer $n$, the complete graph on $n$ vertices is unique and denoted $K_n$.
 
 An \textit{(edge-induced) subgraph} $G' \subseteq G$ is formed from a subset of the edges of $G$, along with the vertices incident to them. When a subgraph is complete, it is called a \textit{clique}.
 
 An \textit{(edge) coloring} labels every edge of a graph by elements from a given set of colors. By tradition, we use the colors \textit{red} and \textit{blue}.
 
-With these definitions, we can state Ramsey's theorem:
+With these definitions, we can state Ramsey's theorem, and with it, the Ramsey numbers:
 
 \begin{Theorem}[Ramsey's theorem] \label{ramseys_theorem}
     Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every red-blue edge coloring of $K_n$ either has a fully red clique of size $s$, or a fully blue clique of size $t$.
@@ -31,21 +31,21 @@ With these definitions, we can state Ramsey's theorem:
 
 \section{Computing Ramsey numbers}
 
-The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proven by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$.
+The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proven by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$. The value of $R(5,5)$---just one step above---is still an open problem!
 
 This difficulty stems from the sheer number of combinations that must be checked. Since a Ramsey number is a statement about \emph{all} colorings of a particular graph, it is not enough to find a single example---we have to account for them all. Moreover, as the number of possible colorings grows exponentially with the number of vertices, it is almost never feasible to check every coloring. In fact, there is no known polynomial-time algorithm for computing Ramsey numbers in general; mathematicians so far have used a separate, ad-hoc proof for each result.
 
 \section{Upper and lower bounds}
 
-While it can be difficult to compute a Ramsey number exactly, we can often derive bounds on what values the number can take. These bounds can be an important step toward finding the exact result. In particular, if we can show that $R(s,t) \geq n$ and $R(s,t) \leq n$, then it follows that $R(s,t) = n$.
+While it can be difficult to compute a Ramsey number exactly, we can often derive bounds on what values the number can take. These bounds can be an important step toward finding the exact result. In particular, if we can show that $R(s,t) \geq n$ and $R(s,t) \leq n$ for the same $n$, then it follows that $R(s,t) = n$.
 
-To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we must construct a counterexample: a coloring on $K_n$ which does \emph{not} have a red clique of size $s$ or a blue clique of size $t$. \todo{explain why this works} This coloring is called a \textit{Ramsey graph} of size $n$.
+To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only need a counterexample: a coloring on $K_n$ which does \emph{not} have a red clique of size $s$ or a blue clique of size $t$. This coloring is called a \textit{Ramsey graph} of size $n$. Since a Ramsey number is a statement about all colorings on $K_n$, such a coloring is sufficient to show that $R(s,t) \nleq n$, hence $R(s,t) > n$.
 
-\todo{explain why upper bounds are harder}
+On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colorings on $K_n$ have the desired property.
 
 \section{Probabilistic proofs}
 
-In finding Ramsey numbers, one often uses the \textit{probabilistic method} in their proofs. This technique was pioneered by Paul Erdős in \todo{find date}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
+In finding Ramsey numbers, one often uses the \textit{probabilistic method} in their proofs. This technique was pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
 
 This argument is non-constructive: it shows that such a counterexample exists, but does not tell us what it is. Despite this caveat, the method is valid and its conclusion is definitely correct.
 
