@@ -2,10 +2,10 @@
 \input{base.tex}
 \begin{document}
 \author{Chris Wong}
-\title{The Ramsey number $R(5,5)$}
+\title{Frank Ramsey's Fantastic Numbers and Where to Find Them}
 \maketitle
 
-Hello, world!
+\todo[inline]{write introduction}
 
 \section{Introduction}
 
@@ -29,9 +29,54 @@ With these definitions, we can state Ramsey's theorem, and with it, the Ramsey n
     Define $R(s,t)$ as the smallest $n$ such that the conclusion of \cref{ramseys_theorem} holds. This is the \textit{Ramsey number} of $(s,t)$.
 \end{Definition}
 
+\todo[inline]{include clique/stable set definition}
+
+\section{1-fish, 2-fish, red fish, blue fish}
+
+As with other areas of mathematics, Ramsey numbers have their simple cases: namely, the values of $R(1,t)$ and $R(2,t)$. These cases are easy to state and prove, and so are given below.
+
+\begin{Proposition}
+    For any positive $s$ and $t$,
+    \[ R(s,1) = R(1,t) = 1 \ . \]
+\end{Proposition}
+
+\begin{proof}
+    Observe that a clique with one vertex has no internal edges. Hence, trivially, all of its edges are colored both red and blue. The smallest complete graph with a one-vertex clique is $K_1$ itself. The proposition follows.
+\end{proof}
+
+\begin{Proposition}
+    For any positive $t$,
+    \[ R(2,t) = t \ . \]
+\end{Proposition}
+
+\begin{proof}
+    Consider a coloring of $K_t$. If every edge is colored blue, then the graph has a blue clique of size $t$; and we are done.
+
+    Otherwise, there must exist at least one edge colored red. Take one such edge, along with the two vertices incident to it. This is a red clique of size 2.
+\end{proof}
+
+On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---the best bounds we have are due to \citet{RSA:RSA3240070302}, who won a Fulkerson prize for his work.
+
+\begin{Theorem}[\citet{RSA:RSA3240070302}] \label{kims_theorem}
+    For sufficiently large $t$, the value of $R(3,t)$ can be approximated by $t^2/\log t$.
+\end{Theorem}
+
+Finally, we observe that the colors \emph{red} and \emph{blue} are interchangable: any coloring that satisfies the Ramsey property for $(s,t)$ can be adapted to one for $(t,s)$ by swapping the colors.
+
+\begin{Proposition}
+    For any positive $s$ and $t$,
+    \[ R(s,t) = R(t,s) \ . \]
+\end{Proposition}
+
+\begin{proof}
+    By symmetry of red and blue.
+\end{proof}
+
 \section{Computing Ramsey numbers}
 
 The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proven by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$. The value of $R(5,5)$---just one step above---is still an open problem!
+
+\todo[inline]{insert table of known Ramsey numbers}
 
 This difficulty stems from the sheer number of combinations that must be checked. Since a Ramsey number is a statement about \emph{all} colorings of a particular graph, it is not enough to find a single example---we have to account for them all. Moreover, as the number of possible colorings grows exponentially with the number of vertices, it is almost never feasible to check every coloring. In fact, there is no known polynomial-time algorithm for computing Ramsey numbers in general; mathematicians so far have used a separate, ad-hoc proof for each result.
 
@@ -43,11 +88,15 @@ To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only nee
 
 On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colorings on $K_n$ have the desired property.
 
-\section{Probabilistic proofs}
+That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the number of possible colorings is too large to search exhaustively. \todo[inline]{explain how counterexamples are often hard to find too} \todo[inline]{include bounds on $R(5,5)$}
 
-In finding Ramsey numbers, one often uses the \textit{probabilistic method} in their proofs. This technique was pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
+\section{The probabilistic method}
 
-This argument is non-constructive: it shows that such a counterexample exists, but does not tell us what it is. Despite this caveat, the method is valid and its conclusion is definitely correct.
+One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from linear programming and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming.
+
+For this report, we will focus on one such technique: the \textit{probabilistic method}, pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
+
+This argument is non-constructive: it shows that such a counterexample exists, but does not tell us what it is. Despite this caveat, the method is valid and its conclusion is correct with no chance of error.
 
 To illustrate the probabilistic method, we give a proof of the lower bound $R(k,k) \geq 2^{\frac k 2}$. This proof depends on a short lemma, which we will introduce first.
 
@@ -77,7 +126,7 @@ To illustrate the probabilistic method, we give a proof of the lower bound $R(k,
     \]
 \end{proof}
 
-\begin{Theorem}
+\begin{Theorem}[\cite{erdos1947some}]
     For all $k \geq 2$, the following lower bound holds for the Ramsey numbers:
     \[ R(k,k) \geq 2^{\frac k 2} \ . \]
 \end{Theorem}
@@ -105,6 +154,12 @@ Now, applying \cref{binomial_bound}, we use the fact that $n < 2^{\frac k 2}$ to
 
 Hence $p_\red < \frac 1 2$, and by symmetry $p_\blue < \frac 1 2$ for the probability that some $k$ vertices have all edges between them colored blue. It follows that $p_\red + p_\blue < 1$, so there must exist a coloring with no red or blue $K_k$. This means that $K_n$ does not have the Ramsey property for $(k, k)$, and the Ramsey number $R(k,k) \geq 2^{\frac k 2}$.
 \end{proof}
+
+\section{Conclusion}
+
+\todo[inline]{write conclusion}
+
+\listoftodos
 
 \bibliographystyle{abbrvnat}
 \bibliography{sources}
