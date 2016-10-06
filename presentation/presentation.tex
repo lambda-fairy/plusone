@@ -7,6 +7,8 @@
 
 \frame{\titlepage}
 
+\setlength{\parskip}{\baselineskip}
+
 \section{Introduction}
 \begin{frame}
     \frametitle{Two problems}
@@ -82,7 +84,169 @@
 
 \begin{frame}
     \begin{center}
-        \includegraphics[height=0.9\paperheight]{Hindenburg_disaster,_1937.jpg}
+        \includegraphics[height=0.9\paperheight]{atomic_annie_1.jpg}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{(Mathematical) constructivism}
+
+    \textbf{Constructivism} is the belief that to prove an object exists, we must provide a procedure to construct it
+
+    Constructivists reject the excluded middle ($A \vee \neg A$) and double negation elimination ($\neg\neg A \rightarrow A$) laws
+
+    Reaction against a perceived ``lack of meaning'' in modern mathematics
+\end{frame}
+
+\begin{frame}
+    The pure mathematician is isolated\dots He suffers from an alienation which is seemingly inevitable; he has followed the gleam and it has led him out of this world.
+
+    \hfill ---Bishop and Bridges, \textit{Constructive Analysis}, 1987
+\end{frame}
+
+\begin{frame}
+    \frametitle{Construction $\sim$ Computation}
+
+    Since constructive proofs describe procedures, they can be written as computer programs
+
+    Called the ``Curry--Howard correspondence'' or ``BHK interpretation''
+
+    So \textbf{constructive analysis} is also \textbf{computable}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Fast converging Cauchy sequences}
+    \begin{Definition}
+        Let $x : \N \rightarrow \Q$ be a sequence of rational numbers.
+
+        If for any natural numbers $n$ and $m$,
+        \[
+            \abs{x_n - x_{n+m}} < \frac 1 {2^n} \ ,
+        \]
+        then $x$ is a \textbf{fast converging Cauchy sequence}.
+    \end{Definition}
+
+    Intuition: each element is at most $1/2^n$ away from the limit point.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Addition and subtraction}
+
+    When we add two sequences pointwise, we also add the errors
+
+    So the error of the result is at most \emph{double} the error of the inputs
+
+    Solution: shift the sequence by one step, halving the error to compensate
+\end{frame}
+
+\begin{frame}
+    \frametitle{Addition and subtraction}
+
+    \begin{Example}
+        Let $x := (2, 1\frac 1 2, 1\frac 1 4, 1\frac 1 8, \dots)$.
+
+        Let $y := (3, 2\frac 1 2, 2\frac 1 4, 2\frac 1 8, \dots)$.
+
+        Adding pointwise, we get $z = (5, 4, 3\frac 1 2, 3\frac 1 4, \dots)$.
+
+        This is not fast converging because
+        $\abs{z_0 - z_2} = 1\frac 1 2 \nless \frac 1 {2^0}$.
+
+        Shift $z$ to get $z' = (4, 3\frac 1 2, 3\frac 1 4, \dots)$ which is fast converging.
+    \end{Example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Multiplication}
+    With multiplication, the shift depends on the magnitude of the inputs
+
+    For example, if $x = 16$ then we need to shift by $\log_2 16 = 4$ steps
+
+    (Details in thesis)
+\end{frame}
+
+\begin{frame}
+    \frametitle{Division?}
+    We'll come back to that!
+\end{frame}
+
+\begin{frame}
+    \frametitle{Equality}
+
+    \begin{Definition}
+        A pair of FCCS $x$ and $y$ are \textbf{equal} when for every natural number $n$,
+        \[ \abs{x_{n+1} - y_{n+1}} \leq \frac 1 {2^n} \ . \]
+    \end{Definition}
+
+    Note the use of $n+1$ as the index!
+\end{frame}
+
+\begin{frame}
+    \frametitle{Equality is undecidable}
+    \begin{Theorem}
+        The proposition
+        \[ x = y \vee \neg (x = y) \]
+        is not derivable for arbitrary $x$ and $y$.
+    \end{Theorem}
+    \begin{proof}
+        Given an arbitrary program $P$, define a FCCS $x$ which converges to zero if and only if $P$ does not terminate. By checking if $x = 0$, we can solve the Halting Problem. Contradiction.
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Inequality and apartness}
+    Constructive analysis makes a distinction between \emph{non-constructive} (not-equal) and \emph{constructive} inequality (apart):
+    \begin{description}
+        \item[Not equal] Not all elements are close enough
+        \item[Apart] We \emph{know} the index after which subsequent elements will never come closer together
+    \end{description}
+    $\textrm{A} \Rightarrow \textrm{NE}$ always, but $\textrm{NE} \Rightarrow \textrm{A}$ requires \textbf{Markov's principle}.
+
+    Under classical logic, Markov's principle is trivial and so the two notions are equivalent.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Division}
+    The reciprocal of $x$ is only defined when $x \neq 0$
+
+    In fact, evidence of apartness from 0 gives a lower bound on the size of $x$
+
+    This bound tells us how much we need to shift $x^{-1}$
+\end{frame}
+
+\begin{frame}
+    \frametitle{Exponentials and trigonometric functions}
+    Use power series expansion
+    \[
+        \exp(x) = \sum_{n=0}^\infty = 1 + x + \frac{x}{2}
+        + \frac{x^3}{3!} + \frac{x^4}{4!} + \dots
+    \]
+    Observe that when $-1 \leq x \leq 1$, the numerator of each term is smaller than 1
+
+    Strategy: prove fast convergence on $[-1,1]$, then use identity $\exp(2x) = \exp(x)^2$ to extend it to all of $\Q$
+
+    Can define $\sin$ and $\cos$ in a similar way
+
+    Question: what if $x$ is a FCCS?
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cantor's diagonal argument}
+    \begin{Theorem}
+        Let $x : \N \rightarrow \mathrm{FCCS}$ be a sequence of fast converging Cauchy sequences. Then we can construct a FCCS $\mathrm{cantor}(x)$ that is apart from every element in $x$.
+    \end{Theorem}
+
+    Analogous to argument on $\R$
+
+    Shows that the set of computable reals (FCCS) is \textbf{countable} but not \textbf{enumerable}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Thanks for listening!}
+    \begin{center}
+        \includegraphics[height=0.5\paperwidth]{Lucerne_flowers.jpg}
+
+        \url{https://github.com/lfairy/plusone}
     \end{center}
 \end{frame}
 
