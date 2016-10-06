@@ -55,10 +55,10 @@ As with other areas of mathematics, Ramsey numbers have their simple cases: name
     Otherwise, there must exist at least one edge colored red. Take one such edge, along with the two vertices incident to it. This is a red clique of size 2.
 \end{proof}
 
-On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---the best bounds we have are due to \citet{RSA:RSA3240070302}, who won a Fulkerson prize for his work.
+On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---we have only approximate bounds for numbers of this form.
 
 \begin{Theorem}[\citet{RSA:RSA3240070302}] \label{kims_theorem}
-    For sufficiently large $t$, the value of $R(3,t)$ can be approximated by $t^2/\log t$.
+    For sufficiently large $t$, the value of $R(3,t)$ is within a constant factor of $t^2/\log t$.
 \end{Theorem}
 
 Finally, we observe that the colors \emph{red} and \emph{blue} are interchangable: any coloring that satisfies the Ramsey property for $(s,t)$ can be adapted to one for $(t,s)$ by swapping the colors.
@@ -92,7 +92,7 @@ That is not to say that lower bounds are not hard to find. For all but trivial v
 
 \section{The probabilistic method}
 
-One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from linear programming and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming.
+One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from linear programming and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming and counting arguments.
 
 For this report, we will focus on one such technique: the \textit{probabilistic method}, pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
 
