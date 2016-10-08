@@ -7,7 +7,7 @@
 
 \todo[inline]{write introduction}
 
-\section{Introduction}
+\section{Preliminaries}
 
 Before we introduce the Ramsey numbers, we must first define a few terms.
 
@@ -55,7 +55,7 @@ As with other areas of mathematics, Ramsey numbers have their simple cases: name
     Otherwise, there must exist at least one edge colored red. Take one such edge, along with the two vertices incident to it. This is a red clique of size 2.
 \end{proof}
 
-On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---we have only approximate bounds for numbers of this form.
+On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---we have only approximate bounds for numbers of this form. Mathematician Jeong Han Kim received a Fulkerson Prize for the following result.
 
 \begin{Theorem}[\citet{RSA:RSA3240070302}] \label{kims_theorem}
     For sufficiently large $t$, the value of $R(3,t)$ is within a constant factor of $t^2/\log t$.
@@ -88,11 +88,13 @@ To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only nee
 
 On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colorings on $K_n$ have the desired property.
 
-That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the number of possible colorings is too large to search exhaustively. \todo[inline]{explain how counterexamples are often hard to find too} \todo[inline]{include bounds on $R(5,5)$}
+That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the set of possible colorings is too large to search exhaustively. Finding a counterexample at this scale often requires special techniques: in \citet{exoo2004some}, the Ramsey graphs are constructed from non-abelian groups.
+
+\todo[inline]{include bounds on $R(5,5)$}
 
 \section{The probabilistic method}
 
-One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from linear programming and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming and counting arguments.
+One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from differential equations and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming and counting arguments.
 
 For this report, we will focus on one such technique: the \textit{probabilistic method}, pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
 
