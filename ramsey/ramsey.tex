@@ -15,13 +15,13 @@ A \textit{graph} $G = (V, E)$ consists of a set of \textit{vertices} $V$ connect
 
 A graph is \textit{complete} when every pair of vertices is connected by an edge. For each positive integer $n$, the complete graph on $n$ vertices is unique and denoted $K_n$.
 
-An \textit{(edge-induced) subgraph} $G' \subseteq G$ is formed from a subset of the edges of $G$, along with the vertices incident to them. When a subgraph is complete, it is called a \textit{clique}.
+An \textit{(vertex-induced) subgraph} $G' \subseteq G$ is formed from a subset of the vertices of $G$, along with the edges of $G$ between these vertices. When a subgraph is complete, it is called a \textit{clique}. Conversely, if no pair of vertices has an edge between them, then the subgraph is a \textit{stable set}.
 
 An \textit{(edge) coloring} labels every edge of a graph by elements from a given set of colors. By tradition, we use the colors \textit{red} and \textit{blue}.
 
 With these definitions, we can state Ramsey's theorem, and with it, the Ramsey numbers:
 
-\begin{Theorem}[Ramsey's theorem] \label{ramseys_theorem}
+\begin{Theorem}[Ramsey's theorem for red-blue colorings] \label{ramseys_theorem}
     Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every red-blue edge coloring of $K_n$ either has a fully red clique of size $s$, or a fully blue clique of size $t$.
 \end{Theorem}
 
@@ -29,7 +29,13 @@ With these definitions, we can state Ramsey's theorem, and with it, the Ramsey n
     Define $R(s,t)$ as the smallest $n$ such that the conclusion of \cref{ramseys_theorem} holds. This is the \textit{Ramsey number} of $(s,t)$.
 \end{Definition}
 
-\todo[inline]{include clique/stable set definition}
+There is an alternative statement of the theorem in terms of \textit{cliques} and \textit{stable sets}:
+
+\begin{Theorem}[Ramsey's theorem for cliques and stable sets]
+    Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every simple graph on $n$ vertices either has a clique of size $n$, or a stable set of size $t$.
+\end{Theorem}
+
+It can be shown that the two statements are equivalent.
 
 \section{1-fish, 2-fish, red fish, blue fish}
 
@@ -88,9 +94,7 @@ To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only nee
 
 On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colorings on $K_n$ have the desired property.
 
-That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the set of possible colorings is too large to search exhaustively. Finding a counterexample at this scale often requires special techniques: in \citet{exoo2004some}, the Ramsey graphs are constructed from non-abelian groups.
-
-\todo[inline]{include bounds on $R(5,5)$}
+That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the set of possible colorings is too large to search exhaustively. Finding a counterexample at this scale often requires special techniques: in \citet{exoo2004some}, Ramsey graphs are constructed from non-abelian groups. Moreover, to prove a \emph{general} lower bound often involves non-constructive techniques. In the next section we derive such a bound for $R(k,k)$, using the non-constructive probabilistic method.
 
 \section{The probabilistic method}
 
