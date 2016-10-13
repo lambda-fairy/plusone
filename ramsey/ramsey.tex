@@ -11,18 +11,18 @@
 
 Before we introduce the Ramsey numbers, we must first define a few terms.
 
-A \textit{graph} $G = (V, E)$ consists of a set of \textit{vertices} $V$ connected by a set of \textit{edges} $E$. For the purposes of this paper, we assume that the graphs are \textit{simple}: that is, every pair of vertices has at most one edge between them.
+A \textit{graph} $G = (V, E)$ consists of a set of \textit{vertices} $V$ connected by a set of \textit{edges} $E \subseteq \{\, \{u, v\} \mid u, v \in V \,\}$. The elements of an edge $e$ are called its \textit{endpoints}. For the purposes of this paper, we assume that the graphs are \textit{simple}: that is, every pair of vertices has at most one edge between them.
 
 A graph is \textit{complete} when every pair of vertices is connected by an edge. For each positive integer $n$, the complete graph on $n$ vertices is unique and denoted $K_n$.
 
-An \textit{(vertex-induced) subgraph} $G' \subseteq G$ is formed from a subset of the vertices of $G$, along with the edges of $G$ between these vertices. When a subgraph is complete, it is called a \textit{clique}. Conversely, if no pair of vertices has an edge between them, then the subgraph is a \textit{stable set}.
+An \textit{subgraph} $G'$ of $G$ is formed from a subset of the vertices and edges of $G$. The vertex subset must include all endpoints of the edge subset, but may also contain extra vertices. In a \textit{vertex-induced} subgraph, $e$ is an edge of $G'$ if and only if its endpoints are also in $G'$. When a subgraph is complete, it is called a \textit{clique}. Conversely, if no pair of vertices in a vertex-induced subgraph has an edge between them, then the subgraph is a \textit{stable set}.
 
-An \textit{(edge) coloring} labels every edge of a graph by elements from a given set of colors. By tradition, we use the colors \textit{red} and \textit{blue}.
+An \textit{edge colouring} labels every edge of a graph by elements from a given set of colours. In this report, we will use the two colours \textit{red} and \textit{blue}.
 
-With these definitions, we can state Ramsey's theorem, and with it, the Ramsey numbers:
+With these definitions, we can state Ramsey's Theorem, and with it, define the Ramsey numbers:
 
-\begin{Theorem}[Ramsey's theorem for red-blue colorings] \label{ramseys_theorem}
-    Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every red-blue edge coloring of $K_n$ either has a fully red clique of size $s$, or a fully blue clique of size $t$.
+\begin{Theorem}[Ramsey's Theorem for red-blue colourings] \label{ramseys_theorem}
+    Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every red-blue edge colouring of $K_n$ either has a clique of size $s$ all coloured red, or a clique of size $t$ all coloured blue.
 \end{Theorem}
 
 \begin{Definition}[Ramsey numbers]
@@ -31,7 +31,7 @@ With these definitions, we can state Ramsey's theorem, and with it, the Ramsey n
 
 There is an alternative statement of the theorem in terms of \textit{cliques} and \textit{stable sets}:
 
-\begin{Theorem}[Ramsey's theorem for cliques and stable sets]
+\begin{Theorem}[Ramsey's Theorem for cliques and stable sets]
     Let $s$ and $t$ be positive integers. Then for sufficiently large $n$, every simple graph on $n$ vertices either has a clique of size $n$, or a stable set of size $t$.
 \end{Theorem}
 
@@ -39,7 +39,7 @@ It can be shown that the two statements are equivalent.
 
 \section{1-fish, 2-fish, red fish, blue fish}
 
-As with other areas of mathematics, Ramsey numbers have their simple cases: namely, the values of $R(1,t)$ and $R(2,t)$. These cases are easy to state and prove, and so are given below.
+As with other concepts in mathematics, Ramsey numbers have their simple cases: namely, the values of $R(1,t)$ and $R(2,t)$. These cases are easy to state and prove, and so are given below.
 
 \begin{Proposition}
     For any positive $s$ and $t$,
@@ -47,7 +47,7 @@ As with other areas of mathematics, Ramsey numbers have their simple cases: name
 \end{Proposition}
 
 \begin{proof}
-    Observe that a clique with one vertex has no internal edges. Hence, trivially, all of its edges are colored both red and blue. The smallest complete graph with a one-vertex clique is $K_1$ itself. The proposition follows.
+    Observe that a clique with one vertex has no edges. Hence, trivially, all of its edges are coloured both red and blue. The smallest complete graph with a one-vertex clique is $K_1$ itself. The proposition follows.
 \end{proof}
 
 \begin{Proposition}
@@ -56,9 +56,9 @@ As with other areas of mathematics, Ramsey numbers have their simple cases: name
 \end{Proposition}
 
 \begin{proof}
-    Consider a coloring of $K_t$. If every edge is colored blue, then the graph has a blue clique of size $t$; and we are done.
+    Consider a colouring of $K_t$. If every edge is coloured blue, then the graph has a blue clique of size $t$; and we are done.
 
-    Otherwise, there must exist at least one edge colored red. Take one such edge, along with the two vertices incident to it. This is a red clique of size 2.
+    Otherwise, there must exist at least one edge coloured red. Take one such edge, along with the two vertices incident to it. This is a red clique of size 2.
 \end{proof}
 
 On learning these results, one may wonder: is the expression for $R(3,t)$ as simple as the two before it? The answer is no---we have only approximate bounds for numbers of this form. Mathematician Jeong Han Kim received a Fulkerson Prize for the following result.
@@ -67,7 +67,9 @@ On learning these results, one may wonder: is the expression for $R(3,t)$ as sim
     For sufficiently large $t$, the value of $R(3,t)$ is within a constant factor of $t^2/\log t$.
 \end{Theorem}
 
-Finally, we observe that the colors \emph{red} and \emph{blue} are interchangable: any coloring that satisfies the Ramsey property for $(s,t)$ can be adapted to one for $(t,s)$ by swapping the colors.
+Kim's argument is much more elaborate than those for $R(1,t)$ and $R(2,t)$; for brevity the proof is omitted. It uses the so-called \textit{R\"{o}dl's nibble method}: a probabilistic argument which constructs the desired colouring in small random increments, or ``nibbles''. While R\"{o}dl's method is out of scope for this article, we will cover probabilistic techniques in general in \cref{probabilistic_method}.
+
+Finally, we observe that the colours \emph{red} and \emph{blue} are interchangable: any colouring that satisfies the Ramsey property for $(s,t)$ can be adapted to one for $(t,s)$ by swapping the colours.
 
 \begin{Proposition}
     For any positive $s$ and $t$,
@@ -75,32 +77,34 @@ Finally, we observe that the colors \emph{red} and \emph{blue} are interchangabl
 \end{Proposition}
 
 \begin{proof}
-    By symmetry of red and blue.
+    By symmetry of the edge colouring.
 \end{proof}
 
 \section{Computing Ramsey numbers}
 
-The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proven by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$. The value of $R(5,5)$---just one step above---is still an open problem!
+The definition of Ramsey numbers is easy to state. What is surprising, then, is how difficult they are to compute. As of this writing, the last exact result was proved by \cite{JGT:JGT3190190304}, who showed that $R(4,5) = 25$. The value of $R(5,5)$---just one step above---is still an open problem!
 
 \todo[inline]{insert table of known Ramsey numbers}
 
-This difficulty stems from the sheer number of combinations that must be checked. Since a Ramsey number is a statement about \emph{all} colorings of a particular graph, it is not enough to find a single example---we have to account for them all. Moreover, as the number of possible colorings grows exponentially with the number of vertices, it is almost never feasible to check every coloring. In fact, there is no known polynomial-time algorithm for computing Ramsey numbers in general; mathematicians so far have used a separate, ad-hoc proof for each result.
+This difficulty stems from the sheer number of colourings that must be checked. Since a Ramsey number is a statement about \emph{all} colourings of a particular graph, it is not enough to find a single example---we have to account for them all. Moreover, as the number of possible colourings grows exponentially with the number of vertices, it is not feasible to check every colouring for all but trivial values of $s$ and $t$. For this reason, while we do know specific cases, there is no known efficient algorithm for computing Ramsey numbers in general.
 
 \section{Upper and lower bounds}
 
-While it can be difficult to compute a Ramsey number exactly, we can often derive bounds on what values the number can take. These bounds can be an important step toward finding the exact result. In particular, if we can show that $R(s,t) \geq n$ and $R(s,t) \leq n$ for the same $n$, then it follows that $R(s,t) = n$.
+As it can be difficult to compute a Ramsey number exactly, most research instead focuses on deriving upper and lower bounds. These bounds may apply to a family of Ramsey numbers---for example, \cref{kims_theorem} is a bound on $R(3,t)$---or it may apply to only a particular one. Either way, they can be an important step toward finding an exact result. In particular, if we can show that $R(s,t) \geq n$ and $R(s,t) \leq n$ for the same $n$, then it follows that $R(s,t) = n$.
 
-To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only need a counterexample: a coloring on $K_n$ which does \emph{not} have a red clique of size $s$ or a blue clique of size $t$. This coloring is called a \textit{Ramsey graph} of size $n$. Since a Ramsey number is a statement about all colorings on $K_n$, such a coloring is sufficient to show that $R(s,t) \nleq n$, hence $R(s,t) > n$.
+To prove a lower bound for a Ramsey number---that is, $R(s,t) > n$---we only need a counterexample: a colouring on $K_n$ which does \emph{not} have a red clique of size $s$ or a blue clique of size $t$. This colouring is called a \textit{Ramsey graph} of size $n$. Since a Ramsey number is a statement about all colourings on $K_n$, such a colouring is sufficient to show that $R(s,t) \nleq n$, hence $R(s,t) > n$.
 
-On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colorings on $K_n$ have the desired property.
+On the other hand, to prove an upper bound is often more difficult. This is because to show that $R(s,t) \leq n$, we must prove that \emph{all} colourings on $K_n$ have the desired property.
 
-That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the set of possible colorings is too large to search exhaustively. Finding a counterexample at this scale often requires special techniques: in \citet{exoo2004some}, Ramsey graphs are constructed from non-abelian groups. Moreover, to prove a \emph{general} lower bound often involves non-constructive techniques. In the next section we derive such a bound for $R(k,k)$, using the non-constructive probabilistic method.
+That is not to say that lower bounds are not hard to find. For all but trivial values for $s$ and $t$, the set of possible colourings is too large to search exhaustively. Finding a counterexample at this scale often requires special techniques: in \citet{exoo2004some}, Ramsey graphs are constructed from non-abelian groups. Moreover, to prove a \emph{general} lower bound often involves non-constructive techniques. In the next section we derive such a bound for $R(k,k)$, using the non-constructive probabilistic method.
 
 \section{The probabilistic method}
 
-One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from differential equations and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proven using differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was shown through linear programming and counting arguments.
+\label{probabilistic_method}
 
-For this report, we will focus on one such technique: the \textit{probabilistic method}, pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a coloring, and show that the probability that some property holds is less than one. From this, it must follow that there exists a coloring where this property does \emph{not} hold.
+One interesting aspect of Ramsey numbers, as well as graph theory as a whole, is the breadth of techniques used in its proofs. Past practitioners have taken ideas from differential equations and probability theory, and used computational methods to narrow down their results. The approximation $R(3,t) \sim t^2/\log t$, as we saw earlier in \cref{kims_theorem}, was proved using probability and differential equations; the bound $R(4,6) \leq 41$ by \citet{mckay1997subgraph} was partly derived using counting arguments, with computer-assisted linear programming completing their proof.
+
+For this report, we will focus on one such technique: the \textit{probabilistic method}, pioneered by Paul Erdős in \citeyear{erdos1947some}. The key idea is to define a random process that builds a colouring, and show the probability that the Ramsey property holds is less than one. From this, it must follow that there exists a colouring where this property does \emph{not} hold.
 
 This argument is non-constructive: it shows that such a counterexample exists, but does not tell us what it is. Despite this caveat, the method is valid and its conclusion is correct with no chance of error.
 
@@ -119,14 +123,14 @@ To illustrate the probabilistic method, we give a proof of the lower bound $R(k,
         = \frac{n(n-1)\ldots(n-(k-1))}{k!}
         \leq \frac{n^k}{k!} \ .
     \]
-    To complete the proof, we use the identity
+    To complete the proof, we observe that
     \[
         2^{k-1}
         = 1 \times 2 \times 2 \times \ldots \times 2
         \leq 1 \times 2 \times 3 \times \ldots \times k
-        = k!
+        = k! \ ;
     \]
-    to conclude that
+    it then follows that
     \[
         {n \choose k} \leq \frac{n^k}{2^{k-1}} \ . \qedhere
     \]
@@ -137,12 +141,12 @@ To illustrate the probabilistic method, we give a proof of the lower bound $R(k,
     \[ R(k,k) \geq 2^{\frac k 2} \ . \]
 \end{Theorem}
 
-\begin{proof}
+\begin{proof}\citep{aigner2010proofs}.
     Let $k \geq 2$. Consider the complete graph $K_n$ on $n$ vertices, where $n < 2^{\frac k 2}$. Since every pair of vertices in this graph is connected by an edge, there must be $n \choose 2$ edges in total.
 
-    Now, suppose that each edge is colored red or blue independently with probability $\frac 1 2$. As each of these $2^{n \choose 2}$ colorings is equally likely, the probability of choosing a particular coloring is $2^{-{n \choose 2}}$.
+    Now, suppose that each edge is coloured red or blue independently with probability $\frac 1 2$. As each of these $2^{n \choose 2}$ colourings is equally likely, the probability of choosing a particular colouring is $2^{-{n \choose 2}}$.
 
-    Let $A$ be a subset of vertices of size $k$. The probability of the event $A_\red$ that all edges within $A$ are colored red is then $2^{-{k \choose 2}}$. Hence it follows that the probability $p_\red$ that \emph{some} $k$-set is colored all red is bounded by
+    Let $A$ be a subset of vertices of size $k$. The probability of the event $A_\red$ that all edges within $A$ are coloured red is then $2^{-{k \choose 2}}$. Hence it follows that the probability $p_\red$ that \emph{some} $k$-set is coloured all red is bounded by
     \[
         p_\red = \Pr(\bigcup_{\abs{A} = k} A_\red)
         \leq \sum_{\abs{A} = k} \Pr(A_\red)
@@ -158,7 +162,7 @@ Now, applying \cref{binomial_bound}, we use the fact that $n < 2^{\frac k 2}$ to
         \leq \frac 1 2 \ .
     \]
 
-Hence $p_\red < \frac 1 2$, and by symmetry $p_\blue < \frac 1 2$ for the probability that some $k$ vertices have all edges between them colored blue. It follows that $p_\red + p_\blue < 1$, so there must exist a coloring with no red or blue $K_k$. This means that $K_n$ does not have the Ramsey property for $(k, k)$, and the Ramsey number $R(k,k) \geq 2^{\frac k 2}$.
+Hence $p_\red < \frac 1 2$, and by symmetry $p_\blue < \frac 1 2$ for the probability that some $k$ vertices have all edges between them coloured blue. It follows that $p_\red + p_\blue < 1$, so there must exist a colouring with no red or blue $K_k$. This means that $K_n$ does not have the Ramsey property for $(k, k)$, and the Ramsey number $R(k,k) \geq 2^{\frac k 2}$.
 \end{proof}
 
 \section{Conclusion}
