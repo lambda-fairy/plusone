@@ -4,7 +4,10 @@ module Cauchy where
 
 
 import Control.Applicative
+import Data.Char
+import Data.List
 import Data.Ratio
+import Data.Tuple
 import Numeric.Natural
 
 
@@ -32,7 +35,7 @@ instance Fractional Cauchy where
 
 
 instance Show Cauchy where
-    showsPrec p x = showsPrec p (toDouble $ x # 64) . ("..." ++)
+    show = showToPrecision 12
 
 
 -- Cauchy sequence with a modulus of convergence.
@@ -175,3 +178,40 @@ instance Index Cauchy' where
 
 toDouble :: Real a => a -> Double
 toDouble = realToFrac
+
+
+-- For some $n$, print the given number to within $10^{-n}$.
+printToPrecision :: Index a => Natural -> a -> IO ()
+printToPrecision n = putStrLn . showToPrecision n
+
+
+-- For some $n$, build a decimal representation of the number to within
+-- $10^{-n}$.
+showToPrecision :: Index a => Natural -> a -> String
+showToPrecision n x = longDiv n xn ++ " ±10⁻" ++ showSuperscript n
+  where
+    -- $\log_10 2 < 4$
+    xn = x # 4 * n
+
+
+longDiv :: Natural -> Rational -> String
+longDiv n x
+    | x < 0 = '-' : longDiv n (-x)
+    | otherwise =
+        let d : ds = map fst $ iterate (\(_, x') -> properFraction (x' * 10)) (properFraction x)
+        in  show d ++ '.' : map intToDigit (genericTake n ds)
+
+
+-- Like $\mathtt{show}$, but uses superscript digits instead.
+showSuperscript :: Natural -> String
+showSuperscript = map (genericIndex "⁰¹²³⁴⁵⁶⁷⁸⁹") . toDigits
+
+
+-- Convert an integer to a list of digits in base 10.
+toDigits :: Integral a => a -> [a]
+toDigits 0 = [0]
+toDigits n' = reverse $ unfoldr step n'
+  where
+    step n
+        | n == 0 = Nothing
+        | otherwise = Just $ swap (divMod n 10)
