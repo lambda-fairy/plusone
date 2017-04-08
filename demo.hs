@@ -15,3 +15,5 @@ exp 1
 printToPrecision 100 $ expC 1
 
 printToPrecision 100 $ expC (-7) / sinC 9 + cosC (1/3) * 42.42
+
+cantor $ realToFrac . genericIndex calkinWilf'
