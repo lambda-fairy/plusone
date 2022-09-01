@@ -17,7 +17,6 @@ cabal-dev
 *.nav
 *.out
 *.snm
-*.pdf
 *.tdo
 *.toc
 _minted-thesis/
